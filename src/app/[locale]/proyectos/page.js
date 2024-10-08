@@ -17,6 +17,11 @@ import araucariasPic from "../../../../public/assets/images/proyectoSalta.png";
 import { useTranslations } from "next-intl";
 import Image from "next/image.js";
 
+import dynamic from 'next/dynamic';
+
+const MapWithMarkers = dynamic(() => import('../components/Map/MapWithMarkers'), { ssr: false });
+const MapBackground = dynamic(() => import('../components/Map/MapBackground'), { ssr: false });
+
 const Proyectos = () => {
   const projectIdioms = useTranslations("Project");
   return (
@@ -24,6 +29,9 @@ const Proyectos = () => {
       <Navbar />
       <section className="project">
         <div className="projectHeader">
+          <div className="mapBackground">
+            <MapBackground />
+          </div>
           <h1>
             {projectIdioms("title-1")} <br />
             {projectIdioms("title-2")}
@@ -35,8 +43,8 @@ const Proyectos = () => {
         <div className="projectMap" id="map">
           <h3>{projectIdioms("map-title-1")}</h3>
           <h2>{projectIdioms("map-title-2")}</h2>
-          <Image src={mapArg} alt="map of argentina" className="mapArg" />
           <div className="projectList">
+            <MapWithMarkers />
             <Project
               name="LA FLORENCIA"
               picture={laFlorenciaPic}
