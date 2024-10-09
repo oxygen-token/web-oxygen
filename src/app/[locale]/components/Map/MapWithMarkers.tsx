@@ -5,6 +5,8 @@ import './styles.css';
 import { geojsonData } from './constants';
 import { useTranslations } from 'next-intl';
 
+
+
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_API_KEY as string | "";
 
 
