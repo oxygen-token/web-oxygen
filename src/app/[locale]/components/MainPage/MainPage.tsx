@@ -5,7 +5,7 @@ import Partnerships from "../Partnerships/Partnerships";
 
 // Styles
 import "./mainpage.css";
-import "../../../[locale]/globals.css";
+import "../../globals.css";
 
 // Sections
 import { PreLanding } from "./PreLanding";
