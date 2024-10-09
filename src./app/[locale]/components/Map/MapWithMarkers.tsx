@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css'; 
-import './styles.css'; 
+import './styles.css';  
+
 import { geojsonData } from './constants';
 import { useTranslations } from 'next-intl';
 
