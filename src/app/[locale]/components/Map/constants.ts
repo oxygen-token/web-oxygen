@@ -4,6 +4,7 @@
 // Cada punto tiene un videoID que se usa para mostrar el video en el reproductor de video
 // El videoID es el ID de un video de YouTube
 
+<<<<<<< HEAD
 export const geojsonData = {
   type: "FeatureCollection",
   name: "Terreno",
@@ -12,6 +13,14 @@ export const geojsonData = {
     {
       type: "Feature",
       properties: { Name: "V1" },
+=======
+export const geojsonData : GeoJSON.FeatureCollection = {
+  type: "FeatureCollection",
+  features: [
+    {
+      type: "Feature",
+      properties: { Name: "Terreno" },
+>>>>>>> oxygen-token/main
       geometry: {
         type: "Polygon",
         coordinates: [

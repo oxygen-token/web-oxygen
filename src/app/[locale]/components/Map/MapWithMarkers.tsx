@@ -8,7 +8,16 @@ import { useTranslations } from 'next-intl';
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_API_KEY as string | "";
 
 
+<<<<<<< HEAD
 const VideoModal = ({ videoID, onClose }) => {
+=======
+interface VideoModalProps {
+  videoID: string | null;
+  onClose: () => void;
+}
+
+const VideoModal = ({ videoID, onClose }: VideoModalProps) => {
+>>>>>>> oxygen-token/main
   if (!videoID) return null;
 
   return (
@@ -77,15 +86,30 @@ const MapWithMarkers = () => {
         ]; 
   
         
+<<<<<<< HEAD
         const innerPolygon = geojsonData.features[0].geometry.coordinates[0]; 
   
         
         const maskData = {
+=======
+        let innerPolygon: number[][] = [];
+        if (geojsonData.features[0].geometry.type === 'Polygon') {
+          innerPolygon = (geojsonData.features[0].geometry as GeoJSON.Polygon).coordinates[0];
+        }
+  
+        
+        const maskData : GeoJSON.Feature = {
+>>>>>>> oxygen-token/main
           'type': 'Feature',
           'geometry': {
             'type': 'Polygon',
             'coordinates': [outerBounds, innerPolygon] 
+<<<<<<< HEAD
           }
+=======
+          },
+          'properties': {}
+>>>>>>> oxygen-token/main
         };
   
         map.addSource('mask', {
@@ -106,10 +130,19 @@ const MapWithMarkers = () => {
   
         
         if (geojsonData.features) {
+<<<<<<< HEAD
           geojsonData.features.forEach((feature) => {
             if (feature.geometry.type === 'Point') {
               const coordinates = feature.geometry.coordinates;
               const videoID = feature.properties.videoID; 
+=======
+          geojsonData.features.forEach((feature : GeoJSON.Feature) => {
+            if (feature.geometry.type === 'Point') {
+              const coordinates = feature.geometry.coordinates;
+              const LnLat = new mapboxgl.LngLat(coordinates[0], coordinates[1]);
+
+              const videoID = feature.properties?.videoID; 
+>>>>>>> oxygen-token/main
   
               
               const marker = new mapboxgl.Marker({
@@ -117,7 +150,11 @@ const MapWithMarkers = () => {
                 draggable: false, 
                 clickTolerance: 10 
               },)
+<<<<<<< HEAD
                 .setLngLat(coordinates)
+=======
+                .setLngLat(LnLat)
+>>>>>>> oxygen-token/main
                 .addTo(map);
               
               marker.getElement().style.cursor = 'pointer'; 
@@ -131,12 +168,21 @@ const MapWithMarkers = () => {
         }
   
         
+<<<<<<< HEAD
         if (geojsonData.features) {
           const coordinates = geojsonData.features[0].geometry.coordinates[0];
           const bounds = coordinates.reduce((bounds, coord) => {
             return bounds.extend(coord);
           }, new mapboxgl.LngLatBounds(coordinates[0], coordinates[0]));  
         }
+=======
+        // if (geojsonData.features) {
+        //   const coordinates = geojsonData.features[0].geometry.coordinates[0];
+        //   const bounds = coordinates.reduce((bounds, coord) => {
+        //     return bounds.extend(coord);
+        //   }, new mapboxgl.LngLatBounds(coordinates[0], coordinates[0]));  
+        // }
+>>>>>>> oxygen-token/main
 
         
       });
