@@ -1,4 +1,5 @@
 import "./globals.css";
+
 import RootLayout from "./layout-ga";
 
 const { NextIntlClientProvider } = require("next-intl");
