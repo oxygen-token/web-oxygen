@@ -1,0 +1,78 @@
+.modal-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000; 
+  }
+  
+  .modal-content {
+    padding: 15px;
+    display: flex;
+  }
+
+
+.map-with-markers {
+    border-radius: 15px;
+    position: relative;
+    width: 500px;
+    height: 650px;
+    display: flex;
+    align-items: flex-end;
+    padding-bottom: 2em;
+}
+
+.map-overlay {
+    position: relative;
+    background-color: #fff;
+    opacity: 0.8;
+    padding: 1em;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 10; 
+}
+
+.map-overlay h1 {
+
+    font-size: 2em;
+    margin-bottom: 0.30em;
+    font-size: clamp(20px, 1.6vw, 26px);
+    text-align: center;
+    color: #006A6A;
+}
+
+.map-overlay p {
+    margin: 0;
+    font-size: clamp(10px, 1.1vw, 18px);
+    line-height: 1.2em;
+}
+
+.modal-content iframe {
+    aspect-ratio: "16:9";
+    border: none;
+}
+
+
+@media screen and (max-width: 768px) {
+    .map-with-markers {
+        max-width: 350px;
+        max-height: 450px;
+
+    }
+
+    .modal-content iframe {
+        max-width: 300px;
+        max-height: 200px;
+
+    }
+}
+
+
