@@ -21,6 +21,7 @@ import picNicolas from "../../../../public/assets/images/picNicolas.jpeg";
 import picLautaro from "../../../../public/assets/images/picLautaro.jpeg";
 import picAgustina from "../../../../public/assets/images/picAgustina.jpeg";
 import picSalvador from "../../../../public/assets/images/picSalvador.jpeg";
+import picFelipe from "../../../../public/assets/images/picFelipe.png";
 
 import Head from "next/head";
 import { useTranslations } from "next-intl";
@@ -133,6 +134,14 @@ const Nosotros = () => {
             description={teamIdioms("text-salvador")}
             linkLin=""
           />
+          <TeamMember
+            name="Felipe Issa"
+            picture={picFelipe}
+            rol="Head of infrastructure"
+            description={teamIdioms("text-felipe")}
+            linkLin=""
+          />
+          
         </div>
         <div className="joinUs">
           <h3>{usIdioms("joinus-title")}</h3>
