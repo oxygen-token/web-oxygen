@@ -2,7 +2,7 @@
 // El primer feature es un polígono que representa el terreno
 // Los otros features son los puntos que se muestran en el mapa
 // Cada punto tiene un videoID que se usa para mostrar el video en el reproductor de video
-// El videoID es el ID de un video de YouTube
+// El videoID es el ID de un video de YouTube !
 
 export const geojsonData : GeoJSON.FeatureCollection = {
   type: "FeatureCollection",
