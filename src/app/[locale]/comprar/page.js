@@ -9,7 +9,7 @@ import tokenImg from "../../../../public/assets/images/tokenv1.png";
 import Project from "../components/Project/Project.js";
 import laFlorenciaPic from "../../../../public/assets/images/laFlorenciaBuy.png";
 import araucariasPic from "../../../../public/assets/images/araucariasBuy.png";
-
+// ..
 const Comprar = () => {
   const buyIdioms = useTranslations("Buy");
   const projectIdioms = useTranslations("Project");
