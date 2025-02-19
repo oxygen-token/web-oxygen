@@ -52,23 +52,17 @@ async function login (req ,res){
   const newUsuario = new Usuario({
     Email: req.body.Email,
     Pass: req.body.Pass})
-
     //traigo el usuraio desde mi DB
     const userDb = await Usuario.findOne({Email: newUsuario.Email})
-
     //pruebo si coinciden los hashes
     const isMatch = await bcrypt.compare(userDb.Pass, userDb.Pass2)
-    
     console.log("coincide el pass ? " + isMatch)
-
-
     if (userDb && newUsuario.Email==userDb.Email && newUsuario.Pass == userDb.Pass){
       console.log("user loged with: " + newUsuario.Email )
-      return res.status(201).json({ status: "logeado", message: "Usuario registrado correctamente", redirect: "/" })
+      return res.status(201).json({ status: "logeado", message: "Usuario registrado correctamente con UPDATE!", redirect: "/" })
     }else{
       res.status(401).send({status:"Error",message:"Las contraseñas no coinciden"})
     }
-
 }
 
 export const methods = {
