@@ -76,6 +76,6 @@ export const methods = {
     login,
   }
 
-/////TERMINAR DE PODER REDIRIJIR ! 
+/////TERMINAR DE PODER REDIRIJIR !!!  
 
 
