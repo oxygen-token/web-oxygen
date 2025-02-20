@@ -78,7 +78,9 @@
     "project": "Projects",
     "buy": "Buy",
     "login": "Log in",
-    "waitlist": "Join the waitlist"
+    "waitlist": "Join the waitlist",
+    "helloUser": "Hello, {username}",
+    "logout": "Log out"
   },
 
   "Footer": {
