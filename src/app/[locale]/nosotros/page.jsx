@@ -22,6 +22,8 @@ import picLautaro from "../../../../public/assets/images/picLautaro.jpeg";
 import picAgustina from "../../../../public/assets/images/picAgustina.jpeg";
 import picSalvador from "../../../../public/assets/images/picSalvador.jpeg";
 import picFelipe from "../../../../public/assets/images/picFelipe.png";
+import picRosa from "../../../../public/assets/images/rosaMoreno.png";
+import picHector from "../../../../public/assets/images/hector.png";
 
 import Head from "next/head";
 import { useTranslations } from "next-intl";
@@ -139,6 +141,20 @@ const Nosotros = () => {
             picture={picFelipe}
             rol="Head of infrastructure"
             description={teamIdioms("text-felipe")}
+            linkLin=""
+          />
+          <TeamMember
+            name="Rosa Moreno"
+            picture={picRosa}
+            rol="Indigenous Leader"
+            description={teamIdioms("text-rosa")}
+            linkLin=""
+          />
+          <TeamMember
+            name="Hector"
+            picture={picHector}
+            rol="Indigenous Leader"
+            description={teamIdioms("text-hector")}
             linkLin=""
           />
           

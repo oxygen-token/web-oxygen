@@ -23,8 +23,7 @@ const LoginForm = () => {
         Email: data.email,
         Pass: data.password,
       });
-
-      router.push("/post-register");
+      router.push("/");
     } catch (err) {
       console.error(JSON.stringify(err));
       if ((err as Response).status === 401) {

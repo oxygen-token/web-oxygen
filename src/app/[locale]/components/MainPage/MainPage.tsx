@@ -32,7 +32,7 @@ const MainPage = () => {
       <Video />
       <Partnerships />
       <Quote />
-
+      
       <Footer />
     </>
   );
