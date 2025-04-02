@@ -39,7 +39,7 @@ export function PreLanding() {
       </div>
     </div>
   ) : (
-    <section className="fixed inset-0 z-[100] grid place-items-center p-20 bg-[url('/assets/images/imgPrevia4.png')] bg-cover bg-neutral-800">
+    <section className="fixed inset-0 z-[100] grid place-items-center p-20 bg-[url('/assets/images/imgPrevia5.png')] bg-cover bg-neutral-800">
       <Image
         className="absolute top-4 left-4 w-60"
         src={logoGeneral}
