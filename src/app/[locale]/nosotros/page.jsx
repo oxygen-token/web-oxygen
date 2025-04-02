@@ -144,7 +144,7 @@ const Nosotros = () => {
             linkLin=""
           />
           <TeamMember
-            name="Rosa Moreno"
+            name="Ernestina Moreno"
             picture={picRosa}
             rol="Indigenous Leader"
             description={teamIdioms("text-rosa")}
