@@ -26,6 +26,10 @@ const links = [
     nameKey: "project",
     href: "/proyectos",
   },
+  {
+    nameKey: "whitepaper",
+    href: "/whitepaper",
+  },
 ] as const;
 
 function LanguageSelect({ className }: { className: string }) {

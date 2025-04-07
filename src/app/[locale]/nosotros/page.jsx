@@ -25,7 +25,7 @@ import picFelipe from "../../../../public/assets/images/picFelipe.png";
 import picRosa from "../../../../public/assets/images/rosaMoreno.png";
 import picHector from "../../../../public/assets/images/hector.png";
 
-import Head from "next/head";
+import Head from "next/head"; 
 import { useTranslations } from "next-intl";
 
 const Nosotros = () => {

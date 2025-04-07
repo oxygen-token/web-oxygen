@@ -80,7 +80,8 @@
     "login": "Log in",
     "waitlist": "Join the waitlist",
     "helloUser": "Hello, {username}",
-    "logout": "Log out"
+    "logout": "Log out",
+    "whitepaper": "Whitepaper"
   },
 
   "Footer": {

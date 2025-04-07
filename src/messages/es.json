@@ -80,7 +80,8 @@
     "login": "Iniciar sesión",
     "waitlist": "Únete a la lista de espera",
     "helloUser": "Hola, {username}",
-    "logout": "Cerrar sesión"
+    "logout": "Cerrar sesión",
+    "whitepaper": "Whitepaper"
   },
 
   "Footer": {
