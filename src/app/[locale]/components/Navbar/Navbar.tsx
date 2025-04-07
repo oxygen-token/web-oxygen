@@ -1,10 +1,10 @@
 "use client";
 import cn from "classnames";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
-import { get, post } from "../../../../../src/utils/request"; // Ajusta la ruta según tu estructura
+import { get, post } from "../../../../../src/utils/request";
 import { capitalizeFirstLetter } from "../../../../../src/utils/stringUtils";
 
 import logoNav from "../../../../../public/assets/images/logo.png";
@@ -53,6 +53,7 @@ function LanguageSelect({ className }: { className: string }) {
 function Navbar() {
   const t = useTranslations("Navbar");
   const [username, setUsername] = useState<string | null>(null);
+  const mobileNavRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     async function fetchSession() {
@@ -75,9 +76,19 @@ function Navbar() {
       document.cookie = "jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
       document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
       setUsername(null);
-      window.location.href = "/"; // Redirigir al home
+      window.location.href = "/";
     } catch (error) {
       console.error("❌ Error al cerrar sesión:", error);
+    }
+  };
+
+  const toggleMobileNav = () => {
+    const nav = mobileNavRef.current;
+    if (!nav) return;
+    if (nav.style.display === "none") {
+      nav.style.removeProperty("display");
+    } else {
+      nav.style.setProperty("display", "none");
     }
   };
 
@@ -91,7 +102,6 @@ function Navbar() {
         />
       </Link>
 
-      {/* Desktop links */}
       <ul className="hidden lg:flex lg:items-center flex-row ml-auto gap-16">
         {links.map((link) => (
           <li key={link.nameKey}>
@@ -100,7 +110,6 @@ function Navbar() {
             </Link>
           </li>
         ))}
-
         {username ? (
           <li className="flex items-center gap-4">
             <span className="border border-current px-3 py-1 rounded-full">
@@ -144,6 +153,85 @@ function Navbar() {
       </ul>
 
       <LanguageSelect className="mx-4 hidden lg:flex" />
+
+      <button
+        className="text-2xl p-2 rounded-full hover:bg-white/20 transition-colors duration-200 lg:hidden ml-auto"
+        onClick={toggleMobileNav}
+      >
+        <PiListBold />
+      </button>
+
+      <div
+        className="lg:hidden fixed inset-0 w-screen h-screen flex flex-row"
+        ref={mobileNavRef}
+        style={{ display: "none" }}
+      >
+        <div className="bg-black/20 grow" onPointerDown={toggleMobileNav} />
+        <div className="w-3/4 min-w-max bg-white text-black">
+          <div className="h-16 flex flex-row items-center justify-end p-5">
+            <button onClick={toggleMobileNav} className="text-2xl">
+              <PiXBold />
+            </button>
+          </div>
+          <ul className="flex flex-col items-end p-5 text-teal-medium font-medium gap-8">
+            {links.map((link) => (
+              <li key={link.nameKey}>
+                <Link
+                  href={link.href}
+                  className="hover:underline decoration-2"
+                >
+                  {t(link.nameKey)}
+                </Link>
+              </li>
+            ))}
+            {username ? (
+              <>
+                <li>
+                  <span className="border border-current px-3 py-1 rounded-full">
+                    {t("helloUser", { username: capitalizeFirstLetter(username) })}
+                  </span>
+                </li>
+                <li>
+                  <button
+                    onClick={handleLogout}
+                    className="border border-red-500 px-3 py-1 rounded-full text-red-500 hover:bg-red-500 hover:text-white transition-colors duration-200"
+                  >
+                    {t("logout")}
+                  </button>
+                </li>
+              </>
+            ) : (
+              <>
+                <li>
+                  <Link
+                    href="/login"
+                    className="border border-current px-3 py-1 rounded-full hover:bg-teal-medium/20 transition-colors duration-200"
+                  >
+                    {t("login")}
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/comprar"
+                    className="border border-current px-3 py-1 rounded-full hover:bg-teal-medium/20 transition-colors duration-200"
+                  >
+                    {t("buy")}
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/register"
+                    className="border border-current px-3 py-1 rounded-full hover:bg-teal-medium/20 transition-colors duration-200"
+                  >
+                    {t("waitlist")}
+                  </Link>
+                </li>
+              </>
+            )}
+            <LanguageSelect className="-mt-4" />
+          </ul>
+        </div>
+      </div>
     </nav>
   );
 }

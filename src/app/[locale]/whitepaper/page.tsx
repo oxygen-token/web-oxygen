@@ -58,7 +58,7 @@ const Whitepaper_Page = () => {
     <>
       <Navbar />
       <div className="flex flex-col md:flex-row min-h-screen scroll-smooth">
-        <aside className="sticky top-[100px] lg:top-[120px] w-full md:w-1/4 border-r border-gray-200 p-6 h-screen overflow-y-auto bg-white z-10">
+        <aside className="hidden md:block sticky top-[100px] overflow-x-hidden lg:top-[120px] w-full md:w-1/4 border-r border-gray-200 p-6 h-screen overflow-y-auto bg-white z-10">
           <nav className="space-y-3">
             {sections.map(({ id, label }) => {
               const isActive = activeSection === id;
@@ -82,7 +82,7 @@ const Whitepaper_Page = () => {
           </nav>
         </aside>
 
-        <main className="flex-1 p-6 pt-[100px] lg:pt-[120px] space-y-20">
+        <main className="w-full md:flex-1 p-6 pt-[100px] overflow-x-hidden lg:pt-[120px] space-y-20">
           {Children.map(
             [
               <section id="carbon-credit">
@@ -300,10 +300,20 @@ const Whitepaper_Page = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, ease: "easeOut" }}
-                  className="grid grid-cols-1 md:grid-cols-[auto_1fr] items-center gap-6 p-6 rounded-2xl "
+                  className="flex flex-col gap-6 p-6 rounded-2xl"
                 >
-                  <div className="flex gap-4 justify-center md:justify-start">
-                    <div className="w-[100px] h-[100px] bg-gray-100 flex items-center justify-center overflow-hidden">
+                  <p className="text-gray-700 leading-relaxed text-base">
+                    <strong>Solution:</strong> Oxygen allows anyone to invest in
+                    tokenized forest square meters ($OM tokens), instantly
+                    protecting these areas permanently. Investors earn Oxygen
+                    Conservation ($OC) tokens representing carbon credits and
+                    other ecosystem services. Tokens can be sold for profit or
+                    burned to certify carbon neutrality. Blockchain technology
+                    ensures full transparency.
+                  </p>
+
+                  <div className="flex justify-center gap-4">
+                    <div className="w-[146px] h-[120px] md:w-[500px] md:h-[400px] bg-gray-100 flex items-center justify-center overflow-hidden rounded-xl shadow-inner">
                       <video
                         src="/assets/videos/OMfloating.mp4"
                         autoPlay
@@ -313,7 +323,7 @@ const Whitepaper_Page = () => {
                         className="w-full h-full object-cover rounded-xl"
                       />
                     </div>
-                    <div className="w-[100px] h-[100px] bg-gray-100 rounded-xl shadow-inner flex items-center justify-center overflow-hidden">
+                    <div className="w-[140px] h-[120px] md:w-[500px] md:h-[400px] bg-gray-100 flex items-center justify-center overflow-hidden rounded-xl shadow-inner">
                       <video
                         src="/assets/videos/OCtoken.mp4"
                         autoPlay
@@ -324,16 +334,6 @@ const Whitepaper_Page = () => {
                       />
                     </div>
                   </div>
-
-                  <p className="text-gray-700 leading-relaxed text-base">
-                    <strong>Solution:</strong> Oxygen allows anyone to invest in
-                    tokenized forest square meters ($OM tokens), instantly
-                    protecting these areas permanently. Investors earn Oxygen
-                    Conservation ($OC) tokens representing carbon credits and
-                    other ecosystem services. Tokens can be sold for profit or
-                    burned to certify carbon neutrality. Blockchain technology
-                    ensures full transparency.
-                  </p>
                 </motion.div>
               </section>,
 
@@ -388,11 +388,27 @@ const Whitepaper_Page = () => {
 
               <section id="market-analysis">
                 <h2 className="text-2xl font-bold mb-4">Market Analysis</h2>
+
                 <p className="mb-4">
                   The global carbon credit market is rapidly expanding, driven
                   by international climate goals, corporate sustainability
                   commitments, and growing regulatory requirements.
                 </p>
+
+                <motion.div
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, ease: "easeOut" }}
+                  className="w-full max-w-2xl mx-auto my-10"
+                >
+                  <img
+                    src="/assets/images/image4.png"
+                    alt="Carbon Credit Market Growth"
+                    className="w-full rounded-xl shadow-lg"
+                  />
+                </motion.div>
+
                 <p className="mb-4">
                   An industry where{" "}
                   <strong>72% of credits issued are sold</strong>, while
@@ -402,35 +418,50 @@ const Whitepaper_Page = () => {
                   outpacing supply, especially due to stricter environmental
                   policies.
                 </p>
+
                 <p className="mb-4">
                   Latin America presents a unique opportunity: low-cost,
                   high-impact carbon credit generation due to vast forest
                   reserves. Many landowners prefer this path over destructive
                   practices like deforestation or cattle ranching.
                 </p>
+
                 <p className="mb-4">
                   <strong>Key Insights:</strong>
-                  <ul className="list-disc list-inside mt-2 space-y-1">
-                    <li>
-                      High entry barriers (~$150,000 in certification costs)
-                      limit access for smaller players.
-                    </li>
-                    <li>
-                      Latin American forests offer cost-effective, high-return
-                      investments.
-                    </li>
-                    <li>
-                      The region is still early in adoption, offering
-                      first-mover advantages.
-                    </li>
-                    <li>
-                      Strong profitability potential as demand continues to
-                      grow.
-                    </li>
-                  </ul>
                 </p>
-              </section>,
 
+                <ul className="list-disc list-inside mt-2 space-y-1 my-10">
+                  <li>
+                    High entry barriers (~$150,000 in certification costs) limit
+                    access for smaller players.
+                  </li>
+                  <li>
+                    Latin American forests offer cost-effective, high-return
+                    investments.
+                  </li>
+                  <li>
+                    The region is still early in adoption, offering first-mover
+                    advantages.
+                  </li>
+                  <li>
+                    Strong profitability potential as demand continues to grow.
+                  </li>
+                </ul>
+
+                <motion.div
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, ease: "easeOut" }}
+                  className="w-full max-w-2xl mx-auto my-10"
+                >
+                  <img
+                    src="/assets/images/image3.png"
+                    alt="Verified Carbon Credits Demand Chart"
+                    className="w-full rounded-xl shadow-lg"
+                  />
+                </motion.div>
+              </section>,
               <section id="token-model">
                 <h2 className="text-2xl font-bold mb-4">Token Model</h2>
 
@@ -504,28 +535,7 @@ const Whitepaper_Page = () => {
                 <h3 className="text-xl font-semibold mt-6 mb-2">
                   Revenue Generation
                 </h3>
-                <div className="space-y-4 text-gray-700 leading-relaxed">
-                  <ul className="list-disc list-inside space-y-2">
-                    <li>
-                      The first project alone (<strong>La Florencia</strong>,
-                      30,000 ha) is projected to generate a{" "}
-                      <strong>minimum of $2.8M USD over 10 years</strong>.
-                    </li>
-                    <li>
-                      Investor ROI is projected at <strong>~7% annually</strong>
-                      , based on selling 63.79 million m² at $0.0055/m² to raise
-                      the initial funds.
-                    </li>
-                    <li>
-                      Once certified by standards such as <strong>Verra</strong>
-                      , <strong>Gold Standard</strong>, or{" "}
-                      <strong>Pachama</strong>, the carbon credits are sold
-                      through established marketplaces.
-                    </li>
-                  </ul>
-                </div>
-
-                <ul className="list-disc list-inside space-y-2 text-gray-700 leading-relaxed">
+                <ul className="list-disc list-inside space-y-2 text-gray-700 leading-relaxed mb-4">
                   <li>
                     The first project alone (<strong>La Florencia</strong>,
                     30,000 ha) is projected to generate a{" "}
@@ -536,6 +546,12 @@ const Whitepaper_Page = () => {
                     based on selling 63.79 million m² at $0.0055/m² to raise the
                     initial funds.
                   </li>
+                  <li>
+                    Once certified by standards such as <strong>Verra</strong>,{" "}
+                    <strong>Gold Standard</strong>, or <strong>Pachama</strong>,
+                    the carbon credits are sold through established
+                    marketplaces.
+                  </li>
                 </ul>
 
                 <p className="mt-4 text-gray-700 leading-relaxed">
@@ -543,40 +559,86 @@ const Whitepaper_Page = () => {
                   funding round and generating new tradable carbon credits.
                 </p>
 
-                <p className="mb-4">
-                  Each new project will follow this model, requiring a new
-                  funding round and generating new tradable carbon credits.
-                </p>
+                <div className="w-full overflow-hidden py-8">
+                  {/* Logos en desktop */}
+                  <div className="hidden md:flex gap-6 items-center justify-start pt-2">
+                    <Image
+                      src={verraIcon}
+                      alt="Verra"
+                      width={200}
+                      height={50}
+                      className="bg-white p-2 shadow-md rounded-md"
+                    />
+                    <Image
+                      src={goldStandardIcon}
+                      alt="Gold Standard"
+                      width={200}
+                      height={50}
+                      className="bg-white p-2 shadow-md rounded-md"
+                    />
+                    <Image
+                      src={pachamaIcon}
+                      alt="Pachama"
+                      width={200}
+                      height={50}
+                      className="bg-white p-2 shadow-md rounded-md"
+                    />
+                    <Image
+                      src={logloClima}
+                      alt="Clima"
+                      width={180}
+                      height={50}
+                      className="bg-white p-2 shadow-md rounded-md"
+                    />
+                  </div>
 
-                <div className="flex gap-6 items-center justify-start pt-2">
-                  <Image
-                    src={verraIcon}
-                    alt="Verra"
-                    width={200}
-                    height={50}
-                    className="bg-white p-2 shadow-md rounded-md"
-                  />
-                  <Image
-                    src={goldStandardIcon}
-                    alt="Gold Standard"
-                    width={200}
-                    height={50}
-                    className="bg-white p-2 shadow-md rounded-md"
-                  />
-                  <Image
-                    src={pachamaIcon}
-                    alt="Pachama"
-                    width={200}
-                    height={50}
-                    className="bg-white p-2 shadow-md rounded-md"
-                  />
-                  <Image
-                    src={logloClima}
-                    alt="Pachama"
-                    width={180}
-                    height={50}
-                    className="bg-white p-2 shadow-md rounded-md"
-                  />
+                  {/* Logos en mobile con scroll infinito */}
+                  <div className="md:hidden relative w-full overflow-hidden">
+                    <motion.div
+                      className="flex gap-6 items-center"
+                      animate={{ x: ["0%", "-50%"] }}
+                      transition={{
+                        repeat: Infinity,
+                        duration: 2,
+                        ease: "linear",
+                      }}
+                    >
+                      {[...Array(2)].flatMap((_, i) => [
+                        <Image
+                          key={`verra-${i}`}
+                          src={verraIcon}
+                          alt="Verra"
+                          width={200}
+                          height={50}
+                          className="bg-white p-2 shadow-md rounded-md"
+                        />,
+                        <Image
+                          key={`gold-${i}`}
+                          src={goldStandardIcon}
+                          alt="Gold Standard"
+                          width={200}
+                          height={50}
+                          className="bg-white p-2 shadow-md rounded-md"
+                        />,
+                        <Image
+                          key={`pachama-${i}`}
+                          src={pachamaIcon}
+                          alt="Pachama"
+                          width={200}
+                          height={50}
+                          className="bg-white p-2 shadow-md rounded-md"
+                        />,
+                        <Image
+                          key={`clima-${i}`}
+                          src={logloClima}
+                          alt="Clima"
+                          width={180}
+                          height={50}
+                          className="bg-white p-2 shadow-md rounded-md"
+                        />,
+                      ])}
+                    </motion.div>
+                  </div>
                 </div>
               </section>,
 
@@ -986,6 +1048,40 @@ const Whitepaper_Page = () => {
                         Berkeley Carbon Trading Project (VCU Database)
                       </a>
                     </p>
+
+                    <motion.div
+                      initial={{ opacity: 0, y: 40 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.6, ease: "easeOut" }}
+                      className="w-full md:max-w-2xl mx-auto my-6"
+                    >
+                      <img
+                        src="/assets/images/image2.png"
+                        alt="Verified Carbon Credits Demand Chart"
+                        className="w-full h-auto max-w-none object-contain "
+                      />
+                    </motion.div>
+
+                    <p className="italic mt-2">
+                      195.500/482.500=60% of all credits emitted by REDD+
+                      globally has been bought. Same situation for latam and
+                      verra projects (when filtered)
+                    </p>
+
+                    <motion.div
+                      initial={{ opacity: 0, y: 40 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.6, ease: "easeOut" }}
+                      className="w-full md:max-w-2xl mx-auto my-6"
+                    >
+                      <img
+                        src="/assets/images/image1.png"
+                        alt="Verified Carbon Credits Demand Chart"
+                        className="w-full h-auto max-w-none object-contain"
+                      />
+                    </motion.div>
                   </div>
                 </div>
               </section>,
