@@ -15,7 +15,7 @@ export function Services() {
       image: imgService1,
       title: services("service-card-1-title"),
       text: services("service-card-1-text"),
-      link: "https://www.mihuelladecarbono.app/quiz",
+      link: "https://goes.bue.edu.ar/multimedia/huellaco2/app/",
     },
     {
       number: "2.",
