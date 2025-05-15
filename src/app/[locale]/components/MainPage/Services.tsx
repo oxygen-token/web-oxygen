@@ -3,6 +3,7 @@ import { useTranslations } from "next-intl";
 import { ServiceCard } from "../ServiceCard/ServiceCard";
 
 import imgService2 from "../../../../../public/assets/images/service2.webp";
+
 import imgService3 from "../../../../../public/assets/images/service3.webp";
 import imgService1 from "../../../../../public/assets/images/service1.webp";
 
