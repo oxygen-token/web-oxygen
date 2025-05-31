@@ -1,4 +1,4 @@
-const BASE_URL = "https://backend-render-main.onrender.com/";
+const BASE_URL = "https://backend-render-main.onrender.com";
 //const BASE_URL = "http://localhost:10001/api";
 
 // Simple thin wrapper around fetch()
