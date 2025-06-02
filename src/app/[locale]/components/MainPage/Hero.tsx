@@ -24,7 +24,7 @@ export function Hero() {
   const dataItems = useMemo(
     () => [
       {
-        number: 133_150,
+        number: 30_000,
         content: (
           <>
             {layout("data-content-1")} <br />
@@ -33,7 +33,7 @@ export function Hero() {
         ),
       },
       {
-        number: 190_214,
+        number: 42_000,
         content: (
           <>
             {layout("data-content-2")} <br />
@@ -42,7 +42,7 @@ export function Hero() {
         ),
       },
       {
-        number: 27_548,
+        number: 600_000,
         content: (
           <>
             {layout("data-content-3")} <br />

@@ -16,7 +16,6 @@
     "data-content-2-mobile": "soccer stadiums",
     "data-content-3-mobile": "tn CO2 offset"
   },
-
   "Services": {
     "title": "SERVICES",
     "subtitle-1": "PRESERVE",
@@ -24,15 +23,17 @@
     "text": "Native forests are one of the main producers of oxygen, they are essential for us and all living beings on the planet. For this reason, we must protect native territories from being deforested.",
     "service-card-1-title": "Measure",
     "service-card-1-text": "Know your environmental impact. Use the calculator and find out your CO2 emissions.",
-    "service-card-2-title": "Compensate",
+    "service-card-2-title": "Compensate 1 OM = 1 m2 of native forest",
     "service-card-2-text": "Your purchase guarantees the protection of the forest. Save trees from being cut down and wildlife from being displaced.",
+    "service-card-2-highlight": "Save the forest ↓",
     "service-card-2-link": "https://opensea.io/collection/theguardiansoftheforest",
     "service-card-3-title": "Monitor",
     "service-card-3-text": "Visualize the number of trees and species saved, and how much CO2 your investment absorbed in a year.",
+    "service-card-3-equivalence": "1 ton CO₂ = 1 OC",
     "service-card-3-link": "https://opensea.io/collection/theguardiansoftheforest",
-    "see-more-btn": "See more "
+    "see-more-btn": "See more ",
+    "buy-OM-btn": "Buy OM"
   },
-
   "issuedTokens": {
     "title": "ISSUED TOKENS",
     "subtitle-1": "TREES ARE THE BEST TECHNOLOGY",
@@ -44,7 +45,6 @@
     "issued-token-3-title": "OC Token",
     "issued-token-3-text": "Day by day, trees absorb carbon from the atmosphere that we emit as humans. We measure how much carbon your (OM) absorbs and give you this token (OC) as a digital Carbon Offset certification."
   },
-
   "homeTokens": {
     "progress-subtitle": "CARBON CREDITS",
     "progress-title": "LET'S BE PART OF THE CHANGE",
@@ -53,7 +53,6 @@
     "progress-span": "OUR GOAL",
     "progress-span-2": "hectares"
   },
-
   "videoIntro": {
     "title": "OUR MANIFESTO",
     "subtitle-1": "BECOME CARBON",
@@ -61,17 +60,14 @@
     "subtitle-3": "OXYGEN",
     "text": "We want to change the conventional donation scheme in order to save native forests and open the market for an international valuation of native forest land!"
   },
-
   "partnerships": {
     "title": "PARTNERSHIPS"
   },
-
   "phrase": {
     "text": "The climate crisis is caused by us and the solutions must come from us. We have the tools: technology is on our side",
     "comment": "- Antonio Guterres, UN Secretary-General",
     "button": "Start"
   },
-
   "Navbar": {
     "home": "Home",
     "us": "About Us",
@@ -83,7 +79,6 @@
     "logout": "Log out",
     "whitepaper": "Whitepaper"
   },
-
   "Footer": {
     "company": "Company",
     "us-link": "About Us",
@@ -93,7 +88,6 @@
     "news": "Subscribe to our newsletter",
     "news-button": "Send"
   },
-
   "AboutUs": {
     "title": "This is Oxygen.",
     "mision-title": "Our mision",
@@ -105,7 +99,6 @@
     "joinus-title": "JOIN OXYGEN TO BE PART OF THE CHANGE!",
     "tokenomics-title": "Income distribution"
   },
-
   "Project": {
     "title-1": "Discover the forests ",
     "title-2": "we are saving.",
@@ -117,7 +110,6 @@
     "map-with-markers-title": "360° VIDEOS OF LA FLORENCIA",
     "map-with-markers-description": "Click on the points of interest to view the videos"
   },
-
   "Buy": {
     "title": "Start to make the change",
     "btn": "Buy",
@@ -126,7 +118,6 @@
     "token-alert-title": "A TOKEN = A BETTER FUTURE",
     "token-alert-text": "By purchasing a token you protect an area of the forest with all the flora and fauna that live in it."
   },
-
   "Team": {
     "text-dante": "Business economist specialized in blockchain management. In crypto since 2015.",
     "text-matteo": "Bachelor's degree student in Environmental Management. +10 years of experience in native forest conservation projects",
@@ -144,7 +135,6 @@
     "text-rosa": "Leader of a Wichi native community in Formosa, Argentina. Forest protection advocate.",
     "text-hector": "Cacique (chief) of a Wichí native community in El Mistolar, Argentina."
   },
-
   "Login": {
     "login-title": "Take action and preserve the environment",
     "login-form-title": "Log In",
@@ -157,7 +147,6 @@
     "server-error": "Something went wrong. Please try again.",
     "login-cta": "Sign up"
   },
-
   "Register": {
     "register-back": "Back",
     "register-title": "Take action and preserve the environment",
@@ -186,7 +175,6 @@
     "register-btn": "Sign up",
     "terms-and-conditions": "I have read and accept the Terms and Conditions"
   },
-
   "PostRegister": {
     "title": "Thanks for signing up for the waitlist!",
     "message": "Your registration was succesful. We'll be in touch soon!",

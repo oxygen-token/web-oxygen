@@ -16,7 +16,6 @@
     "data-content-2-mobile": "estadios de fútbol",
     "data-content-3-mobile": "tn CO2 compensadas"
   },
-
   "Services": {
     "title": "SERVICIOS",
     "subtitle-1": "CONSERVÁ LOS",
@@ -24,15 +23,15 @@
     "text": "Los bosques nativos son uno de los principales productores de oxígeno, son esenciales para nosotros y todos los seres vivos del planeta. Por esto, debemos proteger los territorios nativos de ser deforestados.",
     "service-card-1-title": "Medí",
     "service-card-1-text": "Conocé tu impacto ambiental. Utilizá la calculadora y descubrí tus emisiones de CO2",
-    "service-card-2-title": "Compensá",
+    "service-card-2-title": "Compensá 1OM = 1 m2 de bosque nativo",
     "service-card-2-text": "Tu compra garantiza la protección del bosque. Salvá a los árboles de ser talados y a la fauna de ser desplazada",
     "service-card-2-link": "/",
     "service-card-3-title": "Monitoreá",
     "service-card-3-text": "Visualizá la cantidad de árboles y especies salvadas, y cuánto CO2 absorbió tu inversión en un año.",
     "service-card-3-link": "/",
-    "see-more-btn": "Ver más "
+    "see-more-btn": "Ver más ",
+    "buy-OM-btn": "Comprar OM"
   },
-
   "issuedTokens": {
     "title": "TOKENS EMITIDOS",
     "subtitle-1": "LOS ÁRBOLES SON LA MEJOR TECNOLOGÍA",
@@ -44,7 +43,6 @@
     "issued-token-3-title": "Token OC",
     "issued-token-3-text": "Día a día, los árboles absorbe el carbono de la atmósfera que emitimos como humanos. Medimos cuánto carbono absorbe tu (OM) y te entregamos este token (OC) como certificación digital de Bonos de Carbono"
   },
-
   "homeTokens": {
     "progress-subtitle": "BONOS DE CARBONO",
     "progress-title": "SEAMOS PARTÍCIPES DEL CAMBIO",
@@ -53,7 +51,6 @@
     "progress-span": "NUESTRO OBJETIVO",
     "progress-span-2": "hectareas"
   },
-
   "videoIntro": {
     "title": "NUESTRO MANIFIESTO",
     "subtitle-1": "CONVERTITE EN CARBONO",
@@ -61,17 +58,14 @@
     "subtitle-3": "OXYGEN",
     "text": "Queremos cambiar el esquema de donaciones convencional y así, poder salvar los bosques nativos. ¡Abrimos el mercado para una valoración internacional de terrenos de bosque nativo!"
   },
-
   "partnerships": {
     "title": "ALIANZAS"
   },
-
   "phrase": {
     "text": "La crisis climática esta causada por nosotros y las soluciones deben venir de nosotros. Tenemos las herramientas: la tecnología está de nuestro lado",
     "comment": "- Antonio Guterres, Secretario General de la ONU",
     "button": "Comenzar"
   },
-
   "Navbar": {
     "home": "Inicio",
     "us": "Nosotros",
@@ -83,7 +77,6 @@
     "logout": "Cerrar sesión",
     "whitepaper": "Whitepaper"
   },
-
   "Footer": {
     "company": "Empresa",
     "us-link": "Nosotros",
@@ -93,7 +86,6 @@
     "news": "Suscribite a nuestro newsletter",
     "news-button": "Enviar"
   },
-
   "AboutUs": {
     "title": "Ésto es Oxygen.",
     "mision-title": "Nuestra misión",
@@ -105,7 +97,6 @@
     "joinus-title": "¡UNITE A OXYGEN PARA SER PARTE DEL CAMBIO!",
     "tokenomics-title": "Distribución de ingresos"
   },
-
   "Project": {
     "title-1": "Descubrí los bosques",
     "title-2": "que estamos salvando",
@@ -116,9 +107,7 @@
     "laFlorencia-text": "La Florencia está dividida en dos estancias la parte este y la parte oeste Juntas suman una superficie de cerca de 90.000 hectáreas en las que encontramos ambientes de bosque, humedades, zonas de arenal entre otros. Cabe destacar la presencia confirmada del yaguarete, el yurumi u oso hormiguero, el pecari de collar y muchas otras especies de animales y plantas. Es un territorio clave para la supervivencia del yaguarete ( quedan entre 200 y 250 en estado silvestre y solo 20 en el gran chaco argentino. Se destaca por su cercanía con el parque nacional Impenetrable, actuando como corredor biológico entre el mismo y la provincia de Salta.",
     "map-with-markers-title": "VIDEOS 360° DE LA FLORENCIA",
     "map-with-markers-description": "Haga click en los puntos de interes para vizualizar los videos"
-
   },
-
   "Buy": {
     "title": "Comenzá a hacer el cambio",
     "btn": "Comprar",
@@ -127,7 +116,6 @@
     "token-alert-title": "UN TOKEN = UN FUTURO MEJOR",
     "token-alert-text": "Al comprar un token proteges un área del bosque con toda la flora y fauna que vive en ella."
   },
-
   "Team": {
     "text-dante": "Economista de empresas especializado en gestión de blockchain. Experiencia en cripto desde 2015",
     "text-matteo": "Estudiante de Lic. en Gestión Ambiental. +10 años de experiencia en proyectos de conservación ambiental",
@@ -145,7 +133,6 @@
     "text-rosa": "Líder de una comunidad nativa wichi en Formosa,Argentina. Defensor de la protección forestal.",
     "text-hector": "Cacique de una comunidad nativa wichí en El Mistolar, Argentina."
   },
-
   "Login": {
     "login-title": "Tomá acción y salvá bosques de ser talados",
     "login-form-title": "Inicia sesión",
@@ -158,7 +145,6 @@
     "server-error": "Ocurrió un error inesperado. Por favor intente de nuevo.",
     "login-cta": "Registrate"
   },
-
   "Register": {
     "register-back": "Atrás",
     "register-title": "Take action and preserve the environment",
@@ -187,7 +173,6 @@
     "register-btn": "Registrarse",
     "terms-and-conditions": "Acepto los Términos y Condiciones"
   },
-
   "PostRegister": {
     "title": "¡Gracias por sumarte a la lista de espera!",
     "message": "Fuiste registrado exitosamente. ¡Estaremos en contacto pronto!",
