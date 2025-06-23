@@ -27,6 +27,10 @@ const links = [
     href: "/proyectos",
   },
   {
+    nameKey: "calculator",
+    href: "/calculadora",
+  },
+  {
     nameKey: "whitepaper",
     href: "/whitepaper",
   },

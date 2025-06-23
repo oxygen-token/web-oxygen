@@ -72,6 +72,7 @@
     "home": "Inicio",
     "us": "Nosotros",
     "project": "Proyectos",
+    "calculator": "Calculadora",
     "buy": "Comprar",
     "login": "Iniciar sesión",
     "waitlist": "Únete a la lista de espera",
@@ -179,5 +180,70 @@
     "title": "¡Gracias por sumarte a la lista de espera!",
     "message": "Fuiste registrado exitosamente. ¡Estaremos en contacto pronto!",
     "back-link": "Volver al inicio"
+  },
+  "Calculator": {
+    "title": "Calculadora de Huella de Carbono",
+    "subtitle": "Calcula tu impacto ambiental y descubre cuántos créditos de carbono necesitas",
+    "description": "Responde unas simples preguntas y conoce tu huella de carbono anual en toneladas de CO₂e",
+    "cta": "Comenzar cálculo",
+    "howToCompensate": "¿Cómo deseas compensar?",
+    "individual": "Individuo",
+    "company": "Empresa",
+    "calculateTitle": "Calculá tu emisión de CO",
+    "calculateDescription": "Las actividades que realizamos día a día, como por ejemplo, usar electricidad, manejar en auto, etc. generan emisión de gases de efecto invernadero que son perjudiciales para el medio ambiente.",
+    "start": "Comenzar",
+    "bankTitle": "Banco de Bosques",
+    "bankDescription": "Es una fundación que canaliza el aporte de pequeños, medianos y grandes donantes para intervenir el mercado inmobiliario de tierras para salvar los últimos bosques nativos que quedan en la Argentina.\n\nEl objetivo es que no los desmonten para salvar a todos los habitantes del bosque y potenciar su uso sustentable para las comunidades locales.",
+    "goToBank": "Ir al Banco de Bosques",
+    "companySection": "Empresa",
+    "projects": "Proyectos",
+    "news": "Noticias",
+    "faq": "Preguntas Frecuentes",
+    "contact": "Contacto",
+    "workWithUs": "Trabaja con nosotros",
+    "newsletter": "Suscribite a nuestro newsletter",
+    "emailPlaceholder": "Correo electrónico",
+    "subscribe": "Suscribir",
+    "progress": "Pregunta {current} de {total}",
+    "next": "Siguiente",
+    "previous": "Anterior",
+    "finish": "Finalizar",
+    "currentFootprint": "Tu huella estimada:",
+    "sections": {
+      "transport": "Transporte",
+      "flights": "Vuelos y Alimentación", 
+      "energy": "Energía y Estilo de Vida"
+    },
+    "transport": {
+      "title": "Transporte",
+      "distance": "Distancia anual en vehículo personal",
+      "vehicleType": "Tipo de vehículo",
+      "busFreq": "Frecuencia de uso de autobús",
+      "trainFreq": "Frecuencia de uso de tren/subte"
+    },
+    "flights": {
+      "title": "Vuelos y Alimentación",
+      "shortFlights": "Vuelos cortos por año (menos de 3 horas)",
+      "longFlights": "Vuelos largos por año (más de 3 horas)",
+      "diet": "Tipo de dieta"
+    },
+    "energy": {
+      "title": "Energía y Estilo de Vida",
+      "electricity": "Consumo eléctrico mensual (kWh)",
+      "gas": "Uso de gas u otros combustibles",
+      "householdSize": "Personas que viven en el hogar",
+      "consumption": "Nivel de consumo de bienes/servicios",
+      "waste": "Cantidad de basura no reciclada",
+      "recycling": "Nivel de reciclaje/compostaje",
+      "renewable": "Uso de energía renovable",
+      "cruises": "Cruceros tomados en el año"
+    },
+    "results": {
+      "title": "Tu Huella de Carbono",
+      "footprint": "Tu huella estimada:",
+      "credits": "Créditos de carbono necesarios:",
+      "compensate": "Compensar mi huella",
+      "seeProjects": "Ver proyectos de compensación"
+    }
   }
 }

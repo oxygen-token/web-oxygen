@@ -72,6 +72,7 @@
     "home": "Home",
     "us": "About Us",
     "project": "Projects",
+    "calculator": "Calculator",
     "buy": "Buy",
     "login": "Log in",
     "waitlist": "Join the waitlist",
@@ -179,5 +180,70 @@
     "title": "Thanks for signing up for the waitlist!",
     "message": "Your registration was succesful. We'll be in touch soon!",
     "back-link": "Back to home"
+  },
+  "Calculator": {
+    "title": "Carbon Footprint Calculator",
+    "subtitle": "Calculate your environmental impact and discover how many carbon credits you need",
+    "description": "Answer a few simple questions and learn your annual carbon footprint in tonnes of CO₂e",
+    "cta": "Start calculation",
+    "howToCompensate": "How do you want to offset?",
+    "individual": "Individual",
+    "company": "Company",
+    "calculateTitle": "Calculate your CO",
+    "calculateDescription": "Daily activities like using electricity, driving a car, etc. generate greenhouse gas emissions that are harmful to the environment.",
+    "start": "Start",
+    "bankTitle": "Forest Bank",
+    "bankDescription": "It is a foundation that channels contributions from small, medium and large donors to intervene in the real estate market of lands to save the last native forests remaining in Argentina.\n\nThe objective is to prevent them from being cleared to save all forest inhabitants and enhance their sustainable use for local communities.",
+    "goToBank": "Go to Forest Bank",
+    "companySection": "Company",
+    "projects": "Projects",
+    "news": "News",
+    "faq": "Frequently Asked Questions",
+    "contact": "Contact",
+    "workWithUs": "Work with us",
+    "newsletter": "Subscribe to our newsletter",
+    "emailPlaceholder": "Email address",
+    "subscribe": "Subscribe",
+    "progress": "Question {current} of {total}",
+    "next": "Next",
+    "previous": "Previous",
+    "finish": "Finish",
+    "currentFootprint": "Your estimated footprint:",
+    "sections": {
+      "transport": "Transport",
+      "flights": "Flights & Diet", 
+      "energy": "Energy & Lifestyle"
+    },
+    "transport": {
+      "title": "Transport",
+      "distance": "Annual distance in personal vehicle",
+      "vehicleType": "Type of vehicle",
+      "busFreq": "Frequency of bus usage",
+      "trainFreq": "Frequency of train/subway usage"
+    },
+    "flights": {
+      "title": "Flights & Diet",
+      "shortFlights": "Short flights per year (less than 3 hours)",
+      "longFlights": "Long flights per year (more than 3 hours)",
+      "diet": "Type of diet"
+    },
+    "energy": {
+      "title": "Energy & Lifestyle",
+      "electricity": "Monthly electricity consumption (kWh)",
+      "gas": "Use of gas or other fuels",
+      "householdSize": "People living in the household",
+      "consumption": "Level of consumption of goods/services",
+      "waste": "Amount of non-recycled waste",
+      "recycling": "Level of recycling/composting",
+      "renewable": "Use of renewable energy",
+      "cruises": "Cruises taken per year"
+    },
+    "results": {
+      "title": "Your Carbon Footprint",
+      "footprint": "Your estimated footprint:",
+      "credits": "Carbon credits needed:",
+      "compensate": "Offset my footprint",
+      "seeProjects": "See offset projects"
+    }
   }
 }

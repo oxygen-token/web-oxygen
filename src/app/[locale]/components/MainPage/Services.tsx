@@ -32,7 +32,7 @@ export function Services() {
           </span>
         </>
       ),
-      link: services("service-card-2-link"),
+      link: services("service-card-2-link"), 
       buttonText: services("buy-OM-btn"),
     },
     {
