@@ -934,5 +934,6 @@ export default function CalculadoraPage() {
       
       <Footer />
     </div>
+    
   );
 } 
