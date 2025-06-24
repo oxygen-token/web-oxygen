@@ -115,15 +115,15 @@ export default function CalculadoraPage() {
   // Función para precargar imágenes con prioridad
   const preloadImages = () => {
     const images = [
-      '/assets/images/op2.jpg',  // Q1
-      '/assets/images/op1.webp', // Q2-Q3
-      '/assets/images/op9.jpg',  // Q4
-      '/assets/images/op7.jpg',  // Q5
-      '/assets/images/op5.jpg',  // Q6
-      '/assets/images/op8.jpg',  // Q7
-      '/assets/images/op3.jpg',  // Q8-Q10
-      '/assets/images/op6.jpg',  // Q11-Q13
-      '/assets/images/op4.jpg',  // Q14-Q15
+      '/assets/images/op22.jpg',  // Q1
+      '/assets/images/op11.webp', // Q2-Q3
+      '/assets/images/op99.jpg',  // Q4
+      '/assets/images/op77.jpg',  // Q5
+      '/assets/images/op55.jpg',  // Q6
+      '/assets/images/op88.jpg',  // Q7
+      '/assets/images/op33.jpg',  // Q8-Q10
+      '/assets/images/op66.jpg',  // Q11-Q13
+      '/assets/images/op44.jpg',  // Q14-Q15
     ];
 
     // Cargar primeras 3 imágenes con prioridad alta
@@ -241,24 +241,24 @@ export default function CalculadoraPage() {
 
   const progress = (currentQuestion / (QUESTIONS.length - 1)) * 100;
 
-  // Función para obtener imagen de fondo según la pregunta (usando las nuevas imágenes op1-op9)
+  // Función para obtener imagen de fondo según la pregunta (usando las nuevas imágenes op11-op99)
   const getBackgroundImage = (questionIndex: number) => {
     const images = [
-      '/assets/images/op2.jpg',  // Q1: con op2
-      '/assets/images/op1.webp', // Q2: con op1
-      '/assets/images/op1.webp', // Q3: con op1
-      '/assets/images/op9.jpg',  // Q4: con op9
-      '/assets/images/op7.jpg',  // Q5: con op7
-      '/assets/images/op5.jpg',  // Q6: con op5
-      '/assets/images/op8.jpg',  // Q7: con op8
-      '/assets/images/op3.jpg',  // Q8: con op3
-      '/assets/images/op3.jpg',  // Q9: con op3
-      '/assets/images/op3.jpg',  // Q10: con op3
-      '/assets/images/op6.jpg',  // Q11: con op6
-      '/assets/images/op6.jpg',  // Q12: con op6
-      '/assets/images/op6.jpg',  // Q13: con op6
-      '/assets/images/op4.jpg',  // Q14: con op4
-      '/assets/images/op4.jpg',  // Q15: con op4
+      '/assets/images/op22.jpg',  // Q1: con op22
+      '/assets/images/op11.webp', // Q2: con op11
+      '/assets/images/op11.webp', // Q3: con op11
+      '/assets/images/op99.jpg',  // Q4: con op99
+      '/assets/images/op77.jpg',  // Q5: con op77
+      '/assets/images/op55.jpg',  // Q6: con op55
+      '/assets/images/op88.jpg',  // Q7: con op88
+      '/assets/images/op33.jpg',  // Q8: con op33
+      '/assets/images/op33.jpg',  // Q9: con op33
+      '/assets/images/op33.jpg',  // Q10: con op33
+      '/assets/images/op66.jpg',  // Q11: con op66
+      '/assets/images/op66.jpg',  // Q12: con op66
+      '/assets/images/op66.jpg',  // Q13: con op66
+      '/assets/images/op44.jpg',  // Q14: con op44
+      '/assets/images/op44.jpg',  // Q15: con op44
     ];
     
     // Una imagen específica para cada pregunta
