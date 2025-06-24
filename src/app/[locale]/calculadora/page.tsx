@@ -116,7 +116,7 @@ export default function CalculadoraPage() {
   const preloadImages = () => {
     const images = [
       '/assets/images/op22.jpg',  // Q1
-      '/assets/images/op11.webp', // Q2-Q3
+      '/assets/images/op11.jpg', // Q2-Q3
       '/assets/images/op99.jpg',  // Q4
       '/assets/images/op77.jpg',  // Q5
       '/assets/images/op55.jpg',  // Q6
@@ -245,8 +245,8 @@ export default function CalculadoraPage() {
   const getBackgroundImage = (questionIndex: number) => {
     const images = [
       '/assets/images/op22.jpg',  // Q1: con op22
-      '/assets/images/op11.webp', // Q2: con op11
-      '/assets/images/op11.webp', // Q3: con op11
+      '/assets/images/op11.jpg', // Q2: con op11
+      '/assets/images/op11.jpg', // Q3: con op11
       '/assets/images/op99.jpg',  // Q4: con op99
       '/assets/images/op77.jpg',  // Q5: con op77
       '/assets/images/op55.jpg',  // Q6: con op55
