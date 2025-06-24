@@ -179,7 +179,7 @@ export default function CalculadoraPage() {
     }, 500);
   };
 
-  const progress = ((currentQuestion + 1) / QUESTIONS.length) * 100;
+  const progress = (currentQuestion / (QUESTIONS.length - 1)) * 100;
 
   // Función para obtener imagen de fondo según la pregunta (usando las nuevas imágenes op1-op9)
   const getBackgroundImage = (questionIndex: number) => {
@@ -207,11 +207,11 @@ export default function CalculadoraPage() {
 
   // Componente para preguntas de radio con efectos de iluminación gradual
   const RadioQuestion = ({ question }: { question: any }) => (
-    <div className="space-y-3">
+    <div className="space-y-2 lg:space-y-3">
       {question.options.map((option: EmissionOption) => (
         <label 
           key={option.value} 
-          className={`flex items-center space-x-3 p-4 rounded-xl cursor-pointer transition-all duration-500 hover:shadow-lg group relative ${
+          className={`flex items-center space-x-3 lg:space-x-3 p-3 lg:p-4 rounded-xl lg:rounded-xl cursor-pointer transition-all duration-500 hover:shadow-lg group relative ${
             answers[question.id] === option.value 
               ? 'bg-teal-accent/60 border-2 border-teal-accent shadow-2xl animate-optionGlow' 
               : 'bg-teal-dark/50 border border-teal-accent/60 hover:bg-teal-dark/60 hover:border-teal-accent/80'
@@ -234,7 +234,7 @@ export default function CalculadoraPage() {
             onChange={(e) => handleAnswerChange(question.id, e.target.value)}
             className="w-5 h-5 text-teal-accent focus:ring-teal-accent focus:ring-2 transition-all duration-300"
           />
-          <span className={`text-sm font-medium transition-all duration-500 ${
+          <span className={`text-sm sm:text-base font-medium transition-all duration-500 ${
             answers[question.id] === option.value ? 'text-white font-bold' : 'text-white/95 group-hover:text-white'
           }`}>
             {option.label}
@@ -264,7 +264,7 @@ export default function CalculadoraPage() {
         <button
           type="button"
           onClick={() => setOpenDropdown(isOpen ? null : question.id)}
-          className={`w-full p-4 rounded-xl text-left focus:outline-none ${
+          className={`w-full p-3 lg:p-4 rounded-xl lg:rounded-xl text-left focus:outline-none ${
             selectedOption 
               ? 'border-2 border-teal-accent shadow-2xl' 
               : 'border border-teal-accent/70'
@@ -280,7 +280,7 @@ export default function CalculadoraPage() {
           }}
         >
           <div className="flex items-center justify-between">
-            <span className={`${
+            <span className={`text-sm sm:text-base ${
               selectedOption ? 'text-white font-bold' : 'text-white/95 font-medium'
             }`}>
               {selectedOption ? selectedOption.label : 'Seleccionar opción...'}
@@ -299,7 +299,7 @@ export default function CalculadoraPage() {
         {/* Dropdown Menu */}
         {isOpen && (
           <div 
-            className="absolute top-full left-0 right-0 mt-2 z-30 animate-slideDown rounded-xl overflow-hidden"
+            className="absolute top-full left-0 right-0 mt-2 z-30 animate-slideDown rounded-xl lg:rounded-xl overflow-hidden"
             style={{
               backdropFilter: 'blur(40px)',
               background: 'linear-gradient(135deg, rgba(0, 106, 106, 0.95), rgba(1, 33, 56, 0.9))',
@@ -316,7 +316,7 @@ export default function CalculadoraPage() {
                     handleAnswerChange(question.id, option.value);
                     setOpenDropdown(null);
                   }}
-                  className={`w-full px-4 py-3 text-left transition-all duration-300 ${
+                  className={`w-full px-3 lg:px-4 py-2 lg:py-3 text-left transition-all duration-300 text-sm sm:text-base ${
                     answers[question.id] === option.value 
                       ? 'text-white font-bold border-l-4 border-teal-accent' 
                       : 'text-white/95 font-medium'
@@ -440,205 +440,301 @@ export default function CalculadoraPage() {
             }}
           />
           
-          <div className="relative z-10 container mx-auto px-5 lg:px-20 py-12">
+          <div className="relative z-10 container mx-auto px-4 sm:px-5 lg:px-8 py-8 lg:py-12">
             <div className="flex items-center justify-center">
-              <div className="w-full max-w-7xl h-[600px] bg-white rounded-[2rem] shadow-2xl flex overflow-hidden border border-teal-medium/20 transition-all duration-700 ease-in-out">
+              <div className="w-full max-w-none lg:max-w-[90vw] xl:max-w-[85vw] bg-white rounded-[2rem] lg:rounded-[2rem] shadow-2xl flex flex-col overflow-hidden border border-teal-medium/20 transition-all duration-700 ease-in-out h-[85vh] lg:h-[85vh] xl:h-[85vh]">
                 
-                {/* Left Progress Panel */}
-                <div className="w-[380px] flex-shrink-0 bg-white p-8 flex flex-col justify-center rounded-l-[2rem] transition-all duration-500">
-                  <div className="text-center mb-8">
-                    <h3 className="text-teal-dark font-bold text-lg mb-4">
-                      {t(`sections.${currentSection}`)}
-                    </h3>
-                    <div className="text-lg text-teal-medium mb-8">
-                      {t("progress", { current: currentQuestion + 1, total: QUESTIONS.length })}
+                {/* Main Question Panel - Top */}
+                <div className="flex-1 relative overflow-hidden flex lg:flex-row">
+                  {/* Desktop: Split layout, Mobile: Single column */}
+                  <div className="hidden lg:block lg:w-[300px] xl:w-[320px] flex-shrink-0 bg-white p-4 lg:p-5 flex flex-col justify-between">
+                    <div className="text-center mb-4 lg:mb-5">
+                      <h3 className="text-teal-dark font-bold text-base lg:text-lg xl:text-xl mb-2 lg:mb-3">
+                        {t(`sections.${currentSection}`)}
+                      </h3>
+                      <div className="text-sm lg:text-base xl:text-lg text-teal-medium mb-4 lg:mb-5">
+                        {t("progress", { current: currentQuestion + 1, total: QUESTIONS.length })}
+                      </div>
+                      
+                      {/* Current Emissions Display - Con efecto solo en el valor */}
+                      <div className="bg-teal-lighter/30 rounded-2xl lg:rounded-2xl p-4 lg:p-5 xl:p-5 mb-4 lg:mb-5"
+                           style={{
+                             background: 'linear-gradient(135deg, rgba(0, 202, 166, 0.2), rgba(0, 106, 106, 0.1))',
+                             backdropFilter: 'blur(10px)',
+                             border: '1px solid rgba(0, 202, 166, 0.3)'
+                           }}>
+                        <div className="text-xs lg:text-sm xl:text-sm text-teal-dark mb-2 font-medium">
+                          {t("currentFootprint")}
+                        </div>
+                        <div className="text-xl lg:text-2xl xl:text-3xl font-bold text-teal-medium">
+                          <span className="transition-all duration-400 transform hover:scale-105 inline-block"
+                                key={currentEmissions.toFixed(1)}
+                                style={{
+                                  animation: 'fadeInScale 0.5s ease-out'
+                                }}>
+                            {currentEmissions.toFixed(1)}
+                          </span>
+                          <span className="text-sm lg:text-base xl:text-lg ml-2">tCO₂e</span>
+                        </div>
+                      </div>
                     </div>
                     
-                    {/* Current Emissions Display - Con efecto solo en el valor */}
-                    <div className="bg-teal-lighter/30 rounded-xl p-4 mb-6"
-                         style={{
-                           background: 'linear-gradient(135deg, rgba(0, 202, 166, 0.2), rgba(0, 106, 106, 0.1))',
-                           backdropFilter: 'blur(10px)',
-                           border: '1px solid rgba(0, 202, 166, 0.3)'
-                         }}>
-                      <div className="text-xs text-teal-dark mb-1 font-medium">
-                        {t("currentFootprint")}
-                      </div>
-                      <div className="text-2xl font-bold text-teal-medium">
-                        <span className="transition-all duration-400 transform hover:scale-105 inline-block"
-                              key={currentEmissions.toFixed(1)}
-                              style={{
-                                animation: 'fadeInScale 0.5s ease-out'
-                              }}>
-                          {currentEmissions.toFixed(1)}
-                        </span>
-                        <span className="text-sm ml-1">tCO₂e</span>
-                      </div>
+                    {/* Navigation Buttons */}
+                    <div className="space-y-3 mt-auto">
+                      <button
+                        onClick={handlePrevious}
+                        disabled={currentQuestion === 0}
+                        className="w-full py-2 lg:py-3 xl:py-3 px-3 lg:px-4 rounded-xl text-sm lg:text-sm xl:text-base font-semibold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed border-2 border-teal-medium text-teal-medium hover:bg-teal-medium hover:text-white transform hover:scale-105 disabled:hover:scale-100"
+                      >
+                        {t("previous")}
+                      </button>
+                      <button
+                        onClick={handleNext}
+                        disabled={!answers[question.id]}
+                        className={`w-full py-2 lg:py-3 xl:py-3 px-3 lg:px-4 rounded-xl text-sm lg:text-sm xl:text-base font-semibold transition-all duration-300 transform ${
+                          !answers[question.id]
+                            ? 'bg-gray-300 text-gray-500 opacity-50 cursor-not-allowed'
+                            : 'bg-teal-accent text-white shadow-lg hover:bg-teal-accent/90 hover:shadow-xl hover:scale-105 border-2 border-teal-accent'
+                        }`}
+                      >
+                        {currentQuestion === QUESTIONS.length - 1 ? t("finish") : t("next")}
+                      </button>
                     </div>
                   </div>
-                  
-                  {/* Navigation Buttons */}
-                  <div className="space-y-3">
-                    <button
-                      onClick={handlePrevious}
-                      disabled={currentQuestion === 0}
-                      className="w-full py-3 px-4 rounded-xl font-semibold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed border-2 border-teal-medium text-teal-medium hover:bg-teal-medium hover:text-white transform hover:scale-105 disabled:hover:scale-100"
-                    >
-                      {t("previous")}
-                    </button>
-                    <button
-                      onClick={handleNext}
-                      disabled={!answers[question.id]}
-                      className="w-full bg-teal-medium text-white py-3 px-4 rounded-xl font-semibold hover:bg-teal-dark transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105 disabled:hover:scale-100"
-                    >
-                      {currentQuestion === QUESTIONS.length - 1 ? t("finish") : t("next")}
-                    </button>
-                  </div>
-                </div>
 
-                {/* Right Question Panel */}
-                <div className="flex-1 relative rounded-r-[2rem] overflow-hidden">
-                  {/* Imagen actual */}
-                  <div 
-                    className={`absolute inset-0 bg-cover bg-center transition-all duration-300 ease-out ${
-                      isTransitioning ? 'opacity-0 scale-105' : 'opacity-100 scale-100'
-                    }`}
-                    style={{ backgroundImage: `url('${backgroundImage}')` }}
-                  />
-                  
-                  {/* Imagen siguiente para transición suave */}
-                  {nextImage && (
+                  {/* Question Panel */}
+                  <div className="flex-1 relative overflow-hidden">
+                    {/* Imagen actual */}
                     <div 
                       className={`absolute inset-0 bg-cover bg-center transition-all duration-300 ease-out ${
-                        isTransitioning ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+                        isTransitioning ? 'opacity-0 scale-105' : 'opacity-100 scale-100'
                       }`}
-                      style={{ 
-                        backgroundImage: `url('${nextImage}')`,
-                        transitionDelay: '50ms'
+                      style={{ backgroundImage: `url('${backgroundImage}')` }}
+                    />
+                    
+                    {/* Imagen siguiente para transición suave */}
+                    {nextImage && (
+                      <div 
+                        className={`absolute inset-0 bg-cover bg-center transition-all duration-300 ease-out ${
+                          isTransitioning ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+                        }`}
+                        style={{ 
+                          backgroundImage: `url('${nextImage}')`,
+                          transitionDelay: '50ms'
+                        }}
+                      />
+                    )}
+                    
+                    {/* Gradient overlay with project colors - Más suave */}
+                    <div 
+                      className="absolute inset-0 transition-all duration-500"
+                      style={{
+                        background: 'linear-gradient(135deg, rgba(0, 106, 106, 0.75) 0%, rgba(0, 202, 166, 0.65) 30%, rgba(1, 33, 56, 0.7) 70%, rgba(11, 136, 153, 0.8) 100%)'
                       }}
                     />
-                  )}
-                  
-                  {/* Gradient overlay with project colors - Más suave */}
-                  <div 
-                    className="absolute inset-0 transition-all duration-500"
-                    style={{
-                      background: 'linear-gradient(135deg, rgba(0, 106, 106, 0.75) 0%, rgba(0, 202, 166, 0.65) 30%, rgba(1, 33, 56, 0.7) 70%, rgba(11, 136, 153, 0.8) 100%)'
-                    }}
-                  />
-                  
-                  {/* Overlay dinámico para transiciones */}
-                  <div className={`absolute inset-0 transition-all duration-500 ease-out ${
-                    isTransitioning ? 'bg-black/20' : 'bg-transparent'
-                  }`} />
-                  
-                  <div className="relative h-full flex flex-col items-center text-white text-center px-8 py-16">
-                    <div className={`flex-1 flex flex-col items-center max-w-2xl transition-all duration-400 ease-out transform ${
-                      isTransitioning ? 'opacity-0 translate-y-2 scale-98' : 'opacity-100 translate-y-0 scale-100'
-                    } ${question.type === 'dropdown' ? 'justify-start pt-12' : 'justify-center'}`}>
-                      <h1 className={`text-3xl font-bold mb-8 leading-tight transition-all duration-300 ease-out transform ${
-                        isTransitioning ? 'opacity-0 translate-y-1' : 'opacity-100 translate-y-0 animate-smoothSlide'
-                      }`}>
-                        {t(question.titleKey)}
-                      </h1>
-                      
-                      <div className={`w-full max-w-lg transition-all duration-350 ease-out transform ${
-                        isTransitioning ? 'opacity-0 scale-95' : 'opacity-100 scale-100'
-                      }`}>
-                        {question.type === 'radio' ? (
-                          <div className={isTransitioning ? '' : 'animate-fadeInCenter'}>
-                            <RadioQuestion question={question} />
+                    
+                    {/* Overlay dinámico para transiciones */}
+                    <div className={`absolute inset-0 transition-all duration-500 ease-out ${
+                      isTransitioning ? 'bg-black/20' : 'bg-transparent'
+                    }`} />
+                    
+                                        <div className="relative h-full flex flex-col items-center text-white text-center px-6 sm:px-8 lg:px-8 py-4 lg:py-6">
+                      {/* Mobile: Emissions counter in header */}
+                      <div className="lg:hidden w-full mb-3 flex justify-center">
+                        <div className="inline-flex items-center">
+                          <div className="text-2xl font-bold text-white">
+                            <span className="transition-all duration-500 transform hover:scale-110 inline-block"
+                                  key={currentEmissions.toFixed(1)}
+                                  style={{
+                                    animation: 'fadeInScale 0.6s ease-out'
+                                  }}>
+                              {currentEmissions.toFixed(1)}
+                            </span>
+                            <span className="text-xl ml-1 text-white/80">tCO₂e</span>
                           </div>
-                        ) : (
-                          !isTransitioning && (
-                            <div className="animate-slideDown">
-                              <DropdownQuestion question={question} />
+                        </div>
+                      </div>
+                        
+                      <div className={`flex-1 flex flex-col items-center w-full max-w-2xl transition-all duration-400 ease-out transform ${
+                        isTransitioning ? 'opacity-0 translate-y-2 scale-98' : 'opacity-100 translate-y-0 scale-100'
+                      } ${question.type === 'dropdown' ? 'justify-start pt-2 lg:pt-8' : 'justify-center'}`}>
+                        <h1 className={`text-lg sm:text-xl lg:text-xl xl:text-2xl font-bold mb-3 lg:mb-4 leading-tight transition-all duration-300 ease-out transform ${
+                          isTransitioning ? 'opacity-0 translate-y-1' : 'opacity-100 translate-y-0 animate-smoothSlide'
+                        }`}>
+                          {t(question.titleKey)}
+                        </h1>
+                        
+                        <div className={`w-full max-w-lg transition-all duration-350 ease-out transform ${
+                          isTransitioning ? 'opacity-0 scale-95' : 'opacity-100 scale-100'
+                        }`}>
+                          {question.type === 'radio' ? (
+                            <div className={isTransitioning ? '' : 'animate-fadeInCenter'}>
+                              <RadioQuestion question={question} />
                             </div>
-                          )
-                        )}
+                          ) : (
+                            !isTransitioning && (
+                              <div className="animate-slideDown">
+                                <DropdownQuestion question={question} />
+                              </div>
+                            )
+                          )}
+                        </div>
+                      </div>
+                      
+                      {/* Mobile: Navigation buttons at bottom */}
+                      <div className="lg:hidden w-full mt-2 space-y-2">
+                        <button
+                          onClick={handlePrevious}
+                          disabled={currentQuestion === 0}
+                          className="w-full py-2 px-4 rounded-2xl text-sm font-semibold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed border-2 border-white/50 text-white hover:bg-white/20 transform hover:scale-105 disabled:hover:scale-100"
+                        >
+                          {t("previous")}
+                        </button>
+                        <button
+                          onClick={handleNext}
+                          disabled={!answers[question.id]}
+                          className={`w-full py-2 px-4 rounded-2xl text-sm font-semibold transition-all duration-300 transform ${
+                            !answers[question.id]
+                              ? 'bg-white/20 backdrop-blur text-white/60 border border-white/30 opacity-50 cursor-not-allowed'
+                              : 'bg-teal-accent/60 text-white shadow-lg hover:bg-teal-accent/80 hover:shadow-xl hover:scale-105 border-2 border-teal-accent'
+                          }`}
+                        >
+                          {currentQuestion === QUESTIONS.length - 1 ? t("finish") : t("next")}
+                        </button>
                       </div>
                     </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-                        {/* Simplified Progress Bar Below Container */}
-          <div className="relative z-10 container mx-auto px-5 lg:px-20 mt-8 mb-8">
-            <div className="max-w-7xl mx-auto">
-              {/* Progress Bar with Enhanced Visibility */}
-              <div className="relative h-6 my-4">
-                {/* Background bar */}
-                <div className="bg-gradient-to-r from-white/30 via-white/40 to-white/30 rounded-full h-6 backdrop-blur border border-white/30 shadow-lg overflow-hidden">
-                  {/* Progress fill */}
-                  <div 
-                    className="h-full bg-gradient-to-r from-teal-accent via-teal-light to-teal-accent shadow-inner relative"
-                    style={{ 
-                      width: `${progress}%`,
-                      transition: 'width 0.8s cubic-bezier(0.4, 0, 0.2, 1)'
-                    }}
-                  >
-                    {/* Animated glow effect */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-pulse" />
                   </div>
                 </div>
                 
-                {/* Question number indicator - Positioned relative to container */}
-                <div 
-                  className="absolute top-1/2 transform -translate-y-1/2 -translate-x-1/2 text-sm font-bold text-teal-dark bg-white rounded-full w-10 h-10 flex items-center justify-center shadow-xl border-4 border-teal-accent z-10"
-                  style={{ 
-                    left: `${progress}%`,
-                    transition: 'left 0.8s cubic-bezier(0.4, 0, 0.2, 1)'
-                  }}
-                >
-                  {currentQuestion + 1}
-                </div>
-              </div>
-              
-              {/* Section Labels with Simple Progress Indicators */}
-              <div className="flex justify-between mt-6 text-white/90 text-sm font-medium pb-4">
-                <div className="flex items-center space-x-2">
-                  <div className={`w-4 h-4 rounded-full transition-all duration-500 ${
-                    currentQuestion <= 3 
-                      ? 'bg-white shadow-lg border-2 border-teal-accent' 
-                      : 'bg-white/40 border border-white/50'
-                  }`} />
-                  <span className={`transition-all duration-500 ${
-                    currentQuestion <= 3 
-                      ? 'text-white font-bold text-base' 
-                      : 'text-white/70'
-                  }`}>
-                    {t("sections.transport")}
-                  </span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <div className={`w-4 h-4 rounded-full transition-all duration-500 ${
-                    currentQuestion >= 4 && currentQuestion <= 6 
-                      ? 'bg-white shadow-lg border-2 border-teal-accent' 
-                      : 'bg-white/40 border border-white/50'
-                  }`} />
-                  <span className={`transition-all duration-500 ${
-                    currentQuestion >= 4 && currentQuestion <= 6 
-                      ? 'text-white font-bold text-base' 
-                      : 'text-white/70'
-                  }`}>
-                    {t("sections.flights")}
-                  </span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <div className={`w-4 h-4 rounded-full transition-all duration-500 ${
-                    currentQuestion >= 7 
-                      ? 'bg-white shadow-lg border-2 border-teal-accent' 
-                      : 'bg-white/40 border border-white/50'
-                  }`} />
-                  <span className={`transition-all duration-500 ${
-                    currentQuestion >= 7 
-                      ? 'text-white font-bold text-base' 
-                      : 'text-white/70'
-                  }`}>
-                    {t("sections.energy")}
-                  </span>
+                {/* Bottom Progress Panel - Mobile and Desktop */}
+                <div className="bg-white border-t border-teal-medium/20 p-3 lg:p-2">
+                  {/* Mobile: Simple progress */}
+                  <div className="lg:hidden">
+                    <div className="text-center mb-2">
+                      <div className="text-xs text-teal-medium">
+                        {t("progress", { current: currentQuestion + 1, total: QUESTIONS.length })}
+                      </div>
+                    </div>
+                    
+                    {/* Mobile Progress Bar */}
+                    <div className="relative h-2 mb-2">
+                      <div className="bg-teal-lighter/30 rounded-full h-2 overflow-hidden">
+                        <div 
+                          className="h-full bg-gradient-to-r from-teal-accent to-teal-medium shadow-inner relative"
+                          style={{ 
+                            width: `${progress}%`,
+                            transition: 'width 0.8s cubic-bezier(0.4, 0, 0.2, 1)'
+                          }}
+                        />
+                      </div>
+                      <div 
+                        className="absolute top-1/2 transform -translate-y-1/2 -translate-x-1/2 text-xs font-bold text-white bg-teal-medium rounded-full w-5 h-5 flex items-center justify-center shadow-lg z-10"
+                        style={{ 
+                          left: `${progress}%`,
+                          transition: 'left 0.8s cubic-bezier(0.4, 0, 0.2, 1)'
+                        }}
+                      >
+                        {currentQuestion + 1}
+                      </div>
+                    </div>
+                    
+                    {/* Mobile Section indicators */}
+                    <div className="flex justify-between text-xs text-teal-medium px-2">
+                      <div className="text-center leading-tight">
+                        <div className={currentQuestion <= 3 ? 'font-bold text-teal-dark' : ''}>
+                          Transporte
+                        </div>
+                      </div>
+                      <div className="text-center leading-tight">
+                        <div className={currentQuestion >= 4 && currentQuestion <= 6 ? 'font-bold text-teal-dark' : ''}>
+                          Vuelos y
+                        </div>
+                        <div className={currentQuestion >= 4 && currentQuestion <= 6 ? 'font-bold text-teal-dark' : ''}>
+                          Alimentación
+                        </div>
+                      </div>
+                      <div className="text-center leading-tight">
+                        <div className={currentQuestion >= 7 ? 'font-bold text-teal-dark' : ''}>
+                          Energía y
+                        </div>
+                        <div className={currentQuestion >= 7 ? 'font-bold text-teal-dark' : ''}>
+                          Estilo de Vida
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Desktop: Full progress bar outside */}
+                  <div className="hidden lg:block">
+                    <div className="relative h-4 my-3">
+                      <div className="bg-gradient-to-r from-teal-lighter/30 via-teal-lighter/40 to-teal-lighter/30 rounded-full h-4 backdrop-blur border border-teal-medium/30 shadow-lg overflow-hidden">
+                        <div 
+                          className="h-full bg-gradient-to-r from-teal-accent via-teal-light to-teal-accent shadow-inner relative"
+                          style={{ 
+                            width: `${progress}%`,
+                            transition: 'width 0.8s cubic-bezier(0.4, 0, 0.2, 1)'
+                          }}
+                        >
+                          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-pulse" />
+                        </div>
+                      </div>
+                      
+                      <div 
+                        className="absolute top-1/2 transform -translate-y-1/2 -translate-x-1/2 text-xs font-bold text-teal-dark bg-white rounded-full w-7 h-7 flex items-center justify-center shadow-xl border-3 border-teal-accent z-10"
+                        style={{ 
+                          left: `${progress}%`,
+                          transition: 'left 0.8s cubic-bezier(0.4, 0, 0.2, 1)'
+                        }}
+                      >
+                        {currentQuestion + 1}
+                      </div>
+                    </div>
+                    
+                    <div className="flex justify-between text-xs text-teal-medium font-medium px-2">
+                      <div className="flex items-center space-x-1">
+                        <div className={`w-3 h-3 rounded-full transition-all duration-500 ${
+                          currentQuestion <= 3 
+                            ? 'bg-teal-accent shadow-lg border-2 border-teal-dark' 
+                            : 'bg-teal-lighter/40 border border-teal-medium/50'
+                        }`} />
+                        <div className="text-center leading-tight">
+                          <div className={currentQuestion <= 3 ? 'text-teal-dark font-bold' : ''}>
+                            Transporte
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex items-center space-x-1">
+                        <div className={`w-3 h-3 rounded-full transition-all duration-500 ${
+                          currentQuestion >= 4 && currentQuestion <= 6 
+                            ? 'bg-teal-accent shadow-lg border-2 border-teal-dark' 
+                            : 'bg-teal-lighter/40 border border-teal-medium/50'
+                        }`} />
+                        <div className="text-center leading-tight">
+                          <div className={currentQuestion >= 4 && currentQuestion <= 6 ? 'text-teal-dark font-bold' : ''}>
+                            Vuelos y
+                          </div>
+                          <div className={currentQuestion >= 4 && currentQuestion <= 6 ? 'text-teal-dark font-bold' : ''}>
+                            Alimentación
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex items-center space-x-1">
+                        <div className={`w-3 h-3 rounded-full transition-all duration-500 ${
+                          currentQuestion >= 7 
+                            ? 'bg-teal-accent shadow-lg border-2 border-teal-dark' 
+                            : 'bg-teal-lighter/40 border border-teal-medium/50'
+                        }`} />
+                        <div className="text-center leading-tight">
+                          <div className={currentQuestion >= 7 ? 'text-teal-dark font-bold' : ''}>
+                            Energía y
+                          </div>
+                          <div className={currentQuestion >= 7 ? 'text-teal-dark font-bold' : ''}>
+                            Estilo de Vida
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
