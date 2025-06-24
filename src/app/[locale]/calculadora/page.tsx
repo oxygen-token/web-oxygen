@@ -89,6 +89,24 @@ const styles = `
     animation: smoothSlide 0.4s ease-out forwards;
   }
   
+  .prelanding-bg {
+    background: radial-gradient(#3be23b, #074907);
+    background-size: 200% 200%;
+    background-position: center center;
+  }
+
+  .prelanding-spinner {
+    animation: spin 1500ms linear infinite;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
 
 `;
 
@@ -111,6 +129,7 @@ export default function CalculadoraPage() {
   // Estados para optimización de imágenes
   const [imagesLoaded, setImagesLoaded] = useState<Set<string>>(new Set());
   const [isLoadingImages, setIsLoadingImages] = useState(true);
+  const [showLoadingBanner, setShowLoadingBanner] = useState(true);
 
   // Función para precargar imágenes con prioridad
   const preloadImages = () => {
@@ -165,7 +184,7 @@ export default function CalculadoraPage() {
 
     // Timeout de seguridad para evitar loading infinito
     setTimeout(() => {
-      if (imagesLoaded.size >= 3) {
+      if (imagesLoaded.size >= 1.5) {
         setIsLoadingImages(false);
       }
     }, 5000);
@@ -174,6 +193,16 @@ export default function CalculadoraPage() {
   // Precargar imágenes al montar el componente
   useEffect(() => {
     preloadImages();
+    
+    // Mostrar el banner por un tiempo mínimo de 3 segundos
+    const minLoadingTime = setTimeout(() => {
+      console.log('Ocultando banner de carga...');
+      setShowLoadingBanner(false);
+    }, 3000);
+
+    return () => {
+      clearTimeout(minLoadingTime);
+    };
   }, []);
 
   // Calcular emisiones en tiempo real
@@ -409,37 +438,14 @@ export default function CalculadoraPage() {
   };
 
   // Loading state mientras se precargan las imágenes
-  if (isLoadingImages) {
+  if (isLoadingImages || showLoadingBanner) {
+    console.log('Mostrando banner de carga...', { isLoadingImages, showLoadingBanner, imagesLoaded: imagesLoaded.size });
     return (
-      <div className="min-h-screen">
-        <Navbar />
-        
-        <div className="relative min-h-screen pt-16 lg:pt-[80px]">
-          {/* Complex Gradient Background */}
-          <div className="absolute inset-0 bg-teal-lighter" />
-          <div 
-            className="absolute inset-0"
-            style={{
-              background: "linear-gradient(135deg, #006A6A 0%, rgba(0, 106, 106, 0.8) 40%, transparent 70%)"
-            }}
-          />
-          
-          <div className="relative z-10 container mx-auto px-5 lg:px-20 py-20">
-            <div className="flex items-center justify-center min-h-[60vh]">
-              <div className="text-center">
-                <div className="w-16 h-16 border-4 border-teal-accent border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-                <h2 className="text-2xl font-bold text-teal-dark mb-2">
-                  Cargando calculadora...
-                </h2>
-                <p className="text-teal-medium">
-                  Optimizando imágenes para una mejor experiencia
-                </p>
-                <div className="mt-4 text-sm text-teal-medium">
-                  {imagesLoaded.size} de 9 imágenes cargadas
-                </div>
-              </div>
-            </div>
-          </div>
+      <div className="fixed inset-0 z-[100] grid place-items-center">
+        <div className="absolute inset-0 prelanding-bg" />
+        <div className="w-[100px] h-[100px] grid place-items-center relative">
+          <TreesIcon />
+          <div className="absolute inset-0 rounded-full border-[6px] border-white border-t-green-dark prelanding-spinner" />
         </div>
       </div>
     );
@@ -1028,4 +1034,23 @@ export default function CalculadoraPage() {
       <Footer />
     </div>
   );
-} 
+}
+
+function TreesIcon() {
+  return (
+    <svg
+      viewBox="0 0 81 87"
+      width={60}
+      height={60}
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M49.84 64.443V86h8.098V64.747c0-.168.136-.304.304-.304h21.683c.059 0 .095-.061.063-.108l-10.915-16.44c-.03-.047.005-.108.064-.108h7.779c.058 0 .094-.06.063-.108l-10.78-16.26c-.03-.048.005-.109.064-.109h7.45c.059 0 .095-.06.064-.108L53.95 1.033a.077.077 0 0 0-.127 0L40.5 21.31M23.066 86V64.747a.303.303 0 0 0-.303-.304H1.075c-.059 0-.095-.061-.063-.108l10.919-16.44c.031-.047-.005-.108-.063-.108h-7.78c-.058 0-.094-.06-.063-.108l10.78-16.26c.03-.048-.005-.109-.064-.109h-7.45c-.059 0-.094-.06-.063-.108L27.049 1.033a.077.077 0 0 1 .127 0l19.826 30.169c.031.047-.005.108-.063.108h-7.45c-.06 0-.095.061-.064.108l10.78 16.261c.03.047-.005.108-.064.108h-7.779c-.059 0-.095.062-.063.108l10.92 16.44c.03.047-.005.108-.064.108H31.467a.303.303 0 0 0-.303.304V86h-8.098Z"
+        className="stroke-white"
+        strokeWidth="1.733"
+        strokeMiterlimit="10"
+      />
+    </svg>
+  );
+}
