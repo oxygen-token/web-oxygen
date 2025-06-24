@@ -107,6 +107,74 @@ export default function CalculadoraPage() {
   const [calculatorType, setCalculatorType] = useState<'individual' | 'company'>('individual');
   const [currentEmissions, setCurrentEmissions] = useState(0);
   const [showResults, setShowResults] = useState(false);
+  
+  // Estados para optimización de imágenes
+  const [imagesLoaded, setImagesLoaded] = useState<Set<string>>(new Set());
+  const [isLoadingImages, setIsLoadingImages] = useState(true);
+
+  // Función para precargar imágenes con prioridad
+  const preloadImages = () => {
+    const images = [
+      '/assets/images/op2.jpg',  // Q1
+      '/assets/images/op1.webp', // Q2-Q3
+      '/assets/images/op9.jpg',  // Q4
+      '/assets/images/op7.jpg',  // Q5
+      '/assets/images/op5.jpg',  // Q6
+      '/assets/images/op8.jpg',  // Q7
+      '/assets/images/op3.jpg',  // Q8-Q10
+      '/assets/images/op6.jpg',  // Q11-Q13
+      '/assets/images/op4.jpg',  // Q14-Q15
+    ];
+
+    // Cargar primeras 3 imágenes con prioridad alta
+    const priorityImages = images.slice(0, 3);
+    const remainingImages = images.slice(3);
+
+    const loadImage = (src: string, priority: 'high' | 'low' = 'low') => {
+      return new Promise<string>((resolve, reject) => {
+        const img = new Image();
+        
+        // Configurar prioridad de carga
+        if (priority === 'high') {
+          img.loading = 'eager';
+        }
+        
+        img.onload = () => {
+          setImagesLoaded(prev => new Set([...Array.from(prev), src]));
+          resolve(src);
+        };
+        img.onerror = () => {
+          console.warn(`Failed to load image: ${src}`);
+          reject(src);
+        };
+        img.src = src;
+      });
+    };
+
+    // Cargar imágenes prioritarias primero
+    const priorityPromises = priorityImages.map(src => loadImage(src, 'high'));
+    
+    Promise.allSettled(priorityPromises).then(() => {
+      // Luego cargar el resto
+      const remainingPromises = remainingImages.map(src => loadImage(src, 'low'));
+      
+      Promise.allSettled(remainingPromises).then(() => {
+        setIsLoadingImages(false);
+      });
+    });
+
+    // Timeout de seguridad para evitar loading infinito
+    setTimeout(() => {
+      if (imagesLoaded.size >= 3) {
+        setIsLoadingImages(false);
+      }
+    }, 5000);
+  };
+
+  // Precargar imágenes al montar el componente
+  useEffect(() => {
+    preloadImages();
+  }, []);
 
   // Calcular emisiones en tiempo real
   useEffect(() => {
@@ -122,61 +190,53 @@ export default function CalculadoraPage() {
   };
 
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const [nextImage, setNextImage] = useState<string>("");
 
   const handleNext = () => {
     if (isTransitioning) return; // Prevenir doble click
     
-    setIsTransitioning(true);
-    
-    // Pre-cargar la siguiente imagen después de iniciar transición
     const nextQuestionIndex = currentQuestion < QUESTIONS.length - 1 ? currentQuestion + 1 : currentQuestion;
     const nextBgImage = getBackgroundImage(nextQuestionIndex);
     
-    // Pequeño delay para asegurar que el estado de transición se aplique primero
-    setTimeout(() => {
-      setNextImage(nextBgImage);
-    }, 50);
+    // Verificar si la imagen está precargada
+    const isImageReady = imagesLoaded.has(nextBgImage);
     
-    // Cambiar pregunta cuando la transición visual esté en curso
+    // Transición unificada y suave
+    setIsTransitioning(true);
+    
     setTimeout(() => {
       if (currentQuestion < QUESTIONS.length - 1) {
         setCurrentQuestion(prev => prev + 1);
       } else {
         setShowResults(true);
       }
-    }, 250);
+    }, 150);
     
-    // Limpiar estados cuando termine la transición
     setTimeout(() => {
       setIsTransitioning(false);
-      setNextImage("");
-    }, 500);
+    }, 300);
   };
 
   const handlePrevious = () => {
     if (isTransitioning) return; // Prevenir doble click
     
-    setIsTransitioning(true);
-    
-    // Pre-cargar la imagen anterior después de iniciar transición
     const prevQuestionIndex = currentQuestion > 0 ? currentQuestion - 1 : currentQuestion;
     const prevBgImage = getBackgroundImage(prevQuestionIndex);
     
-    setTimeout(() => {
-      setNextImage(prevBgImage);
-    }, 50);
+    // Verificar si la imagen está precargada
+    const isImageReady = imagesLoaded.has(prevBgImage);
+    
+    // Transición unificada y suave
+    setIsTransitioning(true);
     
     setTimeout(() => {
       if (currentQuestion > 0) {
         setCurrentQuestion(prev => prev - 1);
       }
-    }, 250);
+    }, 150);
     
     setTimeout(() => {
       setIsTransitioning(false);
-      setNextImage("");
-    }, 500);
+    }, 300);
   };
 
   const progress = (currentQuestion / (QUESTIONS.length - 1)) * 100;
@@ -348,6 +408,43 @@ export default function CalculadoraPage() {
     );
   };
 
+  // Loading state mientras se precargan las imágenes
+  if (isLoadingImages) {
+    return (
+      <div className="min-h-screen">
+        <Navbar />
+        
+        <div className="relative min-h-screen pt-16 lg:pt-[80px]">
+          {/* Complex Gradient Background */}
+          <div className="absolute inset-0 bg-teal-lighter" />
+          <div 
+            className="absolute inset-0"
+            style={{
+              background: "linear-gradient(135deg, #006A6A 0%, rgba(0, 106, 106, 0.8) 40%, transparent 70%)"
+            }}
+          />
+          
+          <div className="relative z-10 container mx-auto px-5 lg:px-20 py-20">
+            <div className="flex items-center justify-center min-h-[60vh]">
+              <div className="text-center">
+                <div className="w-16 h-16 border-4 border-teal-accent border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                <h2 className="text-2xl font-bold text-teal-dark mb-2">
+                  Cargando calculadora...
+                </h2>
+                <p className="text-teal-medium">
+                  Optimizando imágenes para una mejor experiencia
+                </p>
+                <div className="mt-4 text-sm text-teal-medium">
+                  {imagesLoaded.size} de 9 imágenes cargadas
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (showResults) {
     return (
       <div className="min-h-screen">
@@ -507,23 +604,17 @@ export default function CalculadoraPage() {
                     {/* Imagen actual */}
                     <div 
                       className={`absolute inset-0 bg-cover bg-center transition-all duration-300 ease-out ${
-                        isTransitioning ? 'opacity-0 scale-105' : 'opacity-100 scale-100'
+                        isTransitioning ? 'opacity-70 scale-102' : 'opacity-100 scale-100'
                       }`}
-                      style={{ backgroundImage: `url('${backgroundImage}')` }}
+                      style={{ 
+                        backgroundImage: `url('${backgroundImage}')`,
+                        willChange: 'transform, opacity'
+                      }}
                     />
                     
-                    {/* Imagen siguiente para transición suave */}
-                    {nextImage && (
-                      <div 
-                        className={`absolute inset-0 bg-cover bg-center transition-all duration-300 ease-out ${
-                          isTransitioning ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
-                        }`}
-                        style={{ 
-                          backgroundImage: `url('${nextImage}')`,
-                          transitionDelay: '50ms'
-                        }}
-                      />
-                    )}
+
+                    
+
                     
                     {/* Gradient overlay with project colors - Más suave */}
                     <div 
