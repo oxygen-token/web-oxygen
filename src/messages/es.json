@@ -238,6 +238,16 @@
       "renewable": "Uso de energía renovable",
       "cruises": "Cruceros tomados en el año"
     },
+    "progressModal": {
+      "title": "¡Excelente progreso!",
+      "description": "Para continuar, por favor completa la siguiente información:",
+      "nameLabel": "Nombre *",
+      "emailLabel": "Email *",
+      "namePlaceholder": "Tu nombre completo",
+      "emailPlaceholder": "tu@email.com",
+      "continueButton": "Continuar",
+      "privacyNote": "Tu información es segura y solo se usa para enviarte el resultado del cálculo."
+    },
     "results": {
       "title": "Tu Huella de Carbono",
       "footprint": "Tu huella estimada:",
