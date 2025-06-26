@@ -908,7 +908,7 @@ export default function CalculadoraPage() {
                           
                         <div className={`flex-1 flex flex-col items-center w-full max-w-2xl transition-all duration-400 ease-out transform ${
                           isTransitioning ? 'opacity-0 translate-y-2 scale-98' : 'opacity-100 translate-y-0 scale-100'
-                        } ${question.type === 'dropdown' ? 'justify-start pt-2 lg:pt-8' : 'justify-center'}`}>
+                        } justify-start pt-2 lg:pt-8`}>
                           <h1 className={`text-lg sm:text-xl lg:text-xl xl:text-2xl font-bold mb-3 lg:mb-4 leading-tight transition-all duration-300 ease-out transform ${
                             isTransitioning ? 'opacity-0 translate-y-1' : 'opacity-100 translate-y-0 animate-smoothSlide'
                           }`}>
