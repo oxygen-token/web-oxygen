@@ -271,19 +271,13 @@ function ProgressModal({
                 />
               </div>
             </div>
-            {/* Botón de continuar */}
-            <div className="flex flex-col sm:flex-row gap-3 mt-6">
-              <button
-                onClick={handleClose}
-                className="w-full sm:w-auto py-3 px-6 rounded-xl font-semibold border border-gray-300 text-gray-500 bg-white hover:bg-gray-100 transition-all duration-300"
-                type="button"
-              >
-                {t('progressModal.skipButton', { defaultValue: 'Saltar' })}
-              </button>
+            {/* Botones centrados */}
+            <div className="flex flex-col items-center gap-3 mt-6">
+              {/* Botón principal - Continuar */}
               <button
                 onClick={handleModalSubmit}
                 disabled={!(nameOk && emailOk)}
-                className={`w-full sm:w-auto py-3 px-6 rounded-xl font-semibold transition-all duration-300 transform ${
+                className={`w-full max-w-xs py-3 px-8 rounded-xl font-semibold transition-all duration-300 transform ${
                   nameOk && emailOk
                     ? 'bg-teal-accent text-white hover:bg-teal-accent/90 hover:scale-105 shadow-lg'
                     : 'bg-gray-300 text-gray-500 cursor-not-allowed opacity-50'
@@ -291,6 +285,15 @@ function ProgressModal({
                 type="button"
               >
                 {t("progressModal.continueButton")}
+              </button>
+              
+              {/* Botón secundario - Saltar */}
+              <button
+                onClick={handleClose}
+                className="text-gray-400 hover:text-gray-600 text-sm font-medium transition-all duration-300 underline-offset-2 hover:underline"
+                type="button"
+              >
+                {t('progressModal.skipButton', { defaultValue: 'Saltar' })}
               </button>
             </div>
             {/* Nota de privacidad */}
