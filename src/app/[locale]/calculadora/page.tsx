@@ -290,7 +290,7 @@ function ProgressModal({
               {/* Botón secundario - Saltar */}
               <button
                 onClick={handleClose}
-                className="text-gray-400 hover:text-gray-600 text-sm font-medium transition-all duration-300 underline-offset-2 hover:underline"
+                className="text-gray-400 hover:text-teal-medium text-sm font-medium transition-all duration-300 underline-offset-2 hover:underline"
                 type="button"
               >
                 {t('progressModal.skipButton', { defaultValue: 'Saltar' })}
@@ -503,8 +503,9 @@ export default function CalculadoraPage() {
     }
   };
 
-  // 4. handleCloseModal también usa animación de salida
+  // 4. handleCloseModal también usa animación de salida y marca como completado
   const handleCloseModal = () => {
+    setModalCompleted(true); // Marcar como completado para que no aparezca más
     setModalAnimation('out');
     setTimeout(() => setModalState('hidden'), 400);
   };
