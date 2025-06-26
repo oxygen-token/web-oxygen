@@ -290,7 +290,7 @@ function ProgressModal({
               {/* Botón secundario - Saltar */}
               <button
                 onClick={handleClose}
-                className="text-gray-400 hover:text-teal-medium text-sm font-medium transition-all duration-300 underline-offset-2 hover:underline"
+                className="text-gray-400 hover:text-teal-medium text-sm font-medium transition-all duration-300"
                 type="button"
               >
                 {t('progressModal.skipButton', { defaultValue: 'Saltar' })}
