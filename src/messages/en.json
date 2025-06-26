@@ -246,7 +246,8 @@
       "namePlaceholder": "Your full name",
       "emailPlaceholder": "your@email.com",
       "continueButton": "Continue",
-      "privacyNote": "Your information is secure and only used to send you the calculation result."
+      "privacyNote": "Your information is secure and only used to send you the calculation result.",
+      "skipButton": "Skip"
     },
     "results": {
       "title": "Your Carbon Footprint",

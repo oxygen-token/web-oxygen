@@ -246,7 +246,8 @@
       "namePlaceholder": "Tu nombre completo",
       "emailPlaceholder": "tu@email.com",
       "continueButton": "Continuar",
-      "privacyNote": "Tu información es segura y solo se usa para enviarte el resultado del cálculo."
+      "privacyNote": "Tu información es segura y solo se usa para enviarte el resultado del cálculo.",
+      "skipButton": "Saltar"
     },
     "results": {
       "title": "Tu Huella de Carbono",

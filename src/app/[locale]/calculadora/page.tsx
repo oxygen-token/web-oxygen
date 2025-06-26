@@ -207,7 +207,7 @@ function ProgressModal({
         onClick={() => {}} // Prevenir cerrar clickeando afuera
       />
       {/* Modal */}
-      <div className={`relative bg-white rounded-[2rem] shadow-2xl border border-teal-medium/20 p-6 sm:p-8 max-w-md w-full mx-4 max-h-[100dvh] h-full overflow-y-auto ${modalClass}`}
+      <div className={`relative bg-white rounded-[2rem] shadow-2xl border border-teal-medium/20 p-6 sm:p-8 max-w-sm sm:max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto ${modalClass}`}
         style={{ pointerEvents: 'auto' }}
       >
         {/* Botón de cierre */}
@@ -222,8 +222,8 @@ function ProgressModal({
           </button>
         )}
         <div className="text-center">
-          {/* Logo de Oxygen grande */}
-          <div className="w-full max-w-[320px] h-auto mx-auto mb-6 flex items-center justify-center">
+          {/* Logo de Oxygen */}
+          <div className="w-full max-w-[200px] sm:max-w-[240px] h-auto mx-auto mb-6 flex items-center justify-center">
             <img 
               src="/assets/images/logo.png" 
               alt="Oxygen Logo" 
@@ -272,17 +272,27 @@ function ProgressModal({
               </div>
             </div>
             {/* Botón de continuar */}
-            <button
-              onClick={handleModalSubmit}
-              disabled={!(nameOk && emailOk)}
-              className={`w-full mt-6 py-3 px-6 rounded-xl font-semibold transition-all duration-300 transform ${
-                nameOk && emailOk
-                  ? 'bg-teal-accent text-white hover:bg-teal-accent/90 hover:scale-105 shadow-lg'
-                  : 'bg-gray-300 text-gray-500 cursor-not-allowed opacity-50'
-              }`}
-            >
-              {t("progressModal.continueButton")}
-            </button>
+            <div className="flex flex-col sm:flex-row gap-3 mt-6">
+              <button
+                onClick={handleClose}
+                className="w-full sm:w-auto py-3 px-6 rounded-xl font-semibold border border-gray-300 text-gray-500 bg-white hover:bg-gray-100 transition-all duration-300"
+                type="button"
+              >
+                {t('progressModal.skipButton', { defaultValue: 'Saltar' })}
+              </button>
+              <button
+                onClick={handleModalSubmit}
+                disabled={!(nameOk && emailOk)}
+                className={`w-full sm:w-auto py-3 px-6 rounded-xl font-semibold transition-all duration-300 transform ${
+                  nameOk && emailOk
+                    ? 'bg-teal-accent text-white hover:bg-teal-accent/90 hover:scale-105 shadow-lg'
+                    : 'bg-gray-300 text-gray-500 cursor-not-allowed opacity-50'
+                }`}
+                type="button"
+              >
+                {t("progressModal.continueButton")}
+              </button>
+            </div>
             {/* Nota de privacidad */}
             <p className="text-xs text-gray-500 mt-4">
               {t("progressModal.privacyNote")}
@@ -318,10 +328,11 @@ export default function CalculadoraPage() {
   const [isLoadingImages, setIsLoadingImages] = useState(true);
   const [showLoadingBanner, setShowLoadingBanner] = useState(true);
 
-  // 1. Estado para animación del modal
+  // Estados para animación del modal y transiciones
   const [modalAnimation, setModalAnimation] = useState<'in' | 'out'>('in');
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
-  // 2. Cuando se muestra el modal, animación 'in'. Cuando se va a ocultar, animación 'out' y luego desmonta.
+  // Cuando se muestra el modal, animación 'in'. Cuando se va a ocultar, animación 'out' y luego desmonta.
   useEffect(() => {
     if (modalState !== 'hidden') setModalAnimation('in');
   }, [modalState]);
@@ -412,8 +423,6 @@ export default function CalculadoraPage() {
       [questionId]: value
     }));
   };
-
-  const [isTransitioning, setIsTransitioning] = useState(false);
 
   const handleNext = () => {
     if (isTransitioning) return; // Prevenir doble click
@@ -1081,12 +1090,12 @@ export default function CalculadoraPage() {
         </div>
         
         {/* Modal de progreso */}
-        {modalState !== 'hidden' && (
+        {(modalState === 'form' || modalState === 'thanks') && (
           <div className="fixed inset-0 z-[150] pointer-events-none opacity-60 bg-black"></div>
         )}
-        {modalState !== 'hidden' && (
+        {(modalState === 'form' || modalState === 'thanks') && (
           <ProgressModal
-            show={modalState !== 'hidden'}
+            show={modalState === 'form' || modalState === 'thanks'}
             modalState={modalState}
             modalAnimation={modalAnimation}
             userInfo={userInfo}
