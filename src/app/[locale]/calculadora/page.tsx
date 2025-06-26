@@ -1142,12 +1142,12 @@ export default function CalculadoraPage() {
             }}
           />
           
-          <div className="relative z-10 container mx-auto px-5 lg:px-20 py-20">
-            <div className="flex items-center justify-center">
-              <div className="w-full max-w-7xl h-[600px] bg-white rounded-[2rem] shadow-2xl flex overflow-hidden border border-teal-medium/20 transition-all duration-700 ease-in-out">
+          <div className="relative z-10 container mx-auto px-5 lg:px-20 py-8 lg:py-20">
+            <div className="flex items-center justify-center min-h-[calc(100vh-8rem)] lg:min-h-auto">
+              <div className="w-full max-w-7xl h-auto min-h-[500px] lg:h-[600px] bg-white rounded-[2rem] shadow-2xl flex flex-col lg:flex-row overflow-hidden border border-teal-medium/20 transition-all duration-700 ease-in-out">
                 
                 {/* Left White Panel */}
-                <div className="w-[380px] flex-shrink-0 bg-white p-8 flex flex-col justify-center rounded-l-[2rem]">
+                <div className="w-full lg:w-[380px] flex-shrink-0 bg-white p-6 lg:p-8 flex flex-col justify-center rounded-t-[2rem] lg:rounded-t-none lg:rounded-l-[2rem]">
                   <h3 className="text-teal-dark font-bold text-lg mb-8 text-center transition-all duration-300">
                     {t("howToCompensate")}
                   </h3>
@@ -1174,7 +1174,7 @@ export default function CalculadoraPage() {
                 </div>
 
                 {/* Right Image Panel */}
-                <div className="flex-1 relative rounded-r-[2rem] overflow-hidden">
+                <div className="flex-1 relative rounded-b-[2rem] lg:rounded-b-none lg:rounded-r-[2rem] overflow-hidden min-h-[300px] lg:min-h-auto">
                   <div 
                     className="absolute inset-0 bg-cover bg-center transition-all duration-1000"
                     style={{ backgroundImage: "url('/assets/images/Pexels Photo by Natalie Dmay.png')" }}
@@ -1188,12 +1188,12 @@ export default function CalculadoraPage() {
                   />
                   <div className="absolute inset-0 bg-teal-dark/20 transition-all duration-500" />
                   
-                  <div className="relative h-full flex flex-col items-center text-white text-center px-8 py-16">
+                  <div className="relative h-full flex flex-col items-center text-white text-center px-6 lg:px-8 py-8 lg:py-16">
                     <div className="flex-1 flex flex-col justify-center items-center max-w-2xl">
-                      <h1 className="text-4xl font-bold mb-6 leading-tight transition-all duration-500">
-                        {t("calculateTitle")}<sub className="text-2xl align-super">2</sub>
+                      <h1 className="text-2xl lg:text-4xl font-bold mb-4 lg:mb-6 leading-tight transition-all duration-500">
+                        {t("calculateTitle")}<sub className="text-lg lg:text-2xl align-super">2</sub>
                       </h1>
-                      <p className="text-lg leading-relaxed mb-10 max-w-xl transition-all duration-500">
+                      <p className="text-base lg:text-lg leading-relaxed mb-6 lg:mb-10 max-w-xl transition-all duration-500">
                         {t("calculateDescription")}
                       </p>
                       <button 
