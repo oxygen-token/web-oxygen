@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { get, post } from "../../../../../src/utils/request";
 import { capitalizeFirstLetter } from "../../../../../src/utils/stringUtils";
+import { useRouter, usePathname } from "next/navigation";
 
 import logoNav from "../../../../../public/assets/images/logo.png";
 import logoArg from "../../../../../public/assets/logos/logoArg.png";
@@ -37,18 +38,29 @@ const links = [
 ] as const;
 
 function LanguageSelect({ className }: { className: string }) {
+  const router = useRouter();
+  const pathname = usePathname();
+
+  // Extrae el locale actual y la ruta sin el prefijo de idioma
+  const pathWithoutLocale = pathname.replace(/^\/(es|en)/, "");
+
+  const handleChangeLang = (lang: string) => {
+    // Navega a la misma ruta pero con el nuevo locale
+    router.replace(`/${lang}${pathWithoutLocale === '/' ? '' : pathWithoutLocale}`);
+  };
+
   return (
     <div className={cn("relative p-4 flex flex-row items-center group", className)}>
       <button className="text-2xl">
         <PiGlobe />
       </button>
       <div className="hidden group-hover:block absolute top-10 left-4 bg-teal-dark/70 backdrop-blur rounded-xs p-1 z-10 overflow-hidden">
-        <Link className="hover:bg-teal-dark" href="/es">
+        <button className="hover:bg-teal-dark block" onClick={() => handleChangeLang('es')}>
           <Image src={logoArg} alt="bandera argentina" className="max-w-8" />
-        </Link>
-        <Link className="hover:bg-teal-dark" href="/en">
+        </button>
+        <button className="hover:bg-teal-dark block" onClick={() => handleChangeLang('en')}>
           <Image src={logoUs} alt="bandera usa" className="max-w-8" />
-        </Link>
+        </button>
       </div>
     </div>
   );

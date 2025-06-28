@@ -150,7 +150,7 @@
   },
   "Register": {
     "register-back": "Atrás",
-    "register-title": "Take action and preserve the environment",
+    "register-title": "Tomá acción y preservá el ambiente",
     "register-form-title": "¡Bienvenido!",
     "firstname-field": "Nombre",
     "lastname-field": "Apellido",
@@ -255,6 +255,100 @@
       "credits": "Créditos de carbono necesarios:",
       "compensate": "Compensar mi huella",
       "seeProjects": "Ver proyectos de compensación"
+    },
+    "selectOption": "Seleccionar opción...",
+    "options": {
+      "q1": {
+        "0": "0 km",
+        "low": "Menos de 5.000 km",
+        "medium": "5.000 a 10.000 km",
+        "high": "10.000 a 20.000 km",
+        "very_high": "Más de 20.000 km"
+      },
+      "q2": {
+        "none": "Sin vehículo",
+        "gasoline": "Gasolina o Diesel",
+        "hybrid": "Híbrido",
+        "electric": "Eléctrico"
+      },
+      "q3": {
+        "never": "Nunca o rara vez",
+        "occasional": "Ocasional (1 a 2 veces por semana)",
+        "regular": "Regular (viaje diario)",
+        "intensive": "Intenso (varios viajes por día)"
+      },
+      "q4": {
+        "never": "Nunca",
+        "occasional": "Ocasional (1 a 2 viajes por semana)",
+        "regular": "Regular (diario)",
+        "intensive": "Intenso (frecuente o largas distancias)"
+      },
+      "q5": {
+        "0": "0 vuelos",
+        "low": "1 a 2 vuelos cortos",
+        "medium": "3 a 5 vuelos cortos",
+        "high": "Más de 5 vuelos cortos"
+      },
+      "q6": {
+        "0": "0 vuelos",
+        "one": "1 vuelo largo",
+        "two": "2 vuelos largos",
+        "medium": "3 a 4 vuelos largos",
+        "high": "Más de 4 vuelos largos"
+      },
+      "q7": {
+        "carnivore": "Carnívoro (alta carne)",
+        "omnivore": "Omnívoro promedio",
+        "low_meat": "Poca carne",
+        "vegetarian": "Vegetariano",
+        "vegan": "Vegano"
+      },
+      "q8": {
+        "low": "Bajo (aprox. 2.000 kWh)",
+        "medium": "Medio (aprox. 5.000 kWh)",
+        "high": "Alto (aprox. 10.000 kWh)",
+        "very_high": "Muy alto (mayor que 15.000 kWh)"
+      },
+      "q9": {
+        "none": "Ninguno (eléctrico)",
+        "low": "Bajo uso (cocina/agua)",
+        "medium": "Medio (uso típico)",
+        "high": "Alto (clima frío, casa grande)"
+      },
+      "q10": {
+        "1": "1 persona",
+        "2": "2 personas",
+        "3": "3 personas",
+        "4": "4 personas",
+        "5+": "5 o más personas"
+      },
+      "q11": {
+        "minimal": "Minimalista",
+        "average": "Promedio",
+        "frequent": "Consumidor frecuente",
+        "luxury": "Alta gama o lujo"
+      },
+      "q12": {
+        "very_low": "Muy poca (menor que 5 kilogramos por semana)",
+        "average": "Promedio (1 a 2 bolsas)",
+        "high": "Alta (mayor que 30 kilogramos por semana)"
+      },
+      "q13": {
+        "none": "Nada o muy poco (0 a 20 por ciento)",
+        "some": "Algo (aproximadamente 30 a 60 por ciento)",
+        "most": "Casi todo (80 a 100 por ciento)"
+      },
+      "q14": {
+        "none": "No (solo red convencional)",
+        "partial": "Parcial (ej. plan verde)",
+        "total": "Total (100 por ciento renovable o solar)"
+      },
+      "q15": {
+        "none": "Ninguno",
+        "occasional": "Ocasional (3 a 4 días)",
+        "average": "Promedio (1 semana al año)",
+        "frequent": "Frecuente o extensos"
+      }
     }
   }
 }

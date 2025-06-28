@@ -102,11 +102,11 @@ const styles = `
   }
   
   .animate-slideDown {
-    animation: slideDown 0.25s ease-out forwards;
+    animation: slideDown 0.3s ease-out forwards;
   }
   
   .animate-slideInCenter {
-    animation: slideInCenter 0.5s ease-out forwards;
+    animation: slideInCenter 0.4s ease-out forwards;
   }
   
   .animate-glowPulse {
@@ -134,7 +134,7 @@ const styles = `
   }
   
   .animate-backdropFadeOut {
-    animation: backdropFadeOut 0.3s ease-out forwards;
+    animation: backdropFadeOut 0.5s ease-out forwards;
   }
   
   .prelanding-bg {
@@ -158,7 +158,7 @@ const styles = `
 
   .modal-animate-in { animation: modalSlideDown 0.6s cubic-bezier(0.4,0,0.2,1) forwards; }
   .modal-animate-out { animation: modalSlideUp 0.5s cubic-bezier(0.4,0,0.2,1) forwards; opacity: 0; }
-  .fade-animate-in { animation: backdropFadeIn 0.4s ease-out forwards; }
+  .fade-animate-in { animation: backdropFadeIn 0.15s ease-out forwards; }
   .fade-animate-out { animation: backdropFadeOut 0.3s ease-out forwards; opacity: 0; }
 
 `;
@@ -249,7 +249,7 @@ function ProgressModal({
                   type="text"
                   value={userInfo.name}
                   onChange={handleNameChange}
-                  className="w-full px-4 py-3 border border-teal-medium/30 rounded-xl focus:ring-2 focus:ring-teal-accent focus:border-teal-accent transition-all duration-300"
+                  className="w-full px-4 py-3 border border-teal-medium/30 rounded-xl focus:ring-2 focus:ring-teal-accent focus:border-teal-accent transition-all duration-100"
                   placeholder={t("progressModal.namePlaceholder")}
                   autoComplete="name"
                   required
@@ -263,7 +263,7 @@ function ProgressModal({
                   type="email"
                   value={userInfo.email}
                   onChange={handleEmailChange}
-                  className="w-full px-4 py-3 border border-teal-medium/30 rounded-xl focus:ring-2 focus:ring-teal-accent focus:border-teal-accent transition-all duration-300"
+                  className="w-full px-4 py-3 border border-teal-medium/30 rounded-xl focus:ring-2 focus:ring-teal-accent focus:border-teal-accent transition-all duration-100"
                   placeholder={t("progressModal.emailPlaceholder")}
                   autoComplete="email"
                   required
@@ -277,7 +277,7 @@ function ProgressModal({
               <button
                 onClick={handleModalSubmit}
                 disabled={!(nameOk && emailOk)}
-                className={`w-full max-w-xs py-3 px-8 rounded-xl font-semibold transition-all duration-300 transform ${
+                className={`w-full max-w-xs py-3 px-8 rounded-xl font-semibold transition-all duration-100 transform ${
                   nameOk && emailOk
                     ? 'bg-teal-accent text-white hover:bg-teal-accent/90 hover:scale-105 shadow-lg'
                     : 'bg-gray-300 text-gray-500 cursor-not-allowed opacity-50'
@@ -290,7 +290,7 @@ function ProgressModal({
               {/* Botón secundario - Saltar */}
               <button
                 onClick={handleClose}
-                className="text-gray-400 hover:text-teal-medium text-sm font-medium transition-all duration-300"
+                className="text-gray-400 hover:text-teal-medium text-sm font-medium transition-all duration-100"
                 type="button"
               >
                 {t('progressModal.skipButton', { defaultValue: 'Saltar' })}
@@ -317,7 +317,7 @@ export default function CalculadoraPage() {
   const [showQuestions, setShowQuestions] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
-  const [calculatorType, setCalculatorType] = useState<'individual' | 'company'>('individual');
+  const [calculatorType, setCalculatorType] = useState<'individual' | 'company' | null>(null);
   const [currentEmissions, setCurrentEmissions] = useState(0);
   const [showResults, setShowResults] = useState(false);
   
@@ -388,6 +388,7 @@ export default function CalculadoraPage() {
       
       Promise.allSettled(remainingPromises).then(() => {
         setIsLoadingImages(false);
+        sessionStorage.setItem('oxy_calc_images_loaded', '1');
       });
     });
 
@@ -401,14 +402,16 @@ export default function CalculadoraPage() {
 
   // Precargar imágenes al montar el componente
   useEffect(() => {
+    if (typeof window !== 'undefined' && sessionStorage.getItem('oxy_calc_images_loaded') === '1') {
+      setIsLoadingImages(false);
+      setShowLoadingBanner(false);
+      return;
+    }
     preloadImages();
-    
     // Mostrar el banner por un tiempo mínimo de 3 segundos
     const minLoadingTime = setTimeout(() => {
-      console.log('Ocultando banner de carga...');
       setShowLoadingBanner(false);
     }, 3000);
-
     return () => {
       clearTimeout(minLoadingTime);
     };
@@ -556,7 +559,7 @@ export default function CalculadoraPage() {
       {question.options.map((option: EmissionOption) => (
         <label 
           key={option.value} 
-          className={`flex items-center space-x-3 lg:space-x-3 p-3 lg:p-4 rounded-xl lg:rounded-xl cursor-pointer transition-all duration-500 hover:shadow-lg group relative ${
+          className={`flex items-center space-x-3 lg:space-x-3 p-3 lg:p-4 rounded-xl lg:rounded-xl cursor-pointer transition-all duration-300 hover:shadow-lg group relative ${
             answers[question.id] === option.value 
               ? 'bg-teal-accent/60 border-2 border-teal-accent shadow-2xl animate-optionGlow' 
               : 'bg-teal-dark/50 border border-teal-accent/60 hover:bg-teal-dark/60 hover:border-teal-accent/80'
@@ -579,13 +582,13 @@ export default function CalculadoraPage() {
             onChange={(e) => handleAnswerChange(question.id, e.target.value)}
             className="w-5 h-5 text-teal-accent focus:ring-teal-accent focus:ring-2 transition-all duration-300"
           />
-          <span className={`text-sm sm:text-base font-medium transition-all duration-500 ${
+          <span className={`text-sm sm:text-base font-medium transition-all duration-300 text-left ${
             answers[question.id] === option.value ? 'text-white font-bold' : 'text-white/95 group-hover:text-white'
           }`}>
-            {option.label}
+            {t(option.label)}
           </span>
           {/* Efecto de brillo gradual en hover */}
-          <div className={`absolute inset-0 rounded-xl transition-all duration-500 pointer-events-none ${
+          <div className={`absolute inset-0 rounded-xl transition-all duration-400 pointer-events-none ${
             answers[question.id] === option.value 
               ? 'bg-gradient-to-r from-teal-accent/20 via-transparent to-teal-accent/20 animate-pulse' 
               : 'group-hover:bg-gradient-to-r group-hover:from-teal-accent/15 group-hover:via-transparent group-hover:to-teal-accent/15'
@@ -607,9 +610,9 @@ export default function CalculadoraPage() {
       <div className="relative">
         {/* Dropdown Button */}
         <button
-          type="button"
-          onClick={() => setOpenDropdown(isOpen ? null : question.id)}
-          className={`w-full p-3 lg:p-4 rounded-xl lg:rounded-xl text-left focus:outline-none ${
+                  type="button"
+        onClick={() => setOpenDropdown(isOpen ? null : question.id)}
+        className={`w-full p-3 lg:p-4 rounded-xl lg:rounded-xl text-left focus:outline-none transition-all duration-300 ${
             selectedOption 
               ? 'border-2 border-teal-accent shadow-2xl' 
               : 'border border-teal-accent/70'
@@ -625,13 +628,13 @@ export default function CalculadoraPage() {
           }}
         >
           <div className="flex items-center justify-between">
-            <span className={`text-sm sm:text-base ${
+            <span className={`text-sm sm:text-base text-left ${
               selectedOption ? 'text-white font-bold' : 'text-white/95 font-medium'
             }`}>
-              {selectedOption ? selectedOption.label : 'Seleccionar opción...'}
+              {selectedOption ? t(selectedOption.label) : t("selectOption")}
             </span>
-            <svg 
-              className={`w-5 h-5 transform transition-transform duration-300 text-white ${isOpen ? 'rotate-180' : 'rotate-0'}`} 
+                      <svg 
+            className={`w-5 h-5 transform transition-transform duration-300 text-white ${isOpen ? 'rotate-180' : 'rotate-0'}`} 
               fill="none" 
               stroke="currentColor" 
               viewBox="0 0 24 24"
@@ -683,7 +686,7 @@ export default function CalculadoraPage() {
                     }
                   }}
                 >
-                  {option.label}
+                  {t(option.label)}
                 </button>
               ))}
             </div>
@@ -776,9 +779,8 @@ export default function CalculadoraPage() {
     return (
       <div className="min-h-screen">
         <Navbar />
-        
-        <div className="relative min-h-screen pt-16 lg:pt-[80px]">
-          {/* Complex Gradient Background */}
+        <div className="pt-16 pb-4 px-4 sm:px-5 lg:px-8 min-h-screen flex items-center justify-center relative">
+          {/* Fondo verde original restaurado */}
           <div className="absolute inset-0 bg-teal-lighter" />
           <div 
             className="absolute inset-0"
@@ -798,292 +800,284 @@ export default function CalculadoraPage() {
               background: "linear-gradient(45deg, transparent 0%, rgba(11, 136, 153, 0.4) 50%, #0B8899 100%)"
             }}
           />
-          
-          <div className="fixed inset-0 z-10 bg-gradient-to-br from-teal-lighter via-white/60 to-teal-lighter/80 flex flex-col justify-start min-h-screen overflow-y-auto pt-16 lg:items-center lg:justify-center">
-            <div className="relative z-10 container mx-auto px-4 sm:px-5 lg:px-8 py-8 lg:py-12 transition-transform duration-300 max-w-full" style={{ maxWidth: '100vw' }}>
-              <div className="flex items-center justify-center">
-                <div className="w-full max-w-none lg:max-w-[90vw] xl:max-w-[85vw] bg-white rounded-[2rem] lg:rounded-[2rem] shadow-2xl flex flex-col overflow-hidden border border-teal-medium/20 transition-all duration-700 ease-in-out h-[85vh] lg:h-[85vh] xl:h-[85vh] 
-                  max-w-xs:scale-95">
+          <div className="relative z-10 w-full max-w-6xl bg-white rounded-[2rem] shadow-2xl flex flex-col border border-teal-medium/20 h-[85vh] lg:h-[80vh] overflow-hidden">
+            
+            {/* Main Question Panel - Top */}
+            <div className="flex-1 relative overflow-hidden flex lg:flex-row">
+              {/* Desktop: Split layout, Mobile: Single column */}
+              <div className="hidden lg:block lg:w-[300px] xl:w-[320px] flex-shrink-0 bg-white p-4 lg:p-5 flex flex-col justify-between">
+                <div className="text-center mb-4 lg:mb-5">
+                  <h3 className="text-teal-dark font-bold text-base lg:text-lg xl:text-xl mb-2 lg:mb-3">
+                    {t(`sections.${currentSection}`)}
+                  </h3>
+                  <div className="text-sm lg:text-base xl:text-lg text-teal-medium mb-4 lg:mb-5">
+                    {t("progress", { current: currentQuestion + 1, total: QUESTIONS.length })}
+                  </div>
                   
-                  {/* Main Question Panel - Top */}
-                  <div className="flex-1 relative overflow-hidden flex lg:flex-row">
-                    {/* Desktop: Split layout, Mobile: Single column */}
-                    <div className="hidden lg:block lg:w-[300px] xl:w-[320px] flex-shrink-0 bg-white p-4 lg:p-5 flex flex-col justify-between">
-                      <div className="text-center mb-4 lg:mb-5">
-                        <h3 className="text-teal-dark font-bold text-base lg:text-lg xl:text-xl mb-2 lg:mb-3">
-                          {t(`sections.${currentSection}`)}
-                        </h3>
-                        <div className="text-sm lg:text-base xl:text-lg text-teal-medium mb-4 lg:mb-5">
-                          {t("progress", { current: currentQuestion + 1, total: QUESTIONS.length })}
-                        </div>
-                        
-                        {/* Current Emissions Display - Con efecto solo en el valor */}
-                        <div className="bg-teal-lighter/30 rounded-2xl lg:rounded-2xl p-4 lg:p-5 xl:p-5 mb-4 lg:mb-5"
-                             style={{
-                               background: 'linear-gradient(135deg, rgba(0, 202, 166, 0.2), rgba(0, 106, 106, 0.1))',
-                               backdropFilter: 'blur(10px)',
-                               border: '1px solid rgba(0, 202, 166, 0.3)'
-                             }}>
-                          <div className="text-xs lg:text-sm xl:text-sm text-teal-dark mb-2 font-medium">
-                            {t("currentFootprint")}
-                          </div>
-                          <div className="text-xl lg:text-2xl xl:text-3xl font-bold text-teal-medium">
-                            <span className="transition-all duration-400 transform hover:scale-105 inline-block"
-                                  key={currentEmissions.toFixed(1)}
-                                  style={{
-                                    animation: 'fadeInScale 0.5s ease-out'
-                                  }}>
-                              {currentEmissions.toFixed(1)}
-                            </span>
-                            <span className="text-sm lg:text-base xl:text-lg ml-2">tCO₂e</span>
-                          </div>
-                        </div>
-                      </div>
-                      
-                      {/* Navigation Buttons */}
-                      <div className="space-y-3 mt-auto">
-                        <button
-                          onClick={handlePrevious}
-                          disabled={currentQuestion === 0}
-                          className="w-full py-2 lg:py-3 xl:py-3 px-3 lg:px-4 rounded-xl text-sm lg:text-sm xl:text-base font-semibold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed border-2 border-teal-medium text-teal-medium hover:bg-teal-medium hover:text-white transform hover:scale-105 disabled:hover:scale-100"
-                        >
-                          {t("previous")}
-                        </button>
-                        <button
-                          onClick={handleNext}
-                          disabled={!answers[question.id]}
-                          className={`w-full py-2 lg:py-3 xl:py-3 px-3 lg:px-4 rounded-xl text-sm lg:text-sm xl:text-base font-semibold transition-all duration-300 transform ${
-                            !answers[question.id]
-                              ? 'bg-gray-300 text-gray-500 opacity-50 cursor-not-allowed'
-                              : 'bg-teal-accent text-white shadow-lg hover:bg-teal-accent/90 hover:shadow-xl hover:scale-105 border-2 border-teal-accent'
-                          }`}
-                        >
-                          {currentQuestion === QUESTIONS.length - 1 ? t("finish") : t("next")}
-                        </button>
-                      </div>
+                  {/* Current Emissions Display - Con efecto solo en el valor */}
+                  <div className="bg-teal-lighter/30 rounded-2xl lg:rounded-2xl p-4 lg:p-5 xl:p-5 mb-4 lg:mb-5"
+                       style={{
+                         background: 'linear-gradient(135deg, rgba(0, 202, 166, 0.2), rgba(0, 106, 106, 0.1))',
+                         backdropFilter: 'blur(10px)',
+                         border: '1px solid rgba(0, 202, 166, 0.3)'
+                       }}>
+                    <div className="text-xs lg:text-sm xl:text-sm text-teal-dark mb-2 font-medium">
+                      {t("currentFootprint")}
                     </div>
+                    <div className="text-xl lg:text-2xl xl:text-3xl font-bold text-teal-medium">
+                                          <span className="transition-all duration-300 transform hover:scale-105 inline-block"
+                          key={currentEmissions.toFixed(1)}
+                          style={{
+                            animation: 'fadeInScale 0.4s ease-out'
+                          }}>
+                        {currentEmissions.toFixed(1)}
+                      </span>
+                      <span className="text-sm lg:text-base xl:text-lg ml-2">tCO₂e</span>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Navigation Buttons */}
+                <div className="space-y-3 mt-auto">
+                  <button
+                    onClick={handlePrevious}
+                    disabled={currentQuestion === 0}
+                    className="w-full py-2 lg:py-3 xl:py-3 px-3 lg:px-4 rounded-xl text-sm lg:text-sm xl:text-base font-semibold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed border-2 border-teal-medium text-teal-medium hover:bg-teal-medium hover:text-white transform hover:scale-105 disabled:hover:scale-100"
+                  >
+                    {t("previous")}
+                  </button>
+                  <button
+                    onClick={handleNext}
+                    disabled={!answers[question.id]}
+                    className={`w-full py-2 lg:py-3 xl:py-3 px-3 lg:px-4 rounded-xl text-sm lg:text-sm xl:text-base font-semibold transition-all duration-300 transform ${
+                      !answers[question.id]
+                        ? 'bg-gray-300 text-gray-500 opacity-50 cursor-not-allowed'
+                        : 'bg-teal-accent text-white shadow-lg hover:bg-teal-accent/90 hover:shadow-xl hover:scale-105 border-2 border-teal-accent'
+                    }`}
+                  >
+                    {currentQuestion === QUESTIONS.length - 1 ? t("finish") : t("next")}
+                  </button>
+                </div>
+              </div>
 
-                    {/* Question Panel */}
-                    <div className="flex-1 relative overflow-hidden">
-                      {/* Imagen actual */}
-                      <div 
-                        className={`absolute inset-0 bg-cover bg-center transition-all duration-300 ease-out ${
-                          isTransitioning ? 'opacity-70 scale-102' : 'opacity-100 scale-100'
-                        }`}
-                        style={{ 
-                          backgroundImage: `url('${backgroundImage}')`,
-                          willChange: 'transform, opacity'
-                        }}
-                      />
-                      
-                      {/* Gradient overlay with project colors - Más suave */}
-                      <div 
-                        className="absolute inset-0 transition-all duration-500"
-                        style={{
-                          background: 'linear-gradient(135deg, rgba(0, 106, 106, 0.75) 0%, rgba(0, 202, 166, 0.65) 30%, rgba(1, 33, 56, 0.7) 70%, rgba(11, 136, 153, 0.8) 100%)'
-                        }}
-                      />
-                      
-                      {/* Overlay dinámico para transiciones */}
-                      <div className={`absolute inset-0 transition-all duration-500 ease-out ${
-                        isTransitioning ? 'bg-black/20' : 'bg-transparent'
-                      }`} />
-                      
-                      <div className="relative h-full flex flex-col items-center text-white text-center px-6 sm:px-8 lg:px-8 py-4 lg:py-6">
-                        {/* Mobile: Emissions counter in header */}
-                        <div className="lg:hidden w-full mb-3 flex justify-center">
-                          <div className="inline-flex items-center">
-                            <div className="text-2xl font-bold text-white">
-                              <span className="transition-all duration-500 transform hover:scale-110 inline-block"
-                                    key={currentEmissions.toFixed(1)}
-                                    style={{
-                                      animation: 'fadeInScale 0.6s ease-out'
-                                    }}>
-                                {currentEmissions.toFixed(1)}
-                              </span>
-                              <span className="text-xl ml-1 text-white/80">tCO₂e</span>
-                            </div>
-                          </div>
-                        </div>
-                          
-                        <div className={`flex-1 flex flex-col items-center w-full max-w-2xl transition-all duration-400 ease-out transform ${
-                          isTransitioning ? 'opacity-0 translate-y-2 scale-98' : 'opacity-100 translate-y-0 scale-100'
-                        } justify-start pt-2 lg:pt-8`}>
-                          <h1 className={`text-lg sm:text-xl lg:text-xl xl:text-2xl font-bold mb-3 lg:mb-4 leading-tight transition-all duration-300 ease-out transform ${
-                            isTransitioning ? 'opacity-0 translate-y-1' : 'opacity-100 translate-y-0 animate-smoothSlide'
-                          }`}>
-                            {t(question.titleKey)}
-                          </h1>
-                          
-                          <div className={`w-full max-w-lg transition-all duration-350 ease-out transform ${
-                            isTransitioning ? 'opacity-0 scale-95' : 'opacity-100 scale-100'
-                          }`}>
-                            {question.type === 'radio' ? (
-                              <div className={isTransitioning ? '' : 'animate-fadeInCenter'}>
-                                <RadioQuestion question={question} />
-                              </div>
-                            ) : (
-                              !isTransitioning && (
-                                <div className="animate-slideDown">
-                                  <DropdownQuestion question={question} />
-                                </div>
-                              )
-                            )}
-                          </div>
-                        </div>
-                        
-                        {/* Mobile: Navigation buttons at bottom */}
-                        <div className="lg:hidden w-full mt-2 space-y-2">
-                          <button
-                            onClick={handleNext}
-                            disabled={!answers[question.id]}
-                            className={`w-full py-2 px-4 rounded-2xl text-sm font-semibold transition-all duration-300 transform ${
-                              !answers[question.id]
-                                ? 'bg-gray-300 text-gray-500 opacity-50 cursor-not-allowed'
-                                : 'bg-teal-accent text-white shadow-lg hover:bg-teal-accent/90 hover:shadow-xl hover:scale-105 border-2 border-teal-accent'
-                            }`}
-                          >
-                            {currentQuestion === QUESTIONS.length - 1 ? t("finish") : t("next")}
-                          </button>
-                          <button
-                            onClick={handlePrevious}
-                            disabled={currentQuestion === 0}
-                            className="w-full py-2 px-4 rounded-2xl text-sm font-semibold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed border-2 border-white/50 text-white hover:bg-white/20 transform hover:scale-105 disabled:hover:scale-100"
-                          >
-                            {t("previous")}
-                          </button>
-                        </div>
+              {/* Question Panel */}
+              <div className="flex-1 relative overflow-hidden">
+                {/* Imagen actual */}
+                <div 
+                  className={`absolute inset-0 bg-cover bg-center transition-all duration-500 ease-out ${
+                    isTransitioning ? 'opacity-70 scale-102' : 'opacity-100 scale-100'
+                  }`}
+                  style={{ 
+                    backgroundImage: `url('${backgroundImage}')`,
+                    willChange: 'transform, opacity'
+                  }}
+                />
+                
+                {/* Gradient overlay with project colors - Más suave */}
+                <div 
+                  className="absolute inset-0 transition-all duration-500"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(0, 106, 106, 0.75) 0%, rgba(0, 202, 166, 0.65) 30%, rgba(1, 33, 56, 0.7) 70%, rgba(11, 136, 153, 0.8) 100%)'
+                  }}
+                />
+                
+                {/* Overlay dinámico para transiciones */}
+                                  <div className={`absolute inset-0 transition-all duration-400 ease-out ${
+                  isTransitioning ? 'bg-black/20' : 'bg-transparent'
+                }`} />
+                
+                <div className="relative h-full flex flex-col items-center text-white text-center px-6 sm:px-8 lg:px-8 py-4 lg:py-6">
+                  {/* Mobile: Emissions counter in header */}
+                  <div className="lg:hidden w-full mb-3 flex justify-center">
+                    <div className="inline-flex items-center">
+                      <div className="text-2xl font-bold text-white">
+                                              <span className="transition-all duration-300 transform hover:scale-110 inline-block"
+                            key={currentEmissions.toFixed(1)}
+                            style={{
+                              animation: 'fadeInScale 0.4s ease-out'
+                            }}>
+                          {currentEmissions.toFixed(1)}
+                        </span>
+                        <span className="text-xl ml-1 text-white/80">tCO₂e</span>
                       </div>
                     </div>
                   </div>
+                    
+                  <div className={`flex-1 flex flex-col items-center w-full max-w-2xl transition-all duration-400 ease-out transform ${
+                    isTransitioning ? 'opacity-0 translate-y-2 scale-98' : 'opacity-100 translate-y-0 scale-100'
+                  } justify-start pt-2 lg:pt-8`}>
+                    <h1 className={`text-lg sm:text-xl lg:text-xl xl:text-2xl font-bold mb-3 lg:mb-4 leading-tight transition-all duration-400 ease-out transform break-words text-balance text-center whitespace-pre-line ${
+                      isTransitioning ? 'opacity-0 translate-y-1' : 'opacity-100 translate-y-0 animate-smoothSlide'
+                    }`}>
+                      {t(question.titleKey)}
+                    </h1>
+                    
+                    <div className={`w-full max-w-lg transition-all duration-400 ease-out transform ${
+                      isTransitioning ? 'opacity-0 scale-95' : 'opacity-100 scale-100'
+                    }`}>
+                      {question.type === 'radio' ? (
+                        <div className={isTransitioning ? '' : 'animate-fadeInCenter'}>
+                          <RadioQuestion question={question} />
+                        </div>
+                      ) : (
+                        !isTransitioning && (
+                          <div className="animate-slideDown">
+                            <DropdownQuestion question={question} />
+                          </div>
+                        )
+                      )}
+                    </div>
+                  </div>
                   
-                  {/* Bottom Progress Panel - Mobile and Desktop */}
-                  <div className="bg-white border-t border-teal-medium/20 p-3 lg:p-2">
-                    {/* Mobile: Simple progress */}
-                    <div className="lg:hidden">
-                      <div className="text-center mb-2">
-                        <div className="text-xs text-teal-medium">
-                          {t("progress", { current: currentQuestion + 1, total: QUESTIONS.length })}
-                        </div>
-                      </div>
-                      
-                      {/* Mobile Progress Bar */}
-                      <div className="relative h-2 mb-2">
-                        <div className="bg-teal-lighter/30 rounded-full h-2 overflow-hidden">
-                          <div 
-                            className="h-full bg-gradient-to-r from-teal-accent to-teal-medium shadow-inner relative"
-                            style={{ 
-                              width: `${progress}%`,
-                              transition: 'width 0.8s cubic-bezier(0.4, 0, 0.2, 1)'
-                            }}
-                          />
-                        </div>
-                        <div 
-                          className="absolute top-1/2 transform -translate-y-1/2 -translate-x-1/2 text-xs font-bold text-white bg-teal-medium rounded-full w-5 h-5 flex items-center justify-center shadow-lg z-10"
-                          style={{ 
-                            left: `${progress}%`,
-                            transition: 'left 0.8s cubic-bezier(0.4, 0, 0.2, 1)'
-                          }}
-                        >
-                          {currentQuestion + 1}
-                        </div>
-                      </div>
-                      
-                      {/* Mobile Section indicators */}
-                      <div className="flex justify-between text-xs text-teal-medium px-2">
-                        <div className="text-center leading-tight">
-                          <div className={currentQuestion <= 3 ? 'font-bold text-teal-dark' : ''}>
-                            Transporte
-                          </div>
-                        </div>
-                        <div className="text-center leading-tight">
-                          <div className={currentQuestion >= 4 && currentQuestion <= 6 ? 'font-bold text-teal-dark' : ''}>
-                            Vuelos y
-                          </div>
-                          <div className={currentQuestion >= 4 && currentQuestion <= 6 ? 'font-bold text-teal-dark' : ''}>
-                            Alimentación
-                          </div>
-                        </div>
-                        <div className="text-center leading-tight">
-                          <div className={currentQuestion >= 7 ? 'font-bold text-teal-dark' : ''}>
-                            Energía y
-                          </div>
-                          <div className={currentQuestion >= 7 ? 'font-bold text-teal-dark' : ''}>
-                            Estilo de Vida
-                          </div>
-                        </div>
+                  {/* Mobile: Navigation buttons at bottom */}
+                  <div className="lg:hidden w-full mt-2 space-y-2">
+                    <button
+                      onClick={handleNext}
+                      disabled={!answers[question.id]}
+                      className={`w-full py-2 px-4 rounded-2xl text-sm font-semibold transition-all duration-300 transform ${
+                        !answers[question.id]
+                          ? 'bg-gray-300 text-gray-500 opacity-50 cursor-not-allowed'
+                          : 'bg-teal-accent text-white shadow-lg hover:bg-teal-accent/90 hover:shadow-xl hover:scale-105 border-2 border-teal-accent'
+                      }`}
+                    >
+                      {currentQuestion === QUESTIONS.length - 1 ? t("finish") : t("next")}
+                    </button>
+                    <button
+                      onClick={handlePrevious}
+                      disabled={currentQuestion === 0}
+                      className="w-full py-2 px-4 rounded-2xl text-sm font-semibold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed border-2 border-white/50 text-white hover:bg-white/20 transform hover:scale-105 disabled:hover:scale-100"
+                    >
+                      {t("previous")}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Bottom Progress Panel - Mobile and Desktop */}
+            <div className="bg-white border-t border-teal-medium/20 p-3 lg:p-2">
+              {/* Mobile: Simple progress */}
+              <div className="lg:hidden">
+                <div className="text-center mb-2">
+                  <div className="text-xs text-teal-medium">
+                    {t("progress", { current: currentQuestion + 1, total: QUESTIONS.length })}
+                  </div>
+                </div>
+                
+                {/* Mobile Progress Bar */}
+                <div className="relative h-2 mb-2">
+                  <div className="bg-teal-lighter/30 rounded-full h-2 overflow-hidden">
+                    <div 
+                      className="h-full bg-gradient-to-r from-teal-accent to-teal-medium shadow-inner relative"
+                      style={{ 
+                        width: `${progress}%`,
+                        transition: 'width 0.8s cubic-bezier(0.4, 0, 0.2, 1)'
+                      }}
+                    />
+                  </div>
+                  <div 
+                    className="absolute top-1/2 transform -translate-y-1/2 -translate-x-1/2 text-xs font-bold text-white bg-teal-medium rounded-full w-5 h-5 flex items-center justify-center shadow-lg z-10"
+                    style={{ 
+                      left: `${progress}%`,
+                      transition: 'left 0.8s cubic-bezier(0.4, 0, 0.2, 1)'
+                    }}
+                  >
+                    {currentQuestion + 1}
+                  </div>
+                </div>
+                
+                {/* Mobile Section indicators */}
+                <div className="flex justify-between text-xs text-teal-medium px-2">
+                  <div className="text-center leading-tight">
+                    <div className={currentQuestion <= 3 ? 'font-bold text-teal-dark' : ''}>
+                      Transporte
+                    </div>
+                  </div>
+                  <div className="text-center leading-tight">
+                    <div className={currentQuestion >= 4 && currentQuestion <= 6 ? 'font-bold text-teal-dark' : ''}>
+                      Vuelos y
+                    </div>
+                    <div className={currentQuestion >= 4 && currentQuestion <= 6 ? 'font-bold text-teal-dark' : ''}>
+                      Alimentación
+                    </div>
+                  </div>
+                  <div className="text-center leading-tight">
+                    <div className={currentQuestion >= 7 ? 'font-bold text-teal-dark' : ''}>
+                      Energía y
+                    </div>
+                    <div className={currentQuestion >= 7 ? 'font-bold text-teal-dark' : ''}>
+                      Estilo de Vida
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Desktop: Full progress bar outside */}
+              <div className="hidden lg:block">
+                <div className="relative h-4 my-3">
+                  <div className="bg-gradient-to-r from-teal-lighter/30 via-teal-lighter/40 to-teal-lighter/30 rounded-full h-4 backdrop-blur border border-teal-medium/30 shadow-lg overflow-hidden">
+                    <div 
+                      className="h-full bg-gradient-to-r from-teal-accent via-teal-light to-teal-accent shadow-inner relative"
+                      style={{ 
+                        width: `${progress}%`,
+                        transition: 'width 0.8s cubic-bezier(0.4, 0, 0.2, 1)'
+                      }}
+                    >
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-pulse" />
+                    </div>
+                  </div>
+                  
+                  <div 
+                    className="absolute top-1/2 transform -translate-y-1/2 -translate-x-1/2 text-xs font-bold text-teal-dark bg-white rounded-full w-7 h-7 flex items-center justify-center shadow-xl border-3 border-teal-accent z-10"
+                    style={{ 
+                      left: `${progress}%`,
+                      transition: 'left 0.8s cubic-bezier(0.4, 0, 0.2, 1)'
+                    }}
+                  >
+                    {currentQuestion + 1}
+                  </div>
+                </div>
+                
+                <div className="flex justify-between text-xs text-teal-medium font-medium px-2">
+                  <div className="flex items-center space-x-1">
+                    <div className={`w-3 h-3 rounded-full transition-all duration-100 ${
+                      currentQuestion <= 3 
+                        ? 'bg-teal-accent shadow-lg border-2 border-teal-dark' 
+                        : 'bg-teal-lighter/40 border border-teal-medium/50'
+                    }`} />
+                    <div className="text-center leading-tight">
+                      <div className={currentQuestion <= 3 ? 'text-teal-dark font-bold' : ''}>
+                        Transporte
                       </div>
                     </div>
-
-                    {/* Desktop: Full progress bar outside */}
-                    <div className="hidden lg:block">
-                      <div className="relative h-4 my-3">
-                        <div className="bg-gradient-to-r from-teal-lighter/30 via-teal-lighter/40 to-teal-lighter/30 rounded-full h-4 backdrop-blur border border-teal-medium/30 shadow-lg overflow-hidden">
-                          <div 
-                            className="h-full bg-gradient-to-r from-teal-accent via-teal-light to-teal-accent shadow-inner relative"
-                            style={{ 
-                              width: `${progress}%`,
-                              transition: 'width 0.8s cubic-bezier(0.4, 0, 0.2, 1)'
-                            }}
-                          >
-                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-pulse" />
-                          </div>
-                        </div>
-                        
-                        <div 
-                          className="absolute top-1/2 transform -translate-y-1/2 -translate-x-1/2 text-xs font-bold text-teal-dark bg-white rounded-full w-7 h-7 flex items-center justify-center shadow-xl border-3 border-teal-accent z-10"
-                          style={{ 
-                            left: `${progress}%`,
-                            transition: 'left 0.8s cubic-bezier(0.4, 0, 0.2, 1)'
-                          }}
-                        >
-                          {currentQuestion + 1}
-                        </div>
+                  </div>
+                  <div className="flex items-center space-x-1">
+                    <div className={`w-3 h-3 rounded-full transition-all duration-100 ${
+                      currentQuestion >= 4 && currentQuestion <= 6 
+                        ? 'bg-teal-accent shadow-lg border-2 border-teal-dark' 
+                        : 'bg-teal-lighter/40 border border-teal-medium/50'
+                    }`} />
+                    <div className="text-center leading-tight">
+                      <div className={currentQuestion >= 4 && currentQuestion <= 6 ? 'text-teal-dark font-bold' : ''}>
+                        Vuelos y
                       </div>
-                      
-                      <div className="flex justify-between text-xs text-teal-medium font-medium px-2">
-                        <div className="flex items-center space-x-1">
-                          <div className={`w-3 h-3 rounded-full transition-all duration-500 ${
-                            currentQuestion <= 3 
-                              ? 'bg-teal-accent shadow-lg border-2 border-teal-dark' 
-                              : 'bg-teal-lighter/40 border border-teal-medium/50'
-                          }`} />
-                          <div className="text-center leading-tight">
-                            <div className={currentQuestion <= 3 ? 'text-teal-dark font-bold' : ''}>
-                              Transporte
-                            </div>
-                          </div>
-                        </div>
-                        <div className="flex items-center space-x-1">
-                          <div className={`w-3 h-3 rounded-full transition-all duration-500 ${
-                            currentQuestion >= 4 && currentQuestion <= 6 
-                              ? 'bg-teal-accent shadow-lg border-2 border-teal-dark' 
-                              : 'bg-teal-lighter/40 border border-teal-medium/50'
-                          }`} />
-                          <div className="text-center leading-tight">
-                            <div className={currentQuestion >= 4 && currentQuestion <= 6 ? 'text-teal-dark font-bold' : ''}>
-                              Vuelos y
-                            </div>
-                            <div className={currentQuestion >= 4 && currentQuestion <= 6 ? 'text-teal-dark font-bold' : ''}>
-                              Alimentación
-                            </div>
-                          </div>
-                        </div>
-                        <div className="flex items-center space-x-1">
-                          <div className={`w-3 h-3 rounded-full transition-all duration-500 ${
-                            currentQuestion >= 7 
-                              ? 'bg-teal-accent shadow-lg border-2 border-teal-dark' 
-                              : 'bg-teal-lighter/40 border border-teal-medium/50'
-                          }`} />
-                          <div className="text-center leading-tight">
-                            <div className={currentQuestion >= 7 ? 'text-teal-dark font-bold' : ''}>
-                              Energía y
-                            </div>
-                            <div className={currentQuestion >= 7 ? 'text-teal-dark font-bold' : ''}>
-                              Estilo de Vida
-                            </div>
-                          </div>
-                        </div>
+                      <div className={currentQuestion >= 4 && currentQuestion <= 6 ? 'text-teal-dark font-bold' : ''}>
+                        Alimentación
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex items-center space-x-1">
+                    <div className={`w-3 h-3 rounded-full transition-all duration-100 ${
+                      currentQuestion >= 7 
+                        ? 'bg-teal-accent shadow-lg border-2 border-teal-dark' 
+                        : 'bg-teal-lighter/40 border border-teal-medium/50'
+                    }`} />
+                    <div className="text-center leading-tight">
+                      <div className={currentQuestion >= 7 ? 'text-teal-dark font-bold' : ''}>
+                        Energía y
+                      </div>
+                      <div className={currentQuestion >= 7 ? 'text-teal-dark font-bold' : ''}>
+                        Estilo de Vida
                       </div>
                     </div>
                   </div>
@@ -1119,14 +1113,13 @@ export default function CalculadoraPage() {
     return (
       <div className="min-h-screen">
         <Navbar />
-        
-        <div className="relative min-h-screen pt-16 lg:pt-[80px]">
-          {/* Complex Gradient Background */}
+        <div className="pt-16 pb-4 px-4 sm:px-5 lg:px-8 min-h-screen flex items-center justify-center relative">
+          {/* Fondo verde original restaurado */}
           <div className="absolute inset-0 bg-teal-lighter" />
           <div 
             className="absolute inset-0"
             style={{
-              background: "linear-gradient(135deg, #006A6A 0%, rgba(0, 106, 106, 0.8) 40%, transparent 70%)"
+              background: "linear-gradient(135deg, #006a6afd 0%, rgba(0, 106, 106, 0.8) 40%, transparent 70%)"
             }}
           />
           <div 
@@ -1141,75 +1134,74 @@ export default function CalculadoraPage() {
               background: "linear-gradient(45deg, transparent 0%, rgba(11, 136, 153, 0.4) 50%, #0B8899 100%)"
             }}
           />
-          
-          <div className="relative z-10 container mx-auto px-5 lg:px-20 py-8 lg:py-20">
-            <div className="flex items-center justify-center min-h-[calc(100vh-8rem)] lg:min-h-auto">
-              <div className="w-full max-w-7xl h-auto min-h-[500px] lg:h-[600px] bg-white rounded-[2rem] shadow-2xl flex flex-col lg:flex-row overflow-hidden border border-teal-medium/20 transition-all duration-700 ease-in-out">
-                
-                {/* Left White Panel */}
-                <div className="w-full lg:w-[380px] flex-shrink-0 bg-white p-6 lg:p-8 flex flex-col justify-center rounded-t-[2rem] lg:rounded-t-none lg:rounded-l-[2rem]">
-                  <h3 className="text-teal-dark font-bold text-lg mb-8 text-center transition-all duration-300">
-                    {t("howToCompensate")}
-                  </h3>
-                  <div className="space-y-4">
-                    <button 
-                      onClick={() => {
-                        setCalculatorType('individual');
-                        setShowQuestions(true);
-                      }}
-                      className="w-full bg-teal-medium text-white py-3 px-6 rounded-xl font-semibold hover:bg-teal-dark transition-all duration-300 text-center transform hover:scale-105 hover:shadow-lg"
-                    >
-                      {t("individual")}
-                    </button>
-                    <button 
-                      onClick={() => {
-                        setCalculatorType('company');
-                        setShowQuestions(true);
-                      }}
-                      className="w-full border-2 border-teal-medium text-teal-medium py-3 px-6 rounded-xl font-semibold hover:bg-teal-medium hover:text-white transition-all duration-300 text-center transform hover:scale-105 hover:shadow-lg"
-                    >
-                      {t("company")}
-                    </button>
-                  </div>
+          <div className="relative z-10 w-full max-w-7xl h-auto min-h-[500px] lg:h-[600px] bg-white rounded-[2rem] shadow-2xl flex flex-col lg:flex-row overflow-hidden border border-teal-medium/20 transition-all duration-150 ease-in-out">
+            {/* Left White Panel */}
+            <div className="w-full lg:w-[380px] flex-shrink-0 bg-white p-6 lg:p-8 flex flex-col justify-center rounded-t-[2rem] lg:rounded-t-none lg:rounded-l-[2rem]">
+              <h3 className="text-teal-dark font-bold text-lg mb-8 text-center transition-all duration-100">
+                {t("howToCompensate")}
+              </h3>
+              <div className="space-y-4">
+                <button 
+                  onClick={() => {
+                    setCalculatorType('individual');
+                    setShowQuestions(true);
+                  }}
+                  className={`w-full py-3 px-6 rounded-xl font-semibold transition-all duration-300 text-center transform hover:scale-105 hover:shadow-lg ${
+                    calculatorType === 'individual'
+                      ? 'bg-teal-medium text-white hover:bg-teal-dark'
+                      : 'border-2 border-teal-medium text-teal-medium hover:bg-teal-medium hover:text-white'
+                  }`}
+                >
+                  {t("individual")}
+                </button>
+                <button 
+                  onClick={() => {
+                    setCalculatorType('company');
+                    setShowQuestions(true);
+                  }}
+                  className={`w-full py-3 px-6 rounded-xl font-semibold transition-all duration-300 text-center transform hover:scale-105 hover:shadow-lg ${
+                    calculatorType === 'company'
+                      ? 'bg-teal-medium text-white hover:bg-teal-dark'
+                      : 'border-2 border-teal-medium text-teal-medium hover:bg-teal-medium hover:text-white'
+                  }`}
+                >
+                  {t("company")}
+                </button>
+              </div>
+            </div>
+            {/* Right Image Panel */}
+            <div className="flex-1 relative rounded-b-[2rem] lg:rounded-b-none lg:rounded-r-[2rem] overflow-hidden min-h-[300px] lg:min-h-auto">
+              <div 
+                className="absolute inset-0 bg-cover bg-center transition-all duration-1000"
+                style={{ backgroundImage: "url('/assets/images/Pexels Photo by Natalie Dmay.png')" }}
+              />
+              {/* Gradient overlay with project colors */}
+              <div 
+                className="absolute inset-0"
+                style={{
+                  background: 'linear-gradient(135deg, rgba(0, 106, 106, 0.75) 0%, rgba(0, 202, 166, 0.65) 30%, rgba(1, 33, 56, 0.7) 70%, rgba(11, 136, 153, 0.8) 100%)'
+                }}
+              />
+              <div className="absolute inset-0 bg-teal-dark/20 transition-all duration-100" />
+              <div className="relative h-full flex flex-col items-center text-white text-center px-6 lg:px-8 py-8 lg:py-16">
+                <div className="flex-1 flex flex-col justify-center items-center max-w-2xl">
+                  <h1 className="text-2xl lg:text-4xl font-bold mb-4 lg:mb-6 leading-tight transition-all duration-100">
+                    {t("calculateTitle")}<sub className="text-lg lg:text-2xl align-super">2</sub>
+                  </h1>
+                  <p className="text-base lg:text-lg leading-relaxed mb-6 lg:mb-10 max-w-xl transition-all duration-100">
+                    {t("calculateDescription")}
+                  </p>
+                  <button 
+                    onClick={() => setShowQuestions(true)}
+                    className="bg-teal-accent hover:bg-teal-light text-white px-12 py-3 rounded-xl font-semibold transition-all duration-300 text-base transform hover:scale-105 hover:shadow-lg"
+                  >
+                    {t("start")}
+                  </button>
                 </div>
-
-                {/* Right Image Panel */}
-                <div className="flex-1 relative rounded-b-[2rem] lg:rounded-b-none lg:rounded-r-[2rem] overflow-hidden min-h-[300px] lg:min-h-auto">
-                  <div 
-                    className="absolute inset-0 bg-cover bg-center transition-all duration-1000"
-                    style={{ backgroundImage: "url('/assets/images/Pexels Photo by Natalie Dmay.png')" }}
-                  />
-                  {/* Gradient overlay with project colors */}
-                  <div 
-                    className="absolute inset-0"
-                    style={{
-                      background: 'linear-gradient(135deg, rgba(0, 106, 106, 0.75) 0%, rgba(0, 202, 166, 0.65) 30%, rgba(1, 33, 56, 0.7) 70%, rgba(11, 136, 153, 0.8) 100%)'
-                    }}
-                  />
-                  <div className="absolute inset-0 bg-teal-dark/20 transition-all duration-500" />
-                  
-                  <div className="relative h-full flex flex-col items-center text-white text-center px-6 lg:px-8 py-8 lg:py-16">
-                    <div className="flex-1 flex flex-col justify-center items-center max-w-2xl">
-                      <h1 className="text-2xl lg:text-4xl font-bold mb-4 lg:mb-6 leading-tight transition-all duration-500">
-                        {t("calculateTitle")}<sub className="text-lg lg:text-2xl align-super">2</sub>
-                      </h1>
-                      <p className="text-base lg:text-lg leading-relaxed mb-6 lg:mb-10 max-w-xl transition-all duration-500">
-                        {t("calculateDescription")}
-                      </p>
-                      <button 
-                        onClick={() => setShowQuestions(true)}
-                        className="bg-teal-accent hover:bg-teal-light text-white px-12 py-3 rounded-xl font-semibold transition-all duration-300 text-base transform hover:scale-105 hover:shadow-lg"
-                      >
-                        {t("start")}
-                      </button>
-                    </div>
-
-                    <div className="flex justify-center space-x-2 mt-4">
-                      {[...Array(12)].map((_, i) => (
-                        <div key={i} className={`w-2 h-2 rounded-full transition-all duration-300 ${i === 0 ? 'bg-white' : 'bg-white/40'}`} />
-                      ))}
-                    </div>
-                  </div>
+                <div className="flex justify-center space-x-2 mt-4">
+                  {[...Array(12)].map((_, i) => (
+                    <div key={i} className={`w-2 h-2 rounded-full transition-all duration-300 ${i === 0 ? 'bg-white' : 'bg-white/40'}`} />
+                  ))}
                 </div>
               </div>
             </div>
@@ -1253,7 +1245,7 @@ export default function CalculadoraPage() {
             
             {/* CTA Button */}
             <button 
-              className="bg-white text-teal-dark hover:bg-gray-100 px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+              className="bg-white text-teal-dark hover:bg-gray-100 px-8 py-4 rounded-full text-lg font-semibold transition-all duration-100 shadow-lg hover:shadow-xl transform hover:scale-105"
               onClick={() => setShowCalculator(true)}
             >
               {t("cta")}

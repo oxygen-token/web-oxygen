@@ -18,123 +18,123 @@ export interface Question {
 
 // Q1: Distancia anual en vehículo personal
 export const Q1_VEHICLE_DISTANCE: EmissionOption[] = [
-  { label: "0 km", value: "0", emission: 0 },
-  { label: "Menos de 5.000 km", value: "low", emission: 1.0 },
-  { label: "5.000–10.000 km", value: "medium", emission: 1.5 },
-  { label: "10.000–20.000 km", value: "high", emission: 3.0 },
-  { label: "Más de 20.000 km", value: "very_high", emission: 4.0 }
+  { label: "options.q1.0", value: "0", emission: 0 },
+  { label: "options.q1.low", value: "low", emission: 1.0 },
+  { label: "options.q1.medium", value: "medium", emission: 1.5 },
+  { label: "options.q1.high", value: "high", emission: 3.0 },
+  { label: "options.q1.very_high", value: "very_high", emission: 4.0 }
 ];
 
 // Q2: Tipo de vehículo (multiplica Q1)
 export const Q2_VEHICLE_TYPE: EmissionOption[] = [
-  { label: "Sin vehículo", value: "none", emission: 0, multiplier: 0 },
-  { label: "Gasolina / Diesel", value: "gasoline", emission: 0, multiplier: 1 },
-  { label: "Híbrido", value: "hybrid", emission: 0, multiplier: 0.5 },
-  { label: "Eléctrico", value: "electric", emission: 0, multiplier: 0.25 }
+  { label: "options.q2.none", value: "none", emission: 0, multiplier: 0 },
+  { label: "options.q2.gasoline", value: "gasoline", emission: 0, multiplier: 1 },
+  { label: "options.q2.hybrid", value: "hybrid", emission: 0, multiplier: 0.5 },
+  { label: "options.q2.electric", value: "electric", emission: 0, multiplier: 0.25 }
 ];
 
 // Q3: Uso de colectivo/bus
 export const Q3_BUS_USAGE: EmissionOption[] = [
-  { label: "Nunca o rara vez", value: "never", emission: 0 },
-  { label: "Ocasional (1–2 veces por semana)", value: "occasional", emission: 0.1 },
-  { label: "Regular (viaje diario)", value: "regular", emission: 0.45 },
-  { label: "Intenso (varios viajes por día)", value: "intensive", emission: 0.9 }
+  { label: "options.q3.never", value: "never", emission: 0 },
+  { label: "options.q3.occasional", value: "occasional", emission: 0.1 },
+  { label: "options.q3.regular", value: "regular", emission: 0.45 },
+  { label: "options.q3.intensive", value: "intensive", emission: 0.9 }
 ];
 
 // Q4: Uso de tren/subte
 export const Q4_TRAIN_USAGE: EmissionOption[] = [
-  { label: "Nunca", value: "never", emission: 0 },
-  { label: "Ocasional (1–2 viajes por semana)", value: "occasional", emission: 0.05 },
-  { label: "Regular (diario)", value: "regular", emission: 0.2 },
-  { label: "Intenso (frecuente o largas dist.)", value: "intensive", emission: 0.4 }
+  { label: "options.q4.never", value: "never", emission: 0 },
+  { label: "options.q4.occasional", value: "occasional", emission: 0.05 },
+  { label: "options.q4.regular", value: "regular", emission: 0.2 },
+  { label: "options.q4.intensive", value: "intensive", emission: 0.4 }
 ];
 
 // Q5: Vuelos cortos por año
 export const Q5_SHORT_FLIGHTS: EmissionOption[] = [
-  { label: "0 vuelos", value: "0", emission: 0 },
-  { label: "1–2 vuelos cortos", value: "low", emission: 0.375 }, // promedio 0.25-0.5
-  { label: "3–5 vuelos cortos", value: "medium", emission: 1.0 }, // promedio 0.75-1.25
-  { label: "Más de 5 vuelos cortos", value: "high", emission: 2.0 }
+  { label: "options.q5.0", value: "0", emission: 0 },
+  { label: "options.q5.low", value: "low", emission: 0.375 },
+  { label: "options.q5.medium", value: "medium", emission: 1.0 },
+  { label: "options.q5.high", value: "high", emission: 2.0 }
 ];
 
 // Q6: Vuelos largos por año
 export const Q6_LONG_FLIGHTS: EmissionOption[] = [
-  { label: "0 vuelos", value: "0", emission: 0 },
-  { label: "1 vuelo largo", value: "one", emission: 1.0 }, // promedio 0.8-1.2
-  { label: "2 vuelos largos", value: "two", emission: 2.0 }, // promedio 1.6-2.4
-  { label: "3–4 vuelos largos", value: "medium", emission: 3.25 }, // promedio 2.5-4.0
-  { label: "Más de 4 vuelos largos", value: "high", emission: 5.0 }
+  { label: "options.q6.0", value: "0", emission: 0 },
+  { label: "options.q6.one", value: "one", emission: 1.0 },
+  { label: "options.q6.two", value: "two", emission: 2.0 },
+  { label: "options.q6.medium", value: "medium", emission: 3.25 },
+  { label: "options.q6.high", value: "high", emission: 5.0 }
 ];
 
 // Q7: Tipo de dieta
 export const Q7_DIET_TYPE: EmissionOption[] = [
-  { label: "Carnívoro (alta carne)", value: "carnivore", emission: 2.6 },
-  { label: "Omnívoro promedio", value: "omnivore", emission: 2.0 },
-  { label: "Poca carne", value: "low_meat", emission: 1.7 },
-  { label: "Vegetariano", value: "vegetarian", emission: 1.4 },
-  { label: "Vegano", value: "vegan", emission: 1.0 }
+  { label: "options.q7.carnivore", value: "carnivore", emission: 2.6 },
+  { label: "options.q7.omnivore", value: "omnivore", emission: 2.0 },
+  { label: "options.q7.low_meat", value: "low_meat", emission: 1.7 },
+  { label: "options.q7.vegetarian", value: "vegetarian", emission: 1.4 },
+  { label: "options.q7.vegan", value: "vegan", emission: 1.0 }
 ];
 
 // Q8: Consumo eléctrico del hogar (se divide por Q10)
 export const Q8_ELECTRICITY: EmissionOption[] = [
-  { label: "Bajo (~2.000 kWh)", value: "low", emission: 1.0 },
-  { label: "Medio (~5.000 kWh)", value: "medium", emission: 2.4 },
-  { label: "Alto (~10.000 kWh)", value: "high", emission: 4.8 },
-  { label: "Muy alto (>15.000 kWh)", value: "very_high", emission: 7.0 }
+  { label: "options.q8.low", value: "low", emission: 1.0 },
+  { label: "options.q8.medium", value: "medium", emission: 2.4 },
+  { label: "options.q8.high", value: "high", emission: 4.8 },
+  { label: "options.q8.very_high", value: "very_high", emission: 7.0 }
 ];
 
 // Q9: Uso de gas/combustible (se divide por Q10)
 export const Q9_GAS_USAGE: EmissionOption[] = [
-  { label: "Ninguno (eléctrico)", value: "none", emission: 0 },
-  { label: "Bajo uso (cocina/agua)", value: "low", emission: 0.4 }, // promedio 0.3-0.5
-  { label: "Medio (uso típico)", value: "medium", emission: 1.5 }, // promedio 1.0-2.0
-  { label: "Alto (clima frío, casa grande)", value: "high", emission: 3.0 }
+  { label: "options.q9.none", value: "none", emission: 0 },
+  { label: "options.q9.low", value: "low", emission: 0.4 },
+  { label: "options.q9.medium", value: "medium", emission: 1.5 },
+  { label: "options.q9.high", value: "high", emission: 3.0 }
 ];
 
 // Q10: Personas en el hogar (divide Q8 y Q9)
 export const Q10_HOUSEHOLD_SIZE: EmissionOption[] = [
-  { label: "1 persona", value: "1", emission: 0, multiplier: 1 },
-  { label: "2 personas", value: "2", emission: 0, multiplier: 0.5 },
-  { label: "3 personas", value: "3", emission: 0, multiplier: 0.33 },
-  { label: "4 personas", value: "4", emission: 0, multiplier: 0.25 },
-  { label: "5 o más personas", value: "5+", emission: 0, multiplier: 0.2 }
+  { label: "options.q10.1", value: "1", emission: 0, multiplier: 1 },
+  { label: "options.q10.2", value: "2", emission: 0, multiplier: 0.5 },
+  { label: "options.q10.3", value: "3", emission: 0, multiplier: 0.33 },
+  { label: "options.q10.4", value: "4", emission: 0, multiplier: 0.25 },
+  { label: "options.q10.5+", value: "5+", emission: 0, multiplier: 0.2 }
 ];
 
 // Q11: Consumo de bienes y servicios
 export const Q11_CONSUMPTION: EmissionOption[] = [
-  { label: "Minimalista", value: "minimal", emission: 1.0 },
-  { label: "Promedio", value: "average", emission: 2.5 },
-  { label: "Consumidor frecuente", value: "frequent", emission: 5.0 },
-  { label: "Alta gama / lujo", value: "luxury", emission: 8.0 }
+  { label: "options.q11.minimal", value: "minimal", emission: 1.0 },
+  { label: "options.q11.average", value: "average", emission: 2.5 },
+  { label: "options.q11.frequent", value: "frequent", emission: 5.0 },
+  { label: "options.q11.luxury", value: "luxury", emission: 8.0 }
 ];
 
 // Q12: Basura no reciclada (se reduce por Q13)
 export const Q12_WASTE: EmissionOption[] = [
-  { label: "Muy poca (<5 kg/semana)", value: "very_low", emission: 0.1 },
-  { label: "Promedio (1–2 bolsas)", value: "average", emission: 0.3 },
-  { label: "Alta (>30 kg/semana)", value: "high", emission: 0.55 } // promedio 0.5-0.6
+  { label: "options.q12.very_low", value: "very_low", emission: 0.1 },
+  { label: "options.q12.average", value: "average", emission: 0.3 },
+  { label: "options.q12.high", value: "high", emission: 0.55 }
 ];
 
 // Q13: Nivel de reciclaje (reduce Q12)
 export const Q13_RECYCLING: EmissionOption[] = [
-  { label: "Nada o muy poco (0–20%)", value: "none", emission: 0, multiplier: 1 },
-  { label: "Algo (~30–60%)", value: "some", emission: 0, multiplier: 0.65 }, // promedio -30% a -40%
-  { label: "Casi todo (80–100%)", value: "most", emission: 0, multiplier: 0.2 } // -80%
+  { label: "options.q13.none", value: "none", emission: 0, multiplier: 1 },
+  { label: "options.q13.some", value: "some", emission: 0, multiplier: 0.65 },
+  { label: "options.q13.most", value: "most", emission: 0, multiplier: 0.2 }
 ];
 
 // Q14: Energía renovable (reduce Q8)
 export const Q14_RENEWABLE: EmissionOption[] = [
-  { label: "No (solo red convencional)", value: "none", emission: 0, multiplier: 1 },
-  { label: "Parcial (ej. plan verde)", value: "partial", emission: 0, multiplier: 0.625 }, // promedio -25% a -50%
-  { label: "Total (100% renovable / solar)", value: "total", emission: 0, multiplier: 0 } // -100%
+  { label: "options.q14.none", value: "none", emission: 0, multiplier: 1 },
+  { label: "options.q14.partial", value: "partial", emission: 0, multiplier: 0.625 },
+  { label: "options.q14.total", value: "total", emission: 0, multiplier: 0 }
 ];
 
 // Q15: Cruceros por año
 export const Q15_CRUISES: EmissionOption[] = [
-  { label: "Ninguno", value: "none", emission: 0 },
-  { label: "Ocasional (3–4 días)", value: "occasional", emission: 1.75 }, // promedio 1.5-2.0
-  { label: "Promedio (1 semana al año)", value: "average", emission: 3.0 },
-  { label: "Frecuente o extensos", value: "frequent", emission: 7.5 } // promedio 5.0-10.0+
+  { label: "options.q15.none", value: "none", emission: 0 },
+  { label: "options.q15.occasional", value: "occasional", emission: 1.75 },
+  { label: "options.q15.average", value: "average", emission: 3.0 },
+  { label: "options.q15.frequent", value: "frequent", emission: 7.5 }
 ];
 
 // Configuración de preguntas

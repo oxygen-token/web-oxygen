@@ -255,6 +255,100 @@
       "credits": "Carbon credits needed:",
       "compensate": "Offset my footprint",
       "seeProjects": "See offset projects"
+    },
+    "selectOption": "Select option...",
+    "options": {
+      "q1": {
+        "0": "0 km",
+        "low": "Less than 5,000 km",
+        "medium": "5,000 to 10,000 km",
+        "high": "10,000 to 20,000 km",
+        "very_high": "More than 20,000 km"
+      },
+      "q2": {
+        "none": "No vehicle",
+        "gasoline": "Gasoline or Diesel",
+        "hybrid": "Hybrid",
+        "electric": "Electric"
+      },
+      "q3": {
+        "never": "Never or rarely",
+        "occasional": "Occasional (1 to 2 times per week)",
+        "regular": "Regular (daily commute)",
+        "intensive": "Intensive (several trips per day)"
+      },
+      "q4": {
+        "never": "Never",
+        "occasional": "Occasional (1 to 2 trips per week)",
+        "regular": "Regular (daily)",
+        "intensive": "Intensive (frequent or long distances)"
+      },
+      "q5": {
+        "0": "0 flights",
+        "low": "1 to 2 short flights",
+        "medium": "3 to 5 short flights",
+        "high": "More than 5 short flights"
+      },
+      "q6": {
+        "0": "0 flights",
+        "one": "1 long flight",
+        "two": "2 long flights",
+        "medium": "3 to 4 long flights",
+        "high": "More than 4 long flights"
+      },
+      "q7": {
+        "carnivore": "Carnivore (high meat)",
+        "omnivore": "Average omnivore",
+        "low_meat": "Low meat",
+        "vegetarian": "Vegetarian",
+        "vegan": "Vegan"
+      },
+      "q8": {
+        "low": "Low (approx. 2,000 kWh)",
+        "medium": "Medium (approx. 5,000 kWh)",
+        "high": "High (approx. 10,000 kWh)",
+        "very_high": "Very high (greater than 15,000 kWh)"
+      },
+      "q9": {
+        "none": "None (electric)",
+        "low": "Low use (cooking/water)",
+        "medium": "Medium (typical use)",
+        "high": "High (cold climate, large house)"
+      },
+      "q10": {
+        "1": "1 person",
+        "2": "2 people",
+        "3": "3 people",
+        "4": "4 people",
+        "5+": "5 or more people"
+      },
+      "q11": {
+        "minimal": "Minimalist",
+        "average": "Average",
+        "frequent": "Frequent consumer",
+        "luxury": "High-end or luxury"
+      },
+      "q12": {
+        "very_low": "Very little (less than 5 kilograms per week)",
+        "average": "Average (1 to 2 bags)",
+        "high": "High (greater than 30 kilograms per week)"
+      },
+      "q13": {
+        "none": "Nothing or very little (0 to 20 percent)",
+        "some": "Some (approximately 30 to 60 percent)",
+        "most": "Almost everything (80 to 100 percent)"
+      },
+      "q14": {
+        "none": "No (conventional grid only)",
+        "partial": "Partial (e.g. green plan)",
+        "total": "Total (100 percent renewable or solar)"
+      },
+      "q15": {
+        "none": "None",
+        "occasional": "Occasional (3 to 4 days)",
+        "average": "Average (1 week per year)",
+        "frequent": "Frequent or extensive"
+      }
     }
   }
 }
