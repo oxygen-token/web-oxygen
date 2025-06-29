@@ -7,7 +7,6 @@ import Footer from "../components/Footer/Footer";
 import { QUESTIONS, calculateTotalEmissions, type EmissionOption } from "../../../utils/emissionsConstants";
 import { FaInstagram } from "react-icons/fa";
 import { FaXTwitter, FaFacebookF } from "react-icons/fa6";
-import html2canvas from "html2canvas";
 
 // Agregar estilos CSS para animaciones optimizadas y centralizadas
 const styles = `
@@ -787,14 +786,6 @@ export default function CalculadoraPage() {
     );
   }
 
-  // Handler para Instagram
-  const handleInstagramShare = async () => {
-    if (resultRef.current) {
-      const canvas = await html2canvas(resultRef.current, { backgroundColor: null });
-      setInstaImage(canvas.toDataURL("image/png"));
-      setShowInstaModal(true);
-    }
-  };
 
   // Generar un ID tipo ticket
   const randomId = Math.floor(1000 + Math.random() * 9000);
@@ -882,13 +873,13 @@ export default function CalculadoraPage() {
                           background: 'rgba(0, 202, 166, 0)'
                         }}
                         onMouseEnter={(e) => {
-                          e.currentTarget.style.backdropFilter = 'blur(8px)';
+                          e.currentTarget.style.setProperty('backdrop-filter', 'blur(8px)');
                           e.currentTarget.style.background = 'rgba(0, 202, 166, 0.1)';
                           e.currentTarget.style.color = '#006A6A';
                           e.currentTarget.style.transform = 'scale(1.05)';
                         }}
                         onMouseLeave={(e) => {
-                          e.currentTarget.style.backdropFilter = 'blur(0px)';
+                          e.currentTarget.style.setProperty('backdrop-filter', 'blur(0px)');
                           e.currentTarget.style.background = 'rgba(0, 202, 166, 0)';
                           e.currentTarget.style.color = '#00CAA6';
                           e.currentTarget.style.transform = 'scale(1)';
@@ -1517,13 +1508,13 @@ export default function CalculadoraPage() {
                       background: 'rgba(255, 255, 255, 0)'
                     }}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.backdropFilter = 'blur(8px)';
+                      e.currentTarget.style.setProperty('backdrop-filter', 'blur(8px)');
                       e.currentTarget.style.background = 'rgba(255, 255, 255, 0.15)';
                       e.currentTarget.style.color = '#ffffff';
                       e.currentTarget.style.transform = 'scale(1.05)';
                     }}
                     onMouseLeave={(e) => {
-                      e.currentTarget.style.backdropFilter = 'blur(0px)';
+                      e.currentTarget.style.setProperty('backdrop-filter', 'blur(0px)');
                       e.currentTarget.style.background = 'rgba(255, 255, 255, 0)';
                       e.currentTarget.style.color = 'rgba(255, 255, 255, 0.8)';
                       e.currentTarget.style.transform = 'scale(1)';
