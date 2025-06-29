@@ -254,10 +254,14 @@ export const QUESTIONS: Question[] = [
 export function calculateTotalEmissions(answers: Record<string, string>): number {
   let total = 0;
   
-  // Calcular Q1 ajustado por Q2
+  // Q1 ajustado por Q2
   const q1Emission = Q1_VEHICLE_DISTANCE.find(opt => opt.value === answers.q1)?.emission || 0;
-  const q2Multiplier = Q2_VEHICLE_TYPE.find(opt => opt.value === answers.q2)?.multiplier || 1;
-  total += q1Emission * q2Multiplier;
+  const q2Multiplier = Q2_VEHICLE_TYPE.find(opt => opt.value === answers.q2)?.multiplier;
+  if (answers.q1 && answers.q2) {
+    total += q1Emission * (q2Multiplier ?? 1);
+  } else if (answers.q1) {
+    total += q1Emission;
+  }
   
   // Q3, Q4 directas
   total += Q3_BUS_USAGE.find(opt => opt.value === answers.q3)?.emission || 0;
@@ -270,21 +274,35 @@ export function calculateTotalEmissions(answers: Record<string, string>): number
   
   // Q8 ajustado por Q10 y Q14
   const q8Emission = Q8_ELECTRICITY.find(opt => opt.value === answers.q8)?.emission || 0;
-  const q10Multiplier = Q10_HOUSEHOLD_SIZE.find(opt => opt.value === answers.q10)?.multiplier || 1;
-  const q14Multiplier = Q14_RENEWABLE.find(opt => opt.value === answers.q14)?.multiplier || 1;
-  total += (q8Emission * q10Multiplier * q14Multiplier);
+  const q10Multiplier = Q10_HOUSEHOLD_SIZE.find(opt => opt.value === answers.q10)?.multiplier;
+  const q14Multiplier = Q14_RENEWABLE.find(opt => opt.value === answers.q14)?.multiplier;
+  if (answers.q8 && answers.q10 && answers.q14) {
+    total += q8Emission * (q10Multiplier ?? 1) * (q14Multiplier ?? 1);
+  } else if (answers.q8 && answers.q10) {
+    total += q8Emission * (q10Multiplier ?? 1);
+  } else if (answers.q8) {
+    total += q8Emission;
+  }
   
   // Q9 ajustado por Q10
   const q9Emission = Q9_GAS_USAGE.find(opt => opt.value === answers.q9)?.emission || 0;
-  total += (q9Emission * q10Multiplier);
+  if (answers.q9 && answers.q10) {
+    total += q9Emission * (q10Multiplier ?? 1);
+  } else if (answers.q9) {
+    total += q9Emission;
+  }
   
   // Q11 directa
   total += Q11_CONSUMPTION.find(opt => opt.value === answers.q11)?.emission || 0;
   
   // Q12 ajustado por Q13
   const q12Emission = Q12_WASTE.find(opt => opt.value === answers.q12)?.emission || 0;
-  const q13Multiplier = Q13_RECYCLING.find(opt => opt.value === answers.q13)?.multiplier || 1;
-  total += (q12Emission * q13Multiplier);
+  const q13Multiplier = Q13_RECYCLING.find(opt => opt.value === answers.q13)?.multiplier;
+  if (answers.q12 && answers.q13) {
+    total += q12Emission * (q13Multiplier ?? 1);
+  } else if (answers.q12) {
+    total += q12Emission;
+  }
   
   // Q15 directa
   total += Q15_CRUISES.find(opt => opt.value === answers.q15)?.emission || 0;
