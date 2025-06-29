@@ -1,12 +1,13 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useTranslations } from "next-intl";
 import Navbar from "../components/Navbar/Navbar";
 import Footer from "../components/Footer/Footer";
 import { QUESTIONS, calculateTotalEmissions, type EmissionOption } from "../../../utils/emissionsConstants";
 import { FaInstagram } from "react-icons/fa";
 import { FaXTwitter, FaFacebookF } from "react-icons/fa6";
+import html2canvas from "html2canvas";
 
 // Agregar estilos CSS para animaciones optimizadas y centralizadas
 const styles = `
@@ -99,6 +100,17 @@ const styles = `
     to { opacity: 0; }
   }
   
+  @keyframes resultModalFadeIn {
+    from {
+      opacity: 0;
+      transform: scale(0.9) translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+  
   .animate-fadeInCenter {
     animation: fadeInCenter 0.4s ease-out forwards;
   }
@@ -137,6 +149,10 @@ const styles = `
   
   .animate-backdropFadeOut {
     animation: backdropFadeOut 0.5s ease-out forwards;
+  }
+  
+  .animate-resultModalFadeIn {
+    animation: resultModalFadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   }
   
   .prelanding-bg {
@@ -336,6 +352,53 @@ export default function CalculadoraPage() {
   // Estados para animación del modal y transiciones
   const [modalAnimation, setModalAnimation] = useState<'in' | 'out'>('in');
   const [isTransitioning, setIsTransitioning] = useState(false);
+
+  // Estados para el modal de Instagram
+  const [showInstaModal, setShowInstaModal] = useState(false);
+  const [instaImage, setInstaImage] = useState<string | null>(null);
+  const resultRef = useRef<HTMLDivElement>(null);
+
+  // Fecha actual para mostrar en el resultado
+  const today = new Date();
+  const pad = (n: number) => n.toString().padStart(2, '0');
+  const fecha = `${pad(today.getDate())}-${pad(today.getMonth() + 1)}-${today.getFullYear().toString().slice(-2)}`;
+
+  // Estados para el contador animado
+  const [animatedEmissions, setAnimatedEmissions] = useState(0);
+
+  // Estados para el modal de fuentes
+  const [showSourcesModal, setShowSourcesModal] = useState(false);
+
+  // Efecto para animar el contador cuando se muestran los resultados
+  useEffect(() => {
+    if (showResults) {
+      setAnimatedEmissions(0);
+      
+      // Valor final de prueba
+      const finalValue = 15.6;
+      const duration = 2000; // 2 segundos
+      const steps = 80; // 80 pasos para suavidad
+      const increment = finalValue / steps;
+      const stepDuration = duration / steps;
+      
+      let currentStep = 0;
+      
+      const interval = setInterval(() => {
+        currentStep++;
+        const currentValue = Math.min(increment * currentStep, finalValue);
+        setAnimatedEmissions(currentValue);
+        
+        if (currentValue >= finalValue) {
+          clearInterval(interval);
+          setAnimatedEmissions(finalValue);
+        }
+      }, stepDuration);
+      
+      return () => clearInterval(interval);
+    } else {
+      setAnimatedEmissions(0);
+    }
+  }, [showResults]);
 
   // Cuando se muestra el modal, animación 'in'. Cuando se va a ocultar, animación 'out' y luego desmonta.
   useEffect(() => {
@@ -722,14 +785,26 @@ export default function CalculadoraPage() {
     );
   }
 
+  // Handler para Instagram
+  const handleInstagramShare = async () => {
+    if (resultRef.current) {
+      const canvas = await html2canvas(resultRef.current, { backgroundColor: null });
+      setInstaImage(canvas.toDataURL("image/png"));
+      setShowInstaModal(true);
+    }
+  };
+
+  // Generar un ID tipo ticket
+  const randomId = Math.floor(1000 + Math.random() * 9000);
+  const ticketId = `OXY-${today.getFullYear()}${pad(today.getMonth() + 1)}${pad(today.getDate())}-${randomId}`;
+
   if (showResults) {
     return (
-      <div className="min-h-screen">
+      <div className="min-h-screen overflow-hidden">
         {devJumpButton}
         <Navbar />
-        
-        <div className="relative min-h-screen pt-16 lg:pt-[80px]">
-          {/* Complex Gradient Background */}
+        <div className="relative min-h-screen pt-8 lg:pt-12 pb-4 flex items-center justify-center">
+          {/* Fondo y gradientes */}
           <div className="absolute inset-0 bg-teal-lighter" />
           <div 
             className="absolute inset-0"
@@ -737,58 +812,234 @@ export default function CalculadoraPage() {
               background: "linear-gradient(135deg, #006A6A 0%, rgba(0, 106, 106, 0.8) 40%, transparent 70%)"
             }}
           />
-          
-          <div className="relative z-10 container mx-auto px-5 lg:px-20 py-20">
-            <div className="flex items-center justify-center">
-              <div className="w-full max-w-xl bg-white rounded-[2rem] shadow-2xl border border-teal-medium/20 p-8">
+          <div className="relative z-10 container mx-auto px-2 lg:px-8 py-2 flex items-center justify-center min-h-[75vh]">
+            <div className="flex items-center justify-center w-full">
+              <div className="w-full max-w-xl bg-white rounded-[2rem] shadow-2xl border border-teal-medium/20 p-5 sm:p-6 animate-resultModalFadeIn">
                 <div className="text-center">
-                  <h1 className="text-4xl font-bold text-teal-dark mb-8">
+                  {/* ID tipo ticket */}
+                  <div className="mb-3">
+                    <span className="bg-[#e6faf6] border border-[#00CAA6] text-[#00CAA6] font-mono text-xs px-4 py-2 rounded-full shadow-sm tracking-widest font-bold">
+                      ID: {ticketId}
+                    </span>
+                  </div>
+                  
+                  {/* Título principal */}
+                  <h1 className="text-3xl sm:text-4xl font-bold text-teal-dark mb-4">
                     {t("results.title")}
                   </h1>
                   
-                  <div className="bg-teal-lighter/30 rounded-xl p-8 mb-8">
-                    <h2 className="text-2xl font-semibold text-teal-dark mb-4">
+                  {/* Bloque de huella de carbono */}
+                  <div className="bg-teal-lighter/30 rounded-xl p-5 mb-4">
+                    <h2 className="text-xl sm:text-2xl font-semibold text-teal-dark mb-2">
                       {t("results.footprint")}
                     </h2>
-                    <div className="text-6xl font-bold text-teal-medium mb-2">
-                      {currentEmissions.toFixed(1)}
+                    <div className="text-4xl sm:text-5xl font-bold text-teal-medium mb-1">
+                      {animatedEmissions.toFixed(1)}
                     </div>
-                    <div className="text-lg text-teal-dark">
+                    <div className="text-base sm:text-lg text-teal-dark">
                       toneladas CO₂e/año
                     </div>
                   </div>
                   
-                  <div className="bg-green-50 rounded-xl p-6 mb-8">
-                    <h3 className="text-xl font-semibold text-green-800 mb-2">
+                  {/* Bloque de créditos */}
+                  <div className="bg-green-50 rounded-xl p-4 mb-4">
+                    <h3 className="text-lg sm:text-xl font-semibold text-green-800 mb-1">
                       {t("results.credits")}
                     </h3>
-                    <div className="text-3xl font-bold text-green-700">
-                      {Math.ceil(currentEmissions)} créditos de carbono
+                    <div className="text-2xl sm:text-3xl font-bold text-green-700">
+                      {Math.ceil(animatedEmissions)} créditos de carbono
                     </div>
                   </div>
                   
-                  <div className="space-y-4">
-                    {/* Mensaje para compartir */}
-                    <div className="text-center text-teal-dark font-medium mb-1">Compartir en las redes...</div>
-                    {/* Iconos provisorios de redes sociales */}
-                    <div className="flex justify-center gap-4 mb-2">
-                      {/* Instagram */}
-                      <FaInstagram size={36} color="#00CAA6" style={{cursor: 'pointer'}} />
-                      {/* X (Twitter) */}
-                      <FaXTwitter size={36} color="#00CAA6" style={{cursor: 'pointer'}} />
-                      {/* Facebook */}
-                      <FaFacebookF size={36} color="#00CAA6" style={{cursor: 'pointer'}} />
+                  {/* Sección de compartir */}
+                  <div className="mb-4">
+                    <div className="text-teal-dark font-semibold mb-2 text-base sm:text-lg">
+                      ¡Sacale captura y compartí en las redes!<br/>
+                      <span className="text-teal-medium font-bold text-base">Recordá seguirnos</span>
                     </div>
-                    {/* Botón para ver proyectos */}
-                    <button className="w-full border-2 border-teal-medium text-teal-medium hover:bg-teal-medium hover:text-white py-4 px-8 rounded-xl font-semibold transition-colors">
-                      Ver proyectos de compensación
-                    </button>
+                    
+                    {/* Íconos de redes sociales */}
+                    <div className="flex justify-center gap-6 mb-3">
+                      <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
+                        <FaInstagram size={32} color="#00CAA6" style={{cursor: 'pointer'}} />
+                      </a>
+                      <a href="https://x.com" target="_blank" rel="noopener noreferrer">
+                        <FaXTwitter size={32} color="#00CAA6" style={{cursor: 'pointer'}} />
+                      </a>
+                      <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
+                        <FaFacebookF size={32} color="#00CAA6" style={{cursor: 'pointer'}} />
+                      </a>
+                    </div>
+                  </div>
+                  
+                  {/* Botón para ver proyectos */}
+                  <button className="w-full border-2 border-teal-medium text-teal-medium hover:bg-teal-medium hover:text-white py-2 px-6 rounded-xl font-semibold transition-colors mb-4">
+                    Ver proyectos de compensación
+                  </button>
+                  
+                  {/* Footer con fecha y web */}
+                  <div className="border-t border-gray-200 pt-2">
+                    <div className="flex justify-between items-center text-xs text-gray-400">
+                      <button 
+                        onClick={() => setShowSourcesModal(true)}
+                        className="text-teal-medium px-2 py-1 rounded transition-all duration-300 cursor-pointer font-medium"
+                        style={{
+                          backdropFilter: 'blur(0px)',
+                          background: 'rgba(0, 202, 166, 0)'
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.backdropFilter = 'blur(8px)';
+                          e.currentTarget.style.background = 'rgba(0, 202, 166, 0.1)';
+                          e.currentTarget.style.color = '#006A6A';
+                          e.currentTarget.style.transform = 'scale(1.05)';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.backdropFilter = 'blur(0px)';
+                          e.currentTarget.style.background = 'rgba(0, 202, 166, 0)';
+                          e.currentTarget.style.color = '#00CAA6';
+                          e.currentTarget.style.transform = 'scale(1)';
+                        }}
+                      >
+                        Fuentes
+                      </button>
+                      <span className="font-bold text-teal-medium">www.oxygentoken.org</span>
+                      <span>{fecha}</span>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
+        
+        {/* Modal de fuentes */}
+        {showSourcesModal && (
+          <div className="fixed inset-0 z-[300] flex items-center justify-center bg-black/60 p-4">
+            <div className="bg-white rounded-2xl max-w-5xl w-full h-[85vh] shadow-2xl animate-modalSlideDown flex flex-col">
+              <div className="bg-white border-b border-gray-200 p-6 rounded-t-2xl flex-shrink-0">
+                <div className="flex justify-between items-center">
+                  <h2 className="text-2xl font-bold text-teal-dark">Fuentes del proyecto</h2>
+                  <button 
+                    onClick={() => setShowSourcesModal(false)}
+                    className="text-gray-400 hover:text-teal-accent text-2xl font-bold"
+                  >
+                    ×
+                  </button>
+                </div>
+              </div>
+              
+              <div className="flex-1 overflow-y-auto p-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Transporte */}
+                  <div className="space-y-3">
+                    <h3 className="text-lg font-semibold text-teal-dark">Transporte</h3>
+                    <div className="text-sm text-gray-700 space-y-2">
+                      <p><strong>Vehículos personales:</strong></p>
+                      <ul className="ml-4 space-y-1">
+                        <li>• <a href="https://www.epa.gov/energy/greenhouse-gas-equivalencies-calculator-calculations-and-references" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">EPA Greenhouse Gas Equivalencies Calculator</a></li>
+                        <li>• <a href="https://evse.com.au/blog/how-much-carbon-dioxide-does-an-internal-combustion-hybrid-and-electric-car-emit/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">EVSE Australia CO2 emissions data</a></li>
+                        <li>• <a href="https://ourworldindata.org/travel-carbon-footprint" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Our World in Data Travel carbon footprint</a></li>
+                      </ul>
+                      <p><strong>Transporte público:</strong></p>
+                      <ul className="ml-4 space-y-1">
+                        <li>• <a href="https://www.carbonindependent.org/20.html" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">DEFRA/Carbon Independent</a> (~0.089 kg CO₂/pkm)</li>
+                        <li>• National Rail data (~35 g CO₂/pkm)</li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  {/* Vuelos */}
+                  <div className="space-y-3">
+                    <h3 className="text-lg font-semibold text-teal-dark">Vuelos</h3>
+                    <div className="text-sm text-gray-700">
+                      <ul className="space-y-1">
+                        <li>• ICAO/BEIS factores para vuelos</li>
+                        <li>• <a href="https://flygrn.com/blog/carbon-emission-factors-used-by-flygrn" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">FlyGRN Flight emission factors</a></li>
+                        <li>• <a href="https://ourworldindata.org/travel-carbon-footprint" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Our World in Data</a> radiative forcing (~1.9× factor)</li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  {/* Dieta */}
+                  <div className="space-y-3">
+                    <h3 className="text-lg font-semibold text-teal-dark">Dieta</h3>
+                    <div className="text-sm text-gray-700">
+                      <ul className="space-y-1">
+                        <li>• Scarborough et al. (2014) Climatic Change</li>
+                        <li>• <a href="https://www.ethicalconsumer.org/food-drink/climate-impact-meat-vegetarian-vegan-diets" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Ethical Consumer climate impact studies</a></li>
+                        <li>• <a href="https://css.umich.edu/publications/factsheets/sustainability-indicators/carbon-footprint-factsheet" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">University of Michigan Carbon Footprint Factsheet</a></li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  {/* Energía */}
+                  <div className="space-y-3">
+                    <h3 className="text-lg font-semibold text-teal-dark">Energía en el hogar</h3>
+                    <div className="text-sm text-gray-700">
+                      <ul className="space-y-1">
+                        <li>• <a href="https://www.iea.org/reports/global-energy-co2-status-report-2019/emissions" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">IEA Global Energy & CO₂ Status Report (2019)</a></li>
+                        <li>• EPA factores: electricidad (~0.475 kg CO₂/kWh), gas natural (~1.9 kg CO₂/m³)</li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  {/* Bienes y servicios */}
+                  <div className="space-y-3">
+                    <h3 className="text-lg font-semibold text-teal-dark">Bienes y servicios</h3>
+                    <div className="text-sm text-gray-700">
+                      <ul className="space-y-1">
+                        <li>• <a href="https://www.greenfi.com/resources/carbon-footprint-calculation-methodology" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">GreenFi Carbon Footprint Methodology</a></li>
+                        <li>• <a href="https://news.climate.columbia.edu/2020/12/16/buying-stuff-drives-climate-change/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Columbia Climate How Buying Stuff Drives Climate Change</a></li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  {/* Basura */}
+                  <div className="space-y-3">
+                    <h3 className="text-lg font-semibold text-teal-dark">Basura y reciclaje</h3>
+                    <div className="text-sm text-gray-700">
+                      <ul className="space-y-1">
+                        <li>• <a href="https://www.epa.gov/lmop/frequent-questions-about-landfill-gas" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">EPA Landfill methane data</a></li>
+                        <li>• <a href="https://www.changeit.app/blog/recycle-matters/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Changeit Recycling CO₂ savings</a></li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  {/* Energías renovables */}
+                  <div className="space-y-3">
+                    <h3 className="text-lg font-semibold text-teal-dark">Energías renovables</h3>
+                    <div className="text-sm text-gray-700">
+                      <ul className="space-y-1">
+                        <li>• <a href="https://www.carbonindependent.org/15.html" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Carbon Independent Electricity emissions by source</a></li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  {/* Cruceros */}
+                  <div className="space-y-3">
+                    <h3 className="text-lg font-semibold text-teal-dark">Cruceros</h3>
+                    <div className="text-sm text-gray-700">
+                      <ul className="space-y-1">
+                        <li>• <a href="https://foe.org/news/cruise-passengers-carbon/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Friends of the Earth Cruise CO₂ emissions</a></li>
+                        <li>• <a href="https://theicct.org/marine-cruising-flying-may22/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">ICCT/BBC Cruise vs. aviation emissions</a></li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  {/* Créditos */}
+                  <div className="space-y-3">
+                    <h3 className="text-lg font-semibold text-teal-dark">Créditos de carbono</h3>
+                    <div className="text-sm text-gray-700">
+                      <ul className="space-y-1">
+                        <li>• <a href="https://www.causeartist.com/what-is-a-carbon-credit/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Causeartist What is a Carbon Credit?</a></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     );
   }
@@ -849,11 +1100,11 @@ export default function CalculadoraPage() {
                     </div>
                     <div className="text-xl lg:text-2xl xl:text-3xl font-bold text-teal-medium">
                                           <span className="transition-all duration-300 transform hover:scale-105 inline-block"
-                          key={currentEmissions.toFixed(1)}
+                          key={animatedEmissions.toFixed(1)}
                           style={{
                             animation: 'fadeInScale 0.4s ease-out'
                           }}>
-                        {currentEmissions.toFixed(1)}
+                        {animatedEmissions.toFixed(1)}
                       </span>
                       <span className="text-sm lg:text-base xl:text-lg ml-2">tCO₂e</span>
                     </div>
@@ -915,11 +1166,11 @@ export default function CalculadoraPage() {
                     <div className="inline-flex items-center">
                       <div className="text-2xl font-bold text-white">
                                               <span className="transition-all duration-300 transform hover:scale-110 inline-block"
-                            key={currentEmissions.toFixed(1)}
+                            key={animatedEmissions.toFixed(1)}
                             style={{
                               animation: 'fadeInScale 0.4s ease-out'
                             }}>
-                          {currentEmissions.toFixed(1)}
+                          {animatedEmissions.toFixed(1)}
                         </span>
                         <span className="text-xl ml-1 text-white/80">tCO₂e</span>
                       </div>
@@ -1226,6 +1477,32 @@ export default function CalculadoraPage() {
                   {[...Array(12)].map((_, i) => (
                     <div key={i} className={`w-2 h-2 rounded-full transition-all duration-300 ${i === 0 ? 'bg-white' : 'bg-white/40'}`} />
                   ))}
+                </div>
+                
+                {/* Botón Fuentes */}
+                <div className="flex justify-center mt-4">
+                  <button 
+                    onClick={() => setShowSourcesModal(true)}
+                    className="text-white/80 px-3 py-2 rounded transition-all duration-300 cursor-pointer font-medium text-sm"
+                    style={{
+                      backdropFilter: 'blur(0px)',
+                      background: 'rgba(255, 255, 255, 0)'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backdropFilter = 'blur(8px)';
+                      e.currentTarget.style.background = 'rgba(255, 255, 255, 0.15)';
+                      e.currentTarget.style.color = '#ffffff';
+                      e.currentTarget.style.transform = 'scale(1.05)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backdropFilter = 'blur(0px)';
+                      e.currentTarget.style.background = 'rgba(255, 255, 255, 0)';
+                      e.currentTarget.style.color = 'rgba(255, 255, 255, 0.8)';
+                      e.currentTarget.style.transform = 'scale(1)';
+                    }}
+                  >
+                    Fuentes
+                  </button>
                 </div>
               </div>
             </div>
