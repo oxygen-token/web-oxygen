@@ -5,6 +5,8 @@ import { useTranslations } from "next-intl";
 import Navbar from "../components/Navbar/Navbar";
 import Footer from "../components/Footer/Footer";
 import { QUESTIONS, calculateTotalEmissions, type EmissionOption } from "../../../utils/emissionsConstants";
+import { FaInstagram } from "react-icons/fa";
+import { FaXTwitter, FaFacebookF } from "react-icons/fa6";
 
 // Agregar estilos CSS para animaciones optimizadas y centralizadas
 const styles = `
@@ -696,6 +698,16 @@ export default function CalculadoraPage() {
     );
   };
 
+  // Botón de salto a resultados (solo visible en desarrollo)
+  const devJumpButton = (
+    <button
+      style={{ position: 'fixed', top: 10, left: 10, zIndex: 9999, background: '#00CAA6', color: 'white', padding: '8px 16px', borderRadius: 8, fontWeight: 'bold', boxShadow: '0 2px 8px #0002' }}
+      onClick={() => setShowResults(true)}
+    >
+      Ir a resultados (DEV)
+    </button>
+  );
+
   // Loading state mientras se precargan las imágenes
   if (isLoadingImages || showLoadingBanner) {
     console.log('Mostrando banner de carga...', { isLoadingImages, showLoadingBanner, imagesLoaded: imagesLoaded.size });
@@ -713,6 +725,7 @@ export default function CalculadoraPage() {
   if (showResults) {
     return (
       <div className="min-h-screen">
+        {devJumpButton}
         <Navbar />
         
         <div className="relative min-h-screen pt-16 lg:pt-[80px]">
@@ -727,7 +740,7 @@ export default function CalculadoraPage() {
           
           <div className="relative z-10 container mx-auto px-5 lg:px-20 py-20">
             <div className="flex items-center justify-center">
-              <div className="w-full max-w-4xl bg-white rounded-[2rem] shadow-2xl border border-teal-medium/20 p-12">
+              <div className="w-full max-w-xl bg-white rounded-[2rem] shadow-2xl border border-teal-medium/20 p-8">
                 <div className="text-center">
                   <h1 className="text-4xl font-bold text-teal-dark mb-8">
                     {t("results.title")}
@@ -755,11 +768,20 @@ export default function CalculadoraPage() {
                   </div>
                   
                   <div className="space-y-4">
-                    <button className="w-full bg-teal-medium hover:bg-teal-dark text-white py-4 px-8 rounded-xl font-semibold transition-colors">
-                      {t("results.compensate")}
-                    </button>
+                    {/* Mensaje para compartir */}
+                    <div className="text-center text-teal-dark font-medium mb-1">Compartir en las redes...</div>
+                    {/* Iconos provisorios de redes sociales */}
+                    <div className="flex justify-center gap-4 mb-2">
+                      {/* Instagram */}
+                      <FaInstagram size={36} color="#00CAA6" style={{cursor: 'pointer'}} />
+                      {/* X (Twitter) */}
+                      <FaXTwitter size={36} color="#00CAA6" style={{cursor: 'pointer'}} />
+                      {/* Facebook */}
+                      <FaFacebookF size={36} color="#00CAA6" style={{cursor: 'pointer'}} />
+                    </div>
+                    {/* Botón para ver proyectos */}
                     <button className="w-full border-2 border-teal-medium text-teal-medium hover:bg-teal-medium hover:text-white py-4 px-8 rounded-xl font-semibold transition-colors">
-                      {t("results.seeProjects")}
+                      Ver proyectos de compensación
                     </button>
                   </div>
                 </div>
@@ -778,6 +800,7 @@ export default function CalculadoraPage() {
 
     return (
       <div className="min-h-screen">
+        {devJumpButton}
         <Navbar />
         <div className="pt-16 pb-4 px-4 sm:px-5 lg:px-8 min-h-screen flex items-center justify-center relative">
           {/* Fondo verde original restaurado */}
@@ -1112,6 +1135,7 @@ export default function CalculadoraPage() {
   if (showCalculator && !showQuestions && !showResults) {
     return (
       <div className="min-h-screen">
+        {devJumpButton}
         <Navbar />
         <div className="pt-16 pb-4 px-4 sm:px-5 lg:px-8 min-h-screen flex items-center justify-center relative">
           {/* Fondo verde original restaurado */}
