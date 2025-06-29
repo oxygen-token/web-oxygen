@@ -256,6 +256,60 @@
       "compensate": "Compensar mi huella",
       "seeProjects": "Ver proyectos de compensación"
     },
+    "sources": {
+      "button": "Fuentes",
+      "modalTitle": "Fuentes del proyecto",
+      "transport": {
+        "title": "Transporte",
+        "personalVehicles": "Vehículos personales:",
+        "personal1": "EPA Greenhouse Gas Equivalencies Calculator",
+        "personal2": "EVSE Australia CO2 emissions data",
+        "personal3": "Our World in Data Travel carbon footprint",
+        "publicTransport": "Transporte público:",
+        "public1": "DEFRA/Carbon Independent (~0.089 kg CO₂/pkm)",
+        "public2": "National Rail data (~35 g CO₂/pkm)"
+      },
+      "flights": {
+        "title": "Vuelos",
+        "item1": "ICAO/BEIS factores para vuelos",
+        "item2": "FlyGRN Flight emission factors",
+        "item3": "Our World in Data radiative forcing (~1.9× factor)"
+      },
+      "diet": {
+        "title": "Dieta",
+        "item1": "Scarborough et al. (2014) Climatic Change",
+        "item2": "Ethical Consumer climate impact studies",
+        "item3": "University of Michigan Carbon Footprint Factsheet"
+      },
+      "energy": {
+        "title": "Energía en el hogar",
+        "item1": "IEA Global Energy & CO₂ Status Report (2019)",
+        "item2": "EPA factores: electricidad (~0.475 kg CO₂/kWh), gas natural (~1.9 kg CO₂/m³)"
+      },
+      "goods": {
+        "title": "Bienes y servicios",
+        "item1": "GreenFi Carbon Footprint Methodology",
+        "item2": "Columbia Climate How Buying Stuff Drives Climate Change"
+      },
+      "waste": {
+        "title": "Basura y reciclaje",
+        "item1": "EPA Landfill methane data",
+        "item2": "Changeit Recycling CO₂ savings"
+      },
+      "renewable": {
+        "title": "Energías renovables",
+        "item1": "Carbon Independent Electricity emissions by source"
+      },
+      "cruises": {
+        "title": "Cruceros",
+        "item1": "Friends of the Earth Cruise CO₂ emissions",
+        "item2": "ICCT/BBC Cruise vs. aviation emissions"
+      },
+      "credits": {
+        "title": "Créditos de carbono",
+        "item1": "Causeartist What is a Carbon Credit?"
+      }
+    },
     "selectOption": "Seleccionar opción...",
     "options": {
       "q1": {

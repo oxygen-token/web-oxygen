@@ -256,6 +256,60 @@
       "compensate": "Offset my footprint",
       "seeProjects": "See offset projects"
     },
+    "sources": {
+      "button": "Sources",
+      "modalTitle": "Project Sources",
+      "transport": {
+        "title": "Transport",
+        "personalVehicles": "Personal vehicles:",
+        "personal1": "EPA Greenhouse Gas Equivalencies Calculator",
+        "personal2": "EVSE Australia CO2 emissions data",
+        "personal3": "Our World in Data Travel carbon footprint",
+        "publicTransport": "Public transport:",
+        "public1": "DEFRA/Carbon Independent (~0.089 kg CO₂/pkm)",
+        "public2": "National Rail data (~35 g CO₂/pkm)"
+      },
+      "flights": {
+        "title": "Flights",
+        "item1": "ICAO/BEIS flight factors",
+        "item2": "FlyGRN Flight emission factors",
+        "item3": "Our World in Data radiative forcing (~1.9× factor)"
+      },
+      "diet": {
+        "title": "Diet",
+        "item1": "Scarborough et al. (2014) Climatic Change",
+        "item2": "Ethical Consumer climate impact studies",
+        "item3": "University of Michigan Carbon Footprint Factsheet"
+      },
+      "energy": {
+        "title": "Home Energy",
+        "item1": "IEA Global Energy & CO₂ Status Report (2019)",
+        "item2": "EPA factors: electricity (~0.475 kg CO₂/kWh), natural gas (~1.9 kg CO₂/m³)"
+      },
+      "goods": {
+        "title": "Goods and Services",
+        "item1": "GreenFi Carbon Footprint Methodology",
+        "item2": "Columbia Climate How Buying Stuff Drives Climate Change"
+      },
+      "waste": {
+        "title": "Waste and Recycling",
+        "item1": "EPA Landfill methane data",
+        "item2": "Changeit Recycling CO₂ savings"
+      },
+      "renewable": {
+        "title": "Renewable Energy",
+        "item1": "Carbon Independent Electricity emissions by source"
+      },
+      "cruises": {
+        "title": "Cruises",
+        "item1": "Friends of the Earth Cruise CO₂ emissions",
+        "item2": "ICCT/BBC Cruise vs. aviation emissions"
+      },
+      "credits": {
+        "title": "Carbon Credits",
+        "item1": "Causeartist What is a Carbon Credit?"
+      }
+    },
     "selectOption": "Select option...",
     "options": {
       "q1": {

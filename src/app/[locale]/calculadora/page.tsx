@@ -366,16 +366,26 @@ export default function CalculadoraPage() {
   // Estados para el contador animado
   const [animatedEmissions, setAnimatedEmissions] = useState(0);
 
-  // Estados para el modal de fuentes
+    // Estados para el modal de fuentes
   const [showSourcesModal, setShowSourcesModal] = useState(false);
+  const [sourcesModalClosing, setSourcesModalClosing] = useState(false);
+
+  // Función para cerrar el modal con animación
+  const closeSourcesModal = () => {
+    setSourcesModalClosing(true);
+    setTimeout(() => {
+      setShowSourcesModal(false);
+      setSourcesModalClosing(false);
+    }, 300);
+  };  
 
   // Efecto para animar el contador cuando se muestran los resultados
   useEffect(() => {
     if (showResults) {
       setAnimatedEmissions(0);
       
-      // Valor final de prueba
-      const finalValue = 15.6;
+      // Usar el valor real calculado de emisiones
+      const finalValue = currentEmissions;
       const duration = 2000; // 2 segundos
       const steps = 80; // 80 pasos para suavidad
       const increment = finalValue / steps;
@@ -398,7 +408,7 @@ export default function CalculadoraPage() {
     } else {
       setAnimatedEmissions(0);
     }
-  }, [showResults]);
+  }, [showResults, currentEmissions]);
 
   // Cuando se muestra el modal, animación 'in'. Cuando se va a ocultar, animación 'out' y luego desmonta.
   useEffect(() => {
@@ -761,15 +771,7 @@ export default function CalculadoraPage() {
     );
   };
 
-  // Botón de salto a resultados (solo visible en desarrollo)
-  const devJumpButton = (
-    <button
-      style={{ position: 'fixed', top: 10, left: 10, zIndex: 9999, background: '#00CAA6', color: 'white', padding: '8px 16px', borderRadius: 8, fontWeight: 'bold', boxShadow: '0 2px 8px #0002' }}
-      onClick={() => setShowResults(true)}
-    >
-      Ir a resultados (DEV)
-    </button>
-  );
+
 
   // Loading state mientras se precargan las imágenes
   if (isLoadingImages || showLoadingBanner) {
@@ -801,7 +803,6 @@ export default function CalculadoraPage() {
   if (showResults) {
     return (
       <div className="min-h-screen overflow-hidden">
-        {devJumpButton}
         <Navbar />
         <div className="relative min-h-screen pt-8 lg:pt-12 pb-4 flex items-center justify-center">
           {/* Fondo y gradientes */}
@@ -816,13 +817,6 @@ export default function CalculadoraPage() {
             <div className="flex items-center justify-center w-full">
               <div className="w-full max-w-xl bg-white rounded-[2rem] shadow-2xl border border-teal-medium/20 p-5 sm:p-6 animate-resultModalFadeIn">
                 <div className="text-center">
-                  {/* ID tipo ticket */}
-                  <div className="mb-3">
-                    <span className="bg-[#e6faf6] border border-[#00CAA6] text-[#00CAA6] font-mono text-xs px-4 py-2 rounded-full shadow-sm tracking-widest font-bold">
-                      ID: {ticketId}
-                    </span>
-                  </div>
-                  
                   {/* Título principal */}
                   <h1 className="text-3xl sm:text-4xl font-bold text-teal-dark mb-4">
                     {t("results.title")}
@@ -875,7 +869,7 @@ export default function CalculadoraPage() {
                   {/* Botón para ver proyectos */}
                   <button className="w-full border-2 border-teal-medium text-teal-medium hover:bg-teal-medium hover:text-white py-2 px-6 rounded-xl font-semibold transition-colors mb-4">
                     Ver proyectos de compensación
-                  </button>
+                    </button>
                   
                   {/* Footer con fecha y web */}
                   <div className="border-t border-gray-200 pt-2">
@@ -900,138 +894,185 @@ export default function CalculadoraPage() {
                           e.currentTarget.style.transform = 'scale(1)';
                         }}
                       >
-                        Fuentes
-                      </button>
+                        {t("sources.button")}
+                    </button>
                       <span className="font-bold text-teal-medium">www.oxygentoken.org</span>
                       <span>{fecha}</span>
-                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
+        </div>
         
         {/* Modal de fuentes */}
         {showSourcesModal && (
-          <div className="fixed inset-0 z-[300] flex items-center justify-center bg-black/60 p-4">
-            <div className="bg-white rounded-2xl max-w-5xl w-full h-[85vh] shadow-2xl animate-modalSlideDown flex flex-col">
-              <div className="bg-white border-b border-gray-200 p-6 rounded-t-2xl flex-shrink-0">
+          <div 
+            className="fixed inset-0 z-[300] flex items-center justify-center p-4"
+            style={{
+              backgroundColor: sourcesModalClosing ? 'rgba(0, 0, 0, 0)' : 'rgba(0, 0, 0, 0.6)',
+              transition: 'background-color 0.3s ease-out'
+            }}
+            onClick={closeSourcesModal}
+          >
+            <div 
+              className="bg-white rounded-2xl max-w-5xl w-full h-[85vh] shadow-2xl flex flex-col"
+              style={{
+                animation: sourcesModalClosing 
+                  ? 'modalFadeOut 0.3s ease-in forwards' 
+                  : 'modalFadeIn 0.4s ease-out'
+              }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="bg-gradient-to-r from-teal-dark to-teal-medium border-b border-gray-200 p-6 rounded-t-2xl flex-shrink-0">
                 <div className="flex justify-between items-center">
-                  <h2 className="text-2xl font-bold text-teal-dark">Fuentes del proyecto</h2>
+                  <h2 className="text-2xl font-bold text-white">{t("sources.modalTitle")}</h2>
                   <button 
-                    onClick={() => setShowSourcesModal(false)}
-                    className="text-gray-400 hover:text-teal-accent text-2xl font-bold"
+                    onClick={closeSourcesModal}
+                    className="text-white/80 hover:text-white text-2xl font-bold transition-all duration-200 hover:scale-110 hover:rotate-90"
                   >
                     ×
                   </button>
                 </div>
               </div>
               
-              <div className="flex-1 overflow-y-auto p-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div 
+                className="flex-1 p-6 bg-gray-50"
+                style={{
+                  overflowY: 'auto',
+                  scrollbarWidth: 'none',
+                  msOverflowStyle: 'none'
+                }}
+              >
+                <style jsx>{`
+                  div::-webkit-scrollbar {
+                    display: none;
+                  }
+                  @keyframes modalFadeIn {
+                    from {
+                      opacity: 0;
+                      transform: scale(0.9) translateY(-20px);
+                    }
+                    to {
+                      opacity: 1;
+                      transform: scale(1) translateY(0);
+                    }
+                  }
+                  @keyframes modalFadeOut {
+                    from {
+                      opacity: 1;
+                      transform: scale(1) translateY(0);
+                    }
+                    to {
+                      opacity: 0;
+                      transform: scale(0.95) translateY(-10px);
+                    }
+                  }
+                `}</style>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   {/* Transporte */}
                   <div className="space-y-3">
-                    <h3 className="text-lg font-semibold text-teal-dark">Transporte</h3>
+                    <h3 className="text-lg font-bold text-teal-dark mb-3 border-b border-teal-medium/30 pb-2">{t("sources.transport.title")}</h3>
                     <div className="text-sm text-gray-700 space-y-2">
-                      <p><strong>Vehículos personales:</strong></p>
+                      <p><strong className="text-teal-dark">{t("sources.transport.personalVehicles")}</strong></p>
                       <ul className="ml-4 space-y-1">
-                        <li>• <a href="https://www.epa.gov/energy/greenhouse-gas-equivalencies-calculator-calculations-and-references" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">EPA Greenhouse Gas Equivalencies Calculator</a></li>
-                        <li>• <a href="https://evse.com.au/blog/how-much-carbon-dioxide-does-an-internal-combustion-hybrid-and-electric-car-emit/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">EVSE Australia CO2 emissions data</a></li>
-                        <li>• <a href="https://ourworldindata.org/travel-carbon-footprint" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Our World in Data Travel carbon footprint</a></li>
+                        <li>• <a href="https://www.epa.gov/energy/greenhouse-gas-equivalencies-calculator-calculations-and-references" target="_blank" rel="noopener noreferrer" className="text-teal-medium hover:text-teal-dark font-medium hover:underline transition-colors">{t("sources.transport.personal1")}</a></li>
+                        <li>• <a href="https://evse.com.au/blog/how-much-carbon-dioxide-does-an-internal-combustion-hybrid-and-electric-car-emit/" target="_blank" rel="noopener noreferrer" className="text-teal-medium hover:text-teal-dark font-medium hover:underline transition-colors">{t("sources.transport.personal2")}</a></li>
+                        <li>• <a href="https://ourworldindata.org/travel-carbon-footprint" target="_blank" rel="noopener noreferrer" className="text-teal-medium hover:text-teal-dark font-medium hover:underline transition-colors">{t("sources.transport.personal3")}</a></li>
                       </ul>
-                      <p><strong>Transporte público:</strong></p>
+                      <p><strong className="text-teal-dark">{t("sources.transport.publicTransport")}</strong></p>
                       <ul className="ml-4 space-y-1">
-                        <li>• <a href="https://www.carbonindependent.org/20.html" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">DEFRA/Carbon Independent</a> (~0.089 kg CO₂/pkm)</li>
-                        <li>• National Rail data (~35 g CO₂/pkm)</li>
+                        <li>• <a href="https://www.carbonindependent.org/20.html" target="_blank" rel="noopener noreferrer" className="text-teal-medium hover:text-teal-dark font-medium hover:underline transition-colors">{t("sources.transport.public1")}</a></li>
+                        <li>• {t("sources.transport.public2")}</li>
                       </ul>
                     </div>
                   </div>
 
                   {/* Vuelos */}
                   <div className="space-y-3">
-                    <h3 className="text-lg font-semibold text-teal-dark">Vuelos</h3>
+                    <h3 className="text-lg font-bold text-teal-dark mb-3 border-b border-teal-medium/30 pb-2">{t("sources.flights.title")}</h3>
                     <div className="text-sm text-gray-700">
                       <ul className="space-y-1">
-                        <li>• ICAO/BEIS factores para vuelos</li>
-                        <li>• <a href="https://flygrn.com/blog/carbon-emission-factors-used-by-flygrn" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">FlyGRN Flight emission factors</a></li>
-                        <li>• <a href="https://ourworldindata.org/travel-carbon-footprint" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Our World in Data</a> radiative forcing (~1.9× factor)</li>
+                        <li>• {t("sources.flights.item1")}</li>
+                        <li>• <a href="https://flygrn.com/blog/carbon-emission-factors-used-by-flygrn" target="_blank" rel="noopener noreferrer" className="text-teal-medium hover:text-teal-dark font-medium hover:underline transition-colors">{t("sources.flights.item2")}</a></li>
+                        <li>• <a href="https://ourworldindata.org/travel-carbon-footprint" target="_blank" rel="noopener noreferrer" className="text-teal-medium hover:text-teal-dark font-medium hover:underline transition-colors">{t("sources.flights.item3")}</a></li>
                       </ul>
                     </div>
                   </div>
 
                   {/* Dieta */}
                   <div className="space-y-3">
-                    <h3 className="text-lg font-semibold text-teal-dark">Dieta</h3>
+                    <h3 className="text-lg font-bold text-teal-dark mb-3 border-b border-teal-medium/30 pb-2">{t("sources.diet.title")}</h3>
                     <div className="text-sm text-gray-700">
                       <ul className="space-y-1">
-                        <li>• Scarborough et al. (2014) Climatic Change</li>
-                        <li>• <a href="https://www.ethicalconsumer.org/food-drink/climate-impact-meat-vegetarian-vegan-diets" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Ethical Consumer climate impact studies</a></li>
-                        <li>• <a href="https://css.umich.edu/publications/factsheets/sustainability-indicators/carbon-footprint-factsheet" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">University of Michigan Carbon Footprint Factsheet</a></li>
+                        <li>• {t("sources.diet.item1")}</li>
+                        <li>• <a href="https://www.ethicalconsumer.org/food-drink/climate-impact-meat-vegetarian-vegan-diets" target="_blank" rel="noopener noreferrer" className="text-teal-medium hover:text-teal-dark font-medium hover:underline transition-colors">{t("sources.diet.item2")}</a></li>
+                        <li>• <a href="https://css.umich.edu/publications/factsheets/sustainability-indicators/carbon-footprint-factsheet" target="_blank" rel="noopener noreferrer" className="text-teal-medium hover:text-teal-dark font-medium hover:underline transition-colors">{t("sources.diet.item3")}</a></li>
                       </ul>
                     </div>
                   </div>
 
                   {/* Energía */}
                   <div className="space-y-3">
-                    <h3 className="text-lg font-semibold text-teal-dark">Energía en el hogar</h3>
+                    <h3 className="text-lg font-bold text-teal-dark mb-3 border-b border-teal-medium/30 pb-2">{t("sources.energy.title")}</h3>
                     <div className="text-sm text-gray-700">
                       <ul className="space-y-1">
-                        <li>• <a href="https://www.iea.org/reports/global-energy-co2-status-report-2019/emissions" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">IEA Global Energy & CO₂ Status Report (2019)</a></li>
-                        <li>• EPA factores: electricidad (~0.475 kg CO₂/kWh), gas natural (~1.9 kg CO₂/m³)</li>
+                        <li>• <a href="https://www.iea.org/reports/global-energy-co2-status-report-2019/emissions" target="_blank" rel="noopener noreferrer" className="text-teal-medium hover:text-teal-dark font-medium hover:underline transition-colors">{t("sources.energy.item1")}</a></li>
+                        <li>• {t("sources.energy.item2")}</li>
                       </ul>
                     </div>
                   </div>
 
                   {/* Bienes y servicios */}
                   <div className="space-y-3">
-                    <h3 className="text-lg font-semibold text-teal-dark">Bienes y servicios</h3>
+                    <h3 className="text-lg font-bold text-teal-dark mb-3 border-b border-teal-medium/30 pb-2">{t("sources.goods.title")}</h3>
                     <div className="text-sm text-gray-700">
                       <ul className="space-y-1">
-                        <li>• <a href="https://www.greenfi.com/resources/carbon-footprint-calculation-methodology" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">GreenFi Carbon Footprint Methodology</a></li>
-                        <li>• <a href="https://news.climate.columbia.edu/2020/12/16/buying-stuff-drives-climate-change/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Columbia Climate How Buying Stuff Drives Climate Change</a></li>
+                        <li>• <a href="https://www.greenfi.com/resources/carbon-footprint-calculation-methodology" target="_blank" rel="noopener noreferrer" className="text-teal-medium hover:text-teal-dark font-medium hover:underline transition-colors">{t("sources.goods.item1")}</a></li>
+                        <li>• <a href="https://news.climate.columbia.edu/2020/12/16/buying-stuff-drives-climate-change/" target="_blank" rel="noopener noreferrer" className="text-teal-medium hover:text-teal-dark font-medium hover:underline transition-colors">{t("sources.goods.item2")}</a></li>
                       </ul>
                     </div>
                   </div>
 
                   {/* Basura */}
                   <div className="space-y-3">
-                    <h3 className="text-lg font-semibold text-teal-dark">Basura y reciclaje</h3>
+                    <h3 className="text-lg font-bold text-teal-dark mb-3 border-b border-teal-medium/30 pb-2">{t("sources.waste.title")}</h3>
                     <div className="text-sm text-gray-700">
                       <ul className="space-y-1">
-                        <li>• <a href="https://www.epa.gov/lmop/frequent-questions-about-landfill-gas" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">EPA Landfill methane data</a></li>
-                        <li>• <a href="https://www.changeit.app/blog/recycle-matters/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Changeit Recycling CO₂ savings</a></li>
+                        <li>• <a href="https://www.epa.gov/lmop/frequent-questions-about-landfill-gas" target="_blank" rel="noopener noreferrer" className="text-teal-medium hover:text-teal-dark font-medium hover:underline transition-colors">{t("sources.waste.item1")}</a></li>
+                        <li>• <a href="https://www.changeit.app/blog/recycle-matters/" target="_blank" rel="noopener noreferrer" className="text-teal-medium hover:text-teal-dark font-medium hover:underline transition-colors">{t("sources.waste.item2")}</a></li>
                       </ul>
                     </div>
                   </div>
 
                   {/* Energías renovables */}
                   <div className="space-y-3">
-                    <h3 className="text-lg font-semibold text-teal-dark">Energías renovables</h3>
+                    <h3 className="text-lg font-bold text-teal-dark mb-3 border-b border-teal-medium/30 pb-2">Energías renovables</h3>
                     <div className="text-sm text-gray-700">
                       <ul className="space-y-1">
-                        <li>• <a href="https://www.carbonindependent.org/15.html" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Carbon Independent Electricity emissions by source</a></li>
+                        <li>• <a href="https://www.carbonindependent.org/15.html" target="_blank" rel="noopener noreferrer" className="text-teal-medium hover:text-teal-dark font-medium hover:underline transition-colors">{t("sources.renewable.item1")}</a></li>
                       </ul>
                     </div>
                   </div>
 
                   {/* Cruceros */}
                   <div className="space-y-3">
-                    <h3 className="text-lg font-semibold text-teal-dark">Cruceros</h3>
+                    <h3 className="text-lg font-bold text-teal-dark mb-3 border-b border-teal-medium/30 pb-2">Cruceros</h3>
                     <div className="text-sm text-gray-700">
                       <ul className="space-y-1">
-                        <li>• <a href="https://foe.org/news/cruise-passengers-carbon/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Friends of the Earth Cruise CO₂ emissions</a></li>
-                        <li>• <a href="https://theicct.org/marine-cruising-flying-may22/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">ICCT/BBC Cruise vs. aviation emissions</a></li>
+                        <li>• <a href="https://foe.org/news/cruise-passengers-carbon/" target="_blank" rel="noopener noreferrer" className="text-teal-medium hover:text-teal-dark font-medium hover:underline transition-colors">{t("sources.cruises.item1")}</a></li>
+                        <li>• <a href="https://theicct.org/marine-cruising-flying-may22/" target="_blank" rel="noopener noreferrer" className="text-teal-medium hover:text-teal-dark font-medium hover:underline transition-colors">{t("sources.cruises.item2")}</a></li>
                       </ul>
                     </div>
                   </div>
 
                   {/* Créditos */}
                   <div className="space-y-3">
-                    <h3 className="text-lg font-semibold text-teal-dark">Créditos de carbono</h3>
+                    <h3 className="text-lg font-bold text-teal-dark mb-3 border-b border-teal-medium/30 pb-2">Créditos de carbono</h3>
                     <div className="text-sm text-gray-700">
                       <ul className="space-y-1">
-                        <li>• <a href="https://www.causeartist.com/what-is-a-carbon-credit/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Causeartist What is a Carbon Credit?</a></li>
+                        <li>• <a href="https://www.causeartist.com/what-is-a-carbon-credit/" target="_blank" rel="noopener noreferrer" className="text-teal-medium hover:text-teal-dark font-medium hover:underline transition-colors">{t("sources.credits.item1")}</a></li>
                       </ul>
                     </div>
                   </div>
@@ -1051,7 +1092,6 @@ export default function CalculadoraPage() {
 
     return (
       <div className="min-h-screen">
-        {devJumpButton}
         <Navbar />
         <div className="pt-16 pb-4 px-4 sm:px-5 lg:px-8 min-h-screen flex items-center justify-center relative">
           {/* Fondo verde original restaurado */}
@@ -1386,7 +1426,6 @@ export default function CalculadoraPage() {
   if (showCalculator && !showQuestions && !showResults) {
     return (
       <div className="min-h-screen">
-        {devJumpButton}
         <Navbar />
         <div className="pt-16 pb-4 px-4 sm:px-5 lg:px-8 min-h-screen flex items-center justify-center relative">
           {/* Fondo verde original restaurado */}
@@ -1466,17 +1505,6 @@ export default function CalculadoraPage() {
                   <p className="text-base lg:text-lg leading-relaxed mb-6 lg:mb-10 max-w-xl transition-all duration-100">
                     {t("calculateDescription")}
                   </p>
-                  <button 
-                    onClick={() => setShowQuestions(true)}
-                    className="bg-teal-accent hover:bg-teal-light text-white px-12 py-3 rounded-xl font-semibold transition-all duration-300 text-base transform hover:scale-105 hover:shadow-lg"
-                  >
-                    {t("start")}
-                  </button>
-                </div>
-                <div className="flex justify-center space-x-2 mt-4">
-                  {[...Array(12)].map((_, i) => (
-                    <div key={i} className={`w-2 h-2 rounded-full transition-all duration-300 ${i === 0 ? 'bg-white' : 'bg-white/40'}`} />
-                  ))}
                 </div>
                 
                 {/* Botón Fuentes */}
@@ -1501,13 +1529,189 @@ export default function CalculadoraPage() {
                       e.currentTarget.style.transform = 'scale(1)';
                     }}
                   >
-                    Fuentes
+                    {t("sources.button")}
                   </button>
+                </div>
                 </div>
               </div>
             </div>
           </div>
+        
+        {/* Modal de fuentes */}
+        {showSourcesModal && (
+          <div 
+            className="fixed inset-0 z-[300] flex items-center justify-center p-4"
+            style={{
+              backgroundColor: sourcesModalClosing ? 'rgba(0, 0, 0, 0)' : 'rgba(0, 0, 0, 0.6)',
+              transition: 'background-color 0.3s ease-out'
+            }}
+            onClick={closeSourcesModal}
+          >
+            <div 
+              className="bg-white rounded-2xl max-w-5xl w-full h-[85vh] shadow-2xl flex flex-col"
+              style={{
+                animation: sourcesModalClosing 
+                  ? 'modalFadeOut 0.3s ease-in forwards' 
+                  : 'modalFadeIn 0.4s ease-out'
+              }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="bg-gradient-to-r from-teal-dark to-teal-medium border-b border-gray-200 p-6 rounded-t-2xl flex-shrink-0">
+                <div className="flex justify-between items-center">
+                  <h2 className="text-2xl font-bold text-white">Fuentes del proyecto</h2>
+                  <button 
+                    onClick={closeSourcesModal}
+                    className="text-white/80 hover:text-white text-2xl font-bold transition-all duration-200 hover:scale-110 hover:rotate-90"
+                  >
+                    ×
+                  </button>
         </div>
+              </div>
+              
+              <div 
+                className="flex-1 p-6 bg-gray-50"
+                style={{
+                  overflowY: 'auto',
+                  scrollbarWidth: 'none',
+                  msOverflowStyle: 'none'
+                }}
+              >
+                <style jsx>{`
+                  div::-webkit-scrollbar {
+                    display: none;
+                  }
+                  @keyframes modalFadeIn {
+                    from {
+                      opacity: 0;
+                      transform: scale(0.9) translateY(-20px);
+                    }
+                    to {
+                      opacity: 1;
+                      transform: scale(1) translateY(0);
+                    }
+                  }
+                  @keyframes modalFadeOut {
+                    from {
+                      opacity: 1;
+                      transform: scale(1) translateY(0);
+                    }
+                    to {
+                      opacity: 0;
+                      transform: scale(0.95) translateY(-10px);
+                    }
+                  }
+                `}</style>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  {/* Transporte */}
+                  <div className="space-y-3">
+                    <h3 className="text-lg font-bold text-teal-dark mb-3 border-b border-teal-medium/30 pb-2">Transporte</h3>
+                    <div className="text-sm text-gray-700 space-y-2">
+                      <p><strong className="text-teal-dark">Vehículos personales:</strong></p>
+                      <ul className="ml-4 space-y-1">
+                        <li>• <a href="https://www.epa.gov/energy/greenhouse-gas-equivalencies-calculator-calculations-and-references" target="_blank" rel="noopener noreferrer" className="text-teal-medium hover:text-teal-dark font-medium hover:underline transition-colors">{t("sources.transport.personal1")}</a></li>
+                        <li>• <a href="https://evse.com.au/blog/how-much-carbon-dioxide-does-an-internal-combustion-hybrid-and-electric-car-emit/" target="_blank" rel="noopener noreferrer" className="text-teal-medium hover:text-teal-dark font-medium hover:underline transition-colors">{t("sources.transport.personal2")}</a></li>
+                        <li>• <a href="https://ourworldindata.org/travel-carbon-footprint" target="_blank" rel="noopener noreferrer" className="text-teal-medium hover:text-teal-dark font-medium hover:underline transition-colors">{t("sources.transport.personal3")}</a></li>
+                      </ul>
+                      <p><strong className="text-teal-dark">Transporte público:</strong></p>
+                      <ul className="ml-4 space-y-1">
+                        <li>• <a href="https://www.carbonindependent.org/20.html" target="_blank" rel="noopener noreferrer" className="text-teal-medium hover:text-teal-dark font-medium hover:underline transition-colors">{t("sources.transport.public1")}</a></li>
+                        <li>• {t("sources.transport.public2")}</li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  {/* Vuelos */}
+                  <div className="space-y-3">
+                    <h3 className="text-lg font-bold text-teal-dark mb-3 border-b border-teal-medium/30 pb-2">Vuelos</h3>
+                    <div className="text-sm text-gray-700">
+                      <ul className="space-y-1">
+                        <li>{t("sources.flights.item1")}</li>
+                        <li>• <a href="https://flygrn.com/blog/carbon-emission-factors-used-by-flygrn" target="_blank" rel="noopener noreferrer" className="text-teal-medium hover:text-teal-dark font-medium hover:underline transition-colors">{t("sources.flights.item2")}</a></li>
+                        <li>• <a href="https://ourworldindata.org/travel-carbon-footprint" target="_blank" rel="noopener noreferrer" className="text-teal-medium hover:text-teal-dark font-medium hover:underline transition-colors">{t("sources.flights.item3")}</a></li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  {/* Dieta */}
+                  <div className="space-y-3">
+                    <h3 className="text-lg font-bold text-teal-dark mb-3 border-b border-teal-medium/30 pb-2">Dieta</h3>
+                    <div className="text-sm text-gray-700">
+                      <ul className="space-y-1">
+                        <li>{t("sources.diet.item1")}</li>
+                        <li>• <a href="https://www.ethicalconsumer.org/food-drink/climate-impact-meat-vegetarian-vegan-diets" target="_blank" rel="noopener noreferrer" className="text-teal-medium hover:text-teal-dark font-medium hover:underline transition-colors">{t("sources.diet.item2")}</a></li>
+                        <li>• <a href="https://css.umich.edu/publications/factsheets/sustainability-indicators/carbon-footprint-factsheet" target="_blank" rel="noopener noreferrer" className="text-teal-medium hover:text-teal-dark font-medium hover:underline transition-colors">{t("sources.diet.item3")}</a></li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  {/* Energía */}
+                  <div className="space-y-3">
+                    <h3 className="text-lg font-bold text-teal-dark mb-3 border-b border-teal-medium/30 pb-2">Energía en el hogar</h3>
+                    <div className="text-sm text-gray-700">
+                      <ul className="space-y-1">
+                        <li>• <a href="https://www.iea.org/reports/global-energy-co2-status-report-2019/emissions" target="_blank" rel="noopener noreferrer" className="text-teal-medium hover:text-teal-dark font-medium hover:underline transition-colors">{t("sources.energy.item1")}</a></li>
+                        <li>• {t("sources.energy.item2")}</li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  {/* Bienes y servicios */}
+                  <div className="space-y-3">
+                    <h3 className="text-lg font-bold text-teal-dark mb-3 border-b border-teal-medium/30 pb-2">Bienes y servicios</h3>
+                    <div className="text-sm text-gray-700">
+                      <ul className="space-y-1">
+                        <li>• <a href="https://www.greenfi.com/resources/carbon-footprint-calculation-methodology" target="_blank" rel="noopener noreferrer" className="text-teal-medium hover:text-teal-dark font-medium hover:underline transition-colors">{t("sources.goods.item1")}</a></li>
+                        <li>• <a href="https://news.climate.columbia.edu/2020/12/16/buying-stuff-drives-climate-change/" target="_blank" rel="noopener noreferrer" className="text-teal-medium hover:text-teal-dark font-medium hover:underline transition-colors">{t("sources.goods.item2")}</a></li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  {/* Basura */}
+                  <div className="space-y-3">
+                    <h3 className="text-lg font-bold text-teal-dark mb-3 border-b border-teal-medium/30 pb-2">Basura y reciclaje</h3>
+                    <div className="text-sm text-gray-700">
+                      <ul className="space-y-1">
+                        <li>• <a href="https://www.epa.gov/lmop/frequent-questions-about-landfill-gas" target="_blank" rel="noopener noreferrer" className="text-teal-medium hover:text-teal-dark font-medium hover:underline transition-colors">{t("sources.waste.item1")}</a></li>
+                        <li>• <a href="https://www.changeit.app/blog/recycle-matters/" target="_blank" rel="noopener noreferrer" className="text-teal-medium hover:text-teal-dark font-medium hover:underline transition-colors">{t("sources.waste.item2")}</a></li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  {/* Energías renovables */}
+                  <div className="space-y-3">
+                    <h3 className="text-lg font-bold text-teal-dark mb-3 border-b border-teal-medium/30 pb-2">Energías renovables</h3>
+                    <div className="text-sm text-gray-700">
+                      <ul className="space-y-1">
+                        <li>• <a href="https://www.carbonindependent.org/15.html" target="_blank" rel="noopener noreferrer" className="text-teal-medium hover:text-teal-dark font-medium hover:underline transition-colors">{t("sources.renewable.item1")}</a></li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  {/* Cruceros */}
+                  <div className="space-y-3">
+                    <h3 className="text-lg font-bold text-teal-dark mb-3 border-b border-teal-medium/30 pb-2">Cruceros</h3>
+                    <div className="text-sm text-gray-700">
+                      <ul className="space-y-1">
+                        <li>• <a href="https://foe.org/news/cruise-passengers-carbon/" target="_blank" rel="noopener noreferrer" className="text-teal-medium hover:text-teal-dark font-medium hover:underline transition-colors">{t("sources.cruises.item1")}</a></li>
+                        <li>• <a href="https://theicct.org/marine-cruising-flying-may22/" target="_blank" rel="noopener noreferrer" className="text-teal-medium hover:text-teal-dark font-medium hover:underline transition-colors">{t("sources.cruises.item2")}</a></li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  {/* Créditos */}
+                  <div className="space-y-3">
+                    <h3 className="text-lg font-bold text-teal-dark mb-3 border-b border-teal-medium/30 pb-2">Créditos de carbono</h3>
+                    <div className="text-sm text-gray-700">
+                      <ul className="space-y-1">
+                        <li>• <a href="https://www.causeartist.com/what-is-a-carbon-credit/" target="_blank" rel="noopener noreferrer" className="text-teal-medium hover:text-teal-dark font-medium hover:underline transition-colors">{t("sources.credits.item1")}</a></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     );
   }
@@ -1544,13 +1748,7 @@ export default function CalculadoraPage() {
               {t("description")}
             </p>
             
-            {/* CTA Button */}
-            <button 
-              className="bg-white text-teal-dark hover:bg-gray-100 px-8 py-4 rounded-full text-lg font-semibold transition-all duration-100 shadow-lg hover:shadow-xl transform hover:scale-105"
-              onClick={() => setShowCalculator(true)}
-            >
-              {t("cta")}
-            </button>
+
           </div>
           
           {/* Calculator Preview Card */}
