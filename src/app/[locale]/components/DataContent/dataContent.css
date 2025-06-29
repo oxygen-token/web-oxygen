@@ -1,0 +1,36 @@
+.dataContent{
+    display: flex;
+    flex-direction: row;
+}
+
+.dataContent p{
+    padding: 6px;
+    font-family: var(--montserrat);
+    animation-duration: 2s;
+    animation-name: slidein;
+    font-weight: 600;
+  
+}
+
+.dataNumber, .dataText{
+  white-space: nowrap;
+  
+}
+.dataNumber{
+    font-size: 24px;
+
+}
+
+
+  @keyframes slidein {
+    from {
+      margin-left: 20%;
+      width: 100%
+    }
+  
+    to {
+      margin-left: 0%;
+      width: 100%;
+    }
+  }
+

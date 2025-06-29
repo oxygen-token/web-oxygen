@@ -1,0 +1,105 @@
+.thisIsOxygen{
+    display: flex;
+    padding: 4em;
+    justify-content: center;
+    flex-direction: column;
+    min-height: 500px;
+    background-image: url("../../public/assets/images/imgUs.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    flex-wrap: wrap;
+}
+
+.thisIsOxygen h1{
+    font-size: clamp(30px, 3.8vw, 58px);
+    font-family: var(--montserrat);
+    color: var(--white);
+}
+
+.misionVision{
+    display: flex;
+    flex-direction: row;
+    gap: 2em;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+
+}
+
+.mision, .vision{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: #fff;
+    opacity: 0.8;
+    max-width: 350px;
+    min-height: 250px;
+    border-radius: 30px;
+    padding: 0em 1.5em;
+    font-family: var(--montserrat);
+
+}
+
+.mision h2, .vision h2{
+    color: #006A6A;
+    font-size: clamp(20px, 2vw, 32px);
+    font-weight:800;
+    margin: 0;
+
+}
+
+.mision p, .vision p{
+    font-size: clamp(14px, 1.1vw, 18px);
+    font-weight: 500;
+}
+
+.team{
+    display: flex;
+    flex-direction: column;
+    padding: 8em 0em;
+    gap: 1em;
+    background-color: #fff;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    font-family: var(--montserrat);
+}
+
+.team h2{
+    color: #006A6A;
+    font-size: clamp(30px, 2.22vw, 36px);
+    font-weight: 700;
+    margin-top:0;
+}
+
+.team h4{
+    color: #012138;
+    font-weight: 800;
+    font-size: clamp(14px, 1.1vw, 18px);
+    margin-bottom: 0;
+}
+
+.teamCards{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 2em;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+  .joinUs{
+    background-color: var(--strong-green);
+    color:var(--white);
+    padding: 0.2em 2.5em;
+    font-size: 18px;
+    font-family: var(--dm-sans);
+    border-radius: 40px;
+    max-width: 500px;
+  }
+
+  .joinUs:hover{
+    cursor: pointer;
+    transform: translateY(-8px);
+  }

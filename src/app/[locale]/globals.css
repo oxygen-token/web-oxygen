@@ -1,0 +1,54 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz@0,9..40;1,9..40&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /*Colores*/
+  --dark-blue: #0b273a;
+  --strong-green: #00bb22;
+  --white: #f2f2f2;
+  --grey: #d3dddb;
+
+  /*Fuentes*/
+  --montserrat: "Montserrat", serif;
+  --dm-sans: "DM Sans", serif;
+
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+}
+
+.anteSala {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+  background: linear-gradient(135deg, #3d5a3a, #1e3921);
+  flex-direction: column;
+}
+
+.anteSala h1 {
+  font-family: var(--dm-sans);
+  color: var(--white);
+  font-size: 40px;
+}
+
+.anteSala a {
+  font-family: var(--montserrat);
+  color: var(--white);
+  background-color: var(--strong-green);
+  padding: 0.5em 3em;
+  border-radius: 20px;
+  text-decoration: none;
+}
+
+@media screen and (max-width: 768px) {
+  .line {
+    min-width: 300px;
+  }
+}

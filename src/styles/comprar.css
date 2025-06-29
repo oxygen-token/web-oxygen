@@ -1,0 +1,124 @@
+.buyTokens{
+    display: flex;
+    flex-direction: column;
+    font-family: var(--montserrat);
+    
+}
+
+.buyTokensLayout{
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-image: url("../../public/assets/images/imgBuyPage.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    justify-content: center;
+    padding: 0em 3em;
+
+}
+
+.buyTokensLayout h1{
+    color: var(--white);
+    font-size: clamp(30px, 3.8vw, 58px);
+    font-weight: 600;
+}
+
+.buyTokensBtn{
+    background-color: var(--strong-green);
+    color: white;
+    max-width: 160px;
+    padding: 0.5em;
+    border-radius: 16px;
+    text-align: center;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.buyTokensBtn:hover{
+    text-decoration: underline;
+}
+
+.buyNow{
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1em;
+}
+
+.buyNow h4{
+    color: #012138;
+    font-weight: 700;
+    font-size: clamp(14px, 11.1vw, 18px);
+    margin-bottom: 0;
+}
+
+.buyNow h2{
+    color: #006A6A;
+    font-size: clamp(30px, 2.22vw, 36px);
+    font-weight: 700;
+    margin-top:20px;
+}
+
+.tokensDisplay{
+    display: flex;
+    padding: 1em;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.tokenAlert{
+    display: flex;
+    flex-direction: column;
+    max-width: 40%;
+    aspect-ratio: 5/7;
+    background-color: #012138;
+    border-radius: 15px;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
+.tokenAlertImg{
+    max-width: 70%;
+    height: auto;
+    border-radius: 16px;
+    margin-bottom: 1em;
+}
+
+.tokenAlert h3{
+    font-weight: 800;
+    font-size: clamp(14px, 1.1vw, 18px);
+    margin: 0;
+}
+
+.tokenAlert p{
+    padding: 1em;
+    font-size: clamp(14px, 1.1vw, 18px);   
+}
+
+.tokensContainer{
+    display: flex;
+    flex-direction: column;
+    max-width: 50%;
+    justify-content: space-between;
+    gap: 1em;
+}
+
+@media screen and (max-width: 425px) {
+    .tokensDisplay{
+        gap: 2em;
+    }
+
+
+    .tokenAlert{
+        max-width: 100%;
+    }
+
+    .tokensContainer{
+        max-width: 100%;
+        gap:2em;
+    }
+
+
+    }

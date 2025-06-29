@@ -1,0 +1,408 @@
+{
+  "Layout": {
+    "prevTitle": "Let's stop deforestation",
+    "prevButton": "Stop",
+    "title": "Invest for the environment",
+    "subtitle-1": "We protect trees from being cut down and conserve  ",
+    "subtitle-2": "ecosystems",
+    "button": "Start",
+    "data-content-1": "hectares",
+    "data-content-11": "of forest",
+    "data-content-2": "soccer",
+    "data-content-21": "stadiums",
+    "data-content-3": "tn CO₂",
+    "data-content-31": "offset",
+    "data-content-1-mobile": "hectares of forest",
+    "data-content-2-mobile": "soccer stadiums",
+    "data-content-3-mobile": "tn CO2 offset"
+  },
+  "Services": {
+    "title": "SERVICES",
+    "subtitle-1": "PRESERVE",
+    "subtitle-2": "NATIVE TERRITORIES",
+    "text": "Native forests are one of the main producers of oxygen, they are essential for us and all living beings on the planet. For this reason, we must protect native territories from being deforested.",
+    "service-card-1-title": "Measure",
+    "service-card-1-text": "Know your environmental impact. Use the calculator and find out your CO2 emissions.",
+    "service-card-2-title": "Compensate 1 OM = 1 m2 of native forest",
+    "service-card-2-text": "Your purchase guarantees the protection of the forest. Save trees from being cut down and wildlife from being displaced.",
+    "service-card-2-highlight": "Save the forest ↓",
+    "service-card-2-link": "https://opensea.io/collection/theguardiansoftheforest",
+    "service-card-3-title": "Monitor",
+    "service-card-3-text": "Visualize the number of trees and species saved, and how much CO2 your investment absorbed in a year.",
+    "service-card-3-equivalence": "1 ton CO₂ = 1 OC",
+    "service-card-3-link": "https://opensea.io/collection/theguardiansoftheforest",
+    "see-more-btn": "See more ",
+    "buy-OM-btn": "Buy OM"
+  },
+  "issuedTokens": {
+    "title": "ISSUED TOKENS",
+    "subtitle-1": "TREES ARE THE BEST TECHNOLOGY",
+    "subtitle-2": "TO STOP CLIMATE CHANGE",
+    "issued-token-1-title": "What is a token?",
+    "issued-token-1-text": "It is a virtual currency that represents a tradable asset or utility. It is stored in a digital wallet and allows the holder to use it for investment or economic purposes.",
+    "issued-token-2-title": "OM Token",
+    "issued-token-2-text": "This token is a digital certification of 1 m2 of native forest. With your purchase, you are protecting the forest forever.",
+    "issued-token-3-title": "OC Token",
+    "issued-token-3-text": "Day by day, trees absorb carbon from the atmosphere that we emit as humans. We measure how much carbon your (OM) absorbs and give you this token (OC) as a digital Carbon Offset certification."
+  },
+  "homeTokens": {
+    "progress-subtitle": "CARBON CREDITS",
+    "progress-title": "LET'S BE PART OF THE CHANGE",
+    "progress-circle": "Hectares protected",
+    "progress-text": "Being transparent is one of the aspects we value most in our company. Through this counter we can see our progress towards a better planet!",
+    "progress-span": "OUR GOAL",
+    "progress-span-2": "hectares"
+  },
+  "videoIntro": {
+    "title": "OUR MANIFESTO",
+    "subtitle-1": "BECOME CARBON",
+    "subtitle-2": "NEUTRAL, USE ",
+    "subtitle-3": "OXYGEN",
+    "text": "We want to change the conventional donation scheme in order to save native forests and open the market for an international valuation of native forest land!"
+  },
+  "partnerships": {
+    "title": "PARTNERSHIPS"
+  },
+  "phrase": {
+    "text": "The climate crisis is caused by us and the solutions must come from us. We have the tools: technology is on our side",
+    "comment": "- Antonio Guterres, UN Secretary-General",
+    "button": "Start"
+  },
+  "Navbar": {
+    "home": "Home",
+    "us": "About Us",
+    "project": "Projects",
+    "calculator": "Calculator",
+    "buy": "Buy",
+    "login": "Log in",
+    "waitlist": "Join the waitlist",
+    "helloUser": "Hello, {username}",
+    "logout": "Log out",
+    "whitepaper": "Whitepaper"
+  },
+  "Footer": {
+    "company": "Company",
+    "us-link": "About Us",
+    "projects-link": "Projects",
+    "contact-link": "Contact",
+    "joinus-link": "Join Us",
+    "news": "Subscribe to our newsletter",
+    "news-button": "Send"
+  },
+  "AboutUs": {
+    "title": "This is Oxygen.",
+    "mision-title": "Our mision",
+    "vision-title": "Our vision",
+    "mision-text": "Preserve the nature & endangered species that live between it, Help in the economic development of local communities and achieve and international valuation of native forest.",
+    "vision-text": " Following ONU's sustainability goals we want every company & person in the world to shout out loud: Go Green. The change is possible but we need to act now! Follow us in this adventure.",
+    "team-title-1": "OUR TEAM",
+    "team-title-2": "OXYGEN TEAM",
+    "joinus-title": "JOIN OXYGEN TO BE PART OF THE CHANGE!",
+    "tokenomics-title": "Income distribution"
+  },
+  "Project": {
+    "title-1": "Discover the forests ",
+    "title-2": "we are saving.",
+    "map-title-1": "OUR PROJECTS",
+    "map-title-2": "MEET THE AREAS WE ARE PRESERVING",
+    "button-projects": "Explore",
+    "see-map": "See map",
+    "laFlorencia-text": "La Florencia is divided into two estancias, the eastern and western parts. Together they cover an area of about 90,000 hectares in which we find forest environments, wetlands, sandy areas, among others. It is worth mentioning the confirmed presence of the yaguarete, the yurumi or anteater, the collared peccary and many other species of animals and plants. It is a key territory for the survival of the yaguarete (there are between 200 and 250 left in the wild and only 20 in the Gran Chaco of Argentina). It stands out for its proximity to the Impenetrable National Park, acting as a biological corridor between it and the province of Salta.",
+    "map-with-markers-title": "360° VIDEOS OF LA FLORENCIA",
+    "map-with-markers-description": "Click on the points of interest to view the videos"
+  },
+  "Buy": {
+    "title": "Start to make the change",
+    "btn": "Buy",
+    "buy-now-title-1": "BUY A TOKEN",
+    "buy-now-title-2": "INVEST IN THE FUTURE OF THE PLANET",
+    "token-alert-title": "A TOKEN = A BETTER FUTURE",
+    "token-alert-text": "By purchasing a token you protect an area of the forest with all the flora and fauna that live in it."
+  },
+  "Team": {
+    "text-dante": "Business economist specialized in blockchain management. In crypto since 2015.",
+    "text-matteo": "Bachelor's degree student in Environmental Management. +10 years of experience in native forest conservation projects",
+    "text-franco": "Founder of Software & Marketing agency BlackBeaver. Founder of Digital Media Finguru.",
+    "text-emiliano": "Ex Vice-President of Argentine National park service. CEO of Banco de Bosques: NGO with more than 150.000 hectareas saved. Greenpeace advisor.",
+    "text-gustavo": "BID bank tokenomics & climate change advisor. Strategic director of Chronos: B2B crypto wallet.",
+    "text-guido": "Full stack Dev +10 years exp. Founder of Edeon Labs (sofware factory)",
+    "text-constanza": "Frontend Dev +2 years exp. Background in Chemical Engineering and Biotech.",
+    "text-nicolas": "+3 years of experience. Fullstack Web Developer. Bachelor in Computer Science",
+    "text-lautaro": "I have been part of Youth for Climate for 5 years and received the Amnesty Award 2019 for impact in the climate fight.",
+    "text-agustina": "Freelance manager for 4 years, Biological Sciences student at the University of Buenos Aires.",
+    "text-salvador": "Bachelor's degree in Social Communication from the University of Buenos Aires, specializing in Institutional Communication.",
+    "text-malena": "Graphic, industrial and audio-visual designer. 2+ years exp.",
+    "text-felipe": "Architecture student at Ditella University.",
+    "text-rosa": "Leader of a Wichi native community in Formosa, Argentina. Forest protection advocate.",
+    "text-hector": "Cacique (chief) of a Wichí native community in El Mistolar, Argentina."
+  },
+  "Login": {
+    "login-title": "Take action and preserve the environment",
+    "login-form-title": "Log In",
+    "email-field": "Email",
+    "password-field": "Password",
+    "login-btn": "Log In",
+    "forgot-password": "Forgot your Password?",
+    "login-no-account": "Don't have an account?",
+    "login-failed": "Incorrect email or password",
+    "server-error": "Something went wrong. Please try again.",
+    "login-cta": "Sign up"
+  },
+  "Register": {
+    "register-back": "Back",
+    "register-title": "Take action and preserve the environment",
+    "register-form-title": "Welcome!",
+    "firstname-field": "First name",
+    "lastname-field": "Last name",
+    "company-field": "Company name (optional)",
+    "country-field": "Country",
+    "email-field": "Email",
+    "password-field": "Create password",
+    "verify-password-field": "Verify password",
+    "firstname-placeholder": "Enter your first name",
+    "lastname-placeholder": "Enter your last name",
+    "company-placeholder": "Enter your company name",
+    "country-placeholder": "Select your country",
+    "email-placeholder": "Enter your email",
+    "password-placeholder": "Choose your password",
+    "verify-password-placeholder": "Repeat your password",
+    "required-field": "This field is required",
+    "email-invalid": "Must enter a valid email address",
+    "email-exists": "This email address is already registered",
+    "password-length": "Password is too short",
+    "password-no-match": "Passwords do not match",
+    "must-accept-tc": "You must accept the Terms and Conditions to register",
+    "server-error": "Something went wrong. Please try again.",
+    "register-btn": "Sign up",
+    "terms-and-conditions": "I have read and accept the Terms and Conditions"
+  },
+  "PostRegister": {
+    "title": "Thanks for signing up for the waitlist!",
+    "message": "Your registration was succesful. We'll be in touch soon!",
+    "back-link": "Back to home"
+  },
+  "Calculator": {
+    "title": "Carbon Footprint Calculator",
+    "subtitle": "Calculate your environmental impact and discover how many carbon credits you need",
+    "description": "Answer a few simple questions and learn your annual carbon footprint in tonnes of CO₂e",
+    "cta": "Start calculation",
+    "howToCompensate": "How do you want to offset?",
+    "individual": "Individual",
+    "company": "Company",
+    "calculateTitle": "Calculate your CO",
+    "calculateDescription": "Daily activities like using electricity, driving a car, etc. generate greenhouse gas emissions that are harmful to the environment.",
+    "start": "Start",
+    "bankTitle": "Forest Bank",
+    "bankDescription": "It is a foundation that channels contributions from small, medium and large donors to intervene in the real estate market of lands to save the last native forests remaining in Argentina.\n\nThe objective is to prevent them from being cleared to save all forest inhabitants and enhance their sustainable use for local communities.",
+    "goToBank": "Go to Forest Bank",
+    "companySection": "Company",
+    "projects": "Projects",
+    "news": "News",
+    "faq": "Frequently Asked Questions",
+    "contact": "Contact",
+    "workWithUs": "Work with us",
+    "newsletter": "Subscribe to our newsletter",
+    "emailPlaceholder": "Email address",
+    "subscribe": "Subscribe",
+    "progress": "Question {current} of {total}",
+    "next": "Next",
+    "previous": "Previous",
+    "finish": "Finish",
+    "currentFootprint": "Your estimated footprint:",
+    "sections": {
+      "transport": "Transport",
+      "flights": "Flights & Diet", 
+      "energy": "Energy & Lifestyle"
+    },
+    "transport": {
+      "title": "Transport",
+      "distance": "Annual distance in personal vehicle",
+      "vehicleType": "Type of vehicle",
+      "busFreq": "Frequency of bus usage",
+      "trainFreq": "Frequency of train/subway usage"
+    },
+    "flights": {
+      "title": "Flights & Diet",
+      "shortFlights": "Short flights per year (less than 3 hours)",
+      "longFlights": "Long flights per year (more than 3 hours)",
+      "diet": "Type of diet"
+    },
+    "energy": {
+      "title": "Energy & Lifestyle",
+      "electricity": "Monthly electricity consumption (kWh)",
+      "gas": "Use of gas or other fuels",
+      "householdSize": "People living in the household",
+      "consumption": "Level of consumption of goods/services",
+      "waste": "Amount of non-recycled waste",
+      "recycling": "Level of recycling/composting",
+      "renewable": "Use of renewable energy",
+      "cruises": "Cruises taken per year"
+    },
+    "progressModal": {
+      "title": "Excellent progress!",
+      "description": "To continue, please complete the following information:",
+      "nameLabel": "Name *",
+      "emailLabel": "Email *",
+      "namePlaceholder": "Your full name",
+      "emailPlaceholder": "your@email.com",
+      "continueButton": "Continue",
+      "privacyNote": "Your information is secure and only used to send you the calculation result.",
+      "skipButton": "Skip"
+    },
+    "results": {
+      "title": "Your Carbon Footprint",
+      "footprint": "Your estimated footprint:",
+      "credits": "Carbon credits needed:",
+      "compensate": "Offset my footprint",
+      "seeProjects": "See offset projects"
+    },
+    "sources": {
+      "button": "Sources",
+      "modalTitle": "Project Sources",
+      "transport": {
+        "title": "Transport",
+        "personalVehicles": "Personal vehicles:",
+        "personal1": "EPA Greenhouse Gas Equivalencies Calculator",
+        "personal2": "EVSE Australia CO2 emissions data",
+        "personal3": "Our World in Data Travel carbon footprint",
+        "publicTransport": "Public transport:",
+        "public1": "DEFRA/Carbon Independent (~0.089 kg CO₂/pkm)",
+        "public2": "National Rail data (~35 g CO₂/pkm)"
+      },
+      "flights": {
+        "title": "Flights",
+        "item1": "ICAO/BEIS flight factors",
+        "item2": "FlyGRN Flight emission factors",
+        "item3": "Our World in Data radiative forcing (~1.9× factor)"
+      },
+      "diet": {
+        "title": "Diet",
+        "item1": "Scarborough et al. (2014) Climatic Change",
+        "item2": "Ethical Consumer climate impact studies",
+        "item3": "University of Michigan Carbon Footprint Factsheet"
+      },
+      "energy": {
+        "title": "Home Energy",
+        "item1": "IEA Global Energy & CO₂ Status Report (2019)",
+        "item2": "EPA factors: electricity (~0.475 kg CO₂/kWh), natural gas (~1.9 kg CO₂/m³)"
+      },
+      "goods": {
+        "title": "Goods and Services",
+        "item1": "GreenFi Carbon Footprint Methodology",
+        "item2": "Columbia Climate How Buying Stuff Drives Climate Change"
+      },
+      "waste": {
+        "title": "Waste and Recycling",
+        "item1": "EPA Landfill methane data",
+        "item2": "Changeit Recycling CO₂ savings"
+      },
+      "renewable": {
+        "title": "Renewable Energy",
+        "item1": "Carbon Independent Electricity emissions by source"
+      },
+      "cruises": {
+        "title": "Cruises",
+        "item1": "Friends of the Earth Cruise CO₂ emissions",
+        "item2": "ICCT/BBC Cruise vs. aviation emissions"
+      },
+      "credits": {
+        "title": "Carbon Credits",
+        "item1": "Causeartist What is a Carbon Credit?"
+      }
+    },
+    "selectOption": "Select option...",
+    "options": {
+      "q1": {
+        "0": "0 km",
+        "low": "Less than 5,000 km",
+        "medium": "5,000 to 10,000 km",
+        "high": "10,000 to 20,000 km",
+        "very_high": "More than 20,000 km"
+      },
+      "q2": {
+        "none": "No vehicle",
+        "gasoline": "Gasoline or Diesel",
+        "hybrid": "Hybrid",
+        "electric": "Electric"
+      },
+      "q3": {
+        "never": "Never or rarely",
+        "occasional": "Occasional (1 to 2 times per week)",
+        "regular": "Regular (daily commute)",
+        "intensive": "Intensive (several trips per day)"
+      },
+      "q4": {
+        "never": "Never",
+        "occasional": "Occasional (1 to 2 trips per week)",
+        "regular": "Regular (daily)",
+        "intensive": "Intensive (frequent or long distances)"
+      },
+      "q5": {
+        "0": "0 flights",
+        "low": "1 to 2 short flights",
+        "medium": "3 to 5 short flights",
+        "high": "More than 5 short flights"
+      },
+      "q6": {
+        "0": "0 flights",
+        "one": "1 long flight",
+        "two": "2 long flights",
+        "medium": "3 to 4 long flights",
+        "high": "More than 4 long flights"
+      },
+      "q7": {
+        "carnivore": "Carnivore (high meat)",
+        "omnivore": "Average omnivore",
+        "low_meat": "Low meat",
+        "vegetarian": "Vegetarian",
+        "vegan": "Vegan"
+      },
+      "q8": {
+        "low": "Low (approx. 2,000 kWh)",
+        "medium": "Medium (approx. 5,000 kWh)",
+        "high": "High (approx. 10,000 kWh)",
+        "very_high": "Very high (greater than 15,000 kWh)"
+      },
+      "q9": {
+        "none": "None (electric)",
+        "low": "Low use (cooking/water)",
+        "medium": "Medium (typical use)",
+        "high": "High (cold climate, large house)"
+      },
+      "q10": {
+        "1": "1 person",
+        "2": "2 people",
+        "3": "3 people",
+        "4": "4 people",
+        "5+": "5 or more people"
+      },
+      "q11": {
+        "minimal": "Minimalist",
+        "average": "Average",
+        "frequent": "Frequent consumer",
+        "luxury": "High-end or luxury"
+      },
+      "q12": {
+        "very_low": "Very little (less than 5 kilograms per week)",
+        "average": "Average (1 to 2 bags)",
+        "high": "High (greater than 30 kilograms per week)"
+      },
+      "q13": {
+        "none": "Nothing or very little (0 to 20 percent)",
+        "some": "Some (approximately 30 to 60 percent)",
+        "most": "Almost everything (80 to 100 percent)"
+      },
+      "q14": {
+        "none": "No (conventional grid only)",
+        "partial": "Partial (e.g. green plan)",
+        "total": "Total (100 percent renewable or solar)"
+      },
+      "q15": {
+        "none": "None",
+        "occasional": "Occasional (3 to 4 days)",
+        "average": "Average (1 week per year)",
+        "frequent": "Frequent or extensive"
+      }
+    }
+  }
+}

@@ -1,0 +1,50 @@
+.sliderComp {
+    display: flex;
+    width: 300px;
+    height: auto;
+    align-items: center;
+    justify-content: center;
+    padding: 0.7em;
+    
+  }
+
+.sliderComp h2{
+    font-size: 18px;
+}
+.sliderComp p{
+    font-size: 13px;
+}
+
+.sliderComp a{
+    font-size: 14px;
+}
+  .prev1,
+  .next1 {
+    background: var(--dark-green);
+    border: none;
+    padding: 0.2rem 0.8rem;
+    border-radius: 0.25rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: black;
+  }
+  .prev1:hover,
+  .next1:hover {
+    cursor:pointer;
+    background-color: var(--grey);
+  }
+  
+  .prev1 {
+    margin-right: 1rem;
+  }
+  
+  .next1 {
+    margin-left: 1rem;
+  }
+
+  .prev2, .next2{
+    display: none;
+    background: none;
+    border:none;
+    color:white;
+  }

@@ -1,0 +1,44 @@
+.prelanding-anim-root {
+  animation: fadeOut 400ms ease-in calc(var(--anim-length) - 400ms) 1 normal
+    both;
+}
+
+@keyframes fadeOut {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+.prelanding-bg {
+  background: radial-gradient(#3be23b, #074907);
+  background-size: 200% 200%;
+  background-position: center center;
+  animation: expandGradient var(--anim-length) forwards;
+}
+
+@keyframes expandGradient {
+  0% {
+    background-size: 100% 100%;
+  }
+
+  100% {
+    background-size: 200% 200%;
+  }
+}
+
+.prelanding-spinner {
+  animation: spin 1500ms linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
