@@ -181,6 +181,15 @@
     "message": "Your registration was succesful. We'll be in touch soon!",
     "back-link": "Back to home"
   },
+  "SideBarDashboard": {
+    "inicio": "Home",
+    "intercambiar": "Exchange",
+    "quemarToken": "Burn Token",
+    "compensar": "Offset",
+    "ayuda": "Help",
+    "configuracion": "Settings",
+    "cerrarSesion": "Log Out"
+  },
   "Calculator": {
     "title": "Carbon Footprint Calculator",
     "subtitle": "Calculate your environmental impact and discover how many carbon credits you need",

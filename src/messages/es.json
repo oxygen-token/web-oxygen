@@ -181,6 +181,15 @@
     "message": "Fuiste registrado exitosamente. ¡Estaremos en contacto pronto!",
     "back-link": "Volver al inicio"
   },
+  "SideBarDashboard": {
+    "inicio": "Inicio",
+    "intercambiar": "Intercambiar",
+    "quemarToken": "Quemar Token",
+    "compensar": "Compensar",
+    "ayuda": "Ayuda",
+    "configuracion": "Configuración",
+    "cerrarSesion": "Cerrar Sesión"
+  },
   "Calculator": {
     "title": "Calculadora de Huella de Carbono",
     "subtitle": "Calcula tu impacto ambiental y descubre cuántos créditos de carbono necesitas",

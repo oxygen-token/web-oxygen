@@ -1,6 +1,7 @@
 import "./globals.css";
 
 import RootLayout from "./layout-ga";
+import { Transition_Provider } from "./context/Transition_Context";
 
 const { NextIntlClientProvider } = require("next-intl");
 const { notFound } = require("next/navigation");
@@ -28,7 +29,9 @@ async function LocaleLayout({ children, params: { locale } }) {
       <body>
         <RootLayout />
         <NextIntlClientProvider locale={locale} messages={messages}>
-          {children}
+          <Transition_Provider>
+            {children}
+          </Transition_Provider>
         </NextIntlClientProvider>
       </body>
     </html>
