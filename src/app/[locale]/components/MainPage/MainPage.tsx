@@ -1,5 +1,4 @@
 // Components
-import Navbar from "../Navbar/Navbar";
 import Footer from "../Footer/Footer";
 import Partnerships from "../Partnerships/Partnerships";
 
@@ -22,7 +21,6 @@ const MainPage = () => {
     <>
       <PreLanding />
 
-      <Navbar />
       <BackgroundVideo />
 
       <Hero />

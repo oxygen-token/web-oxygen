@@ -22,7 +22,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
           <SideBarDashboard />
         </div>
         <main className="flex-1 bg-gradient-to-br from-teal-dark via-teal-medium to-teal min-h-[calc(100vh-4rem)] relative overflow-hidden">
-          <div className="p-8 sm:p-10 lg:p-12 h-full">
+          <div className="h-full p-0 lg:p-8 xl:p-12">
             <Page_Transition 
               isTransitioning={isTransitioning}
               className="w-full mx-auto h-full"

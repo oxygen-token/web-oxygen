@@ -25,7 +25,7 @@ const VideoModal = ({ videoID, onClose }: VideoModalProps) => {
         <iframe
           width="1000"
           height="600"
-          src={`https://www.youtube.com/embed/${videoID}?autoplay=1&playsinline=1&vr=1`}
+          src={`https://www.youtube.com/embed/${videoID}?autoplay=1&playsinline=1&vr=1&vq=hd1080&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&cc_load_policy=0`}
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen
         ></iframe>

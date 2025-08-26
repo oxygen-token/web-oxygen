@@ -72,6 +72,7 @@
     "home": "Home",
     "us": "About Us",
     "project": "Projects",
+    "community": "Community",
     "calculator": "Calculator",
     "buy": "Buy",
     "login": "Log in",
@@ -88,6 +89,19 @@
     "joinus-link": "Join Us",
     "news": "Subscribe to our newsletter",
     "news-button": "Send"
+  },
+  "Blog": {
+    "title": "Community",
+    "subtitle": "Discover the latest news, insights, and stories about environmental conservation and our mission to protect native forests.",
+    "allPosts": "All Posts",
+    "searchPlaceholder": "Search posts...",
+    "views": "views",
+    "comments": "comments",
+    "aboutSection": "About Our Community",
+    "aboutText": "We share insights about forest conservation, carbon credits, and environmental initiatives. Stay updated with our latest projects and achievements.",
+    "articles": "articles",
+    "updated": "Regularly updated",
+    "moreComing": "More articles coming soon..."
   },
   "AboutUs": {
     "title": "This is Oxygen.",
@@ -156,6 +170,7 @@
     "lastname-field": "Last name",
     "company-field": "Company name (optional)",
     "country-field": "Country",
+    "affiliate-field": "Affiliate code (optional)",
     "email-field": "Email",
     "password-field": "Create password",
     "verify-password-field": "Verify password",
@@ -163,6 +178,7 @@
     "lastname-placeholder": "Enter your last name",
     "company-placeholder": "Enter your company name",
     "country-placeholder": "Select your country",
+    "affiliate-placeholder": "Enter your affiliate code",
     "email-placeholder": "Enter your email",
     "password-placeholder": "Choose your password",
     "verify-password-placeholder": "Repeat your password",
@@ -189,6 +205,22 @@
     "ayuda": "Help",
     "configuracion": "Settings",
     "cerrarSesion": "Log Out"
+  },
+  "dashboard": {
+    "tour": {
+      "metrics": "Here you can see your main metrics: carbon credits, absorbed CO₂ and protected area",
+      "projects": "Find your active projects and the impact of your carbon footprint",
+      "earnings": "Visualize your earnings and the growth of your investment over time",
+      "social": "Share your environmental impact on social networks and get your certificate",
+      "restart": "Restart tour"
+    }
+  },
+  "common": {
+    "back": "Back",
+    "close": "Close",
+    "finish": "Finish",
+    "next": "Next",
+    "skip": "Skip"
   },
   "Calculator": {
     "title": "Carbon Footprint Calculator",
@@ -264,6 +296,15 @@
       "credits": "Carbon credits needed:",
       "compensate": "Offset my footprint",
       "seeProjects": "See offset projects"
+    },
+    "verificationModal": {
+      "title": "Verification Code",
+      "description": "Please enter the 6 digits received in the login email",
+      "emailDetails": "We have sent a verification code to your email. Check your inbox and copy the exact 6 digits you received.",
+      "verifying": "Verifying...",
+      "errorMessage": "Incorrect code. Please try again.",
+      "cancelButton": "Cancel",
+      "verifyButton": "Verify"
     },
     "sources": {
       "button": "Sources",

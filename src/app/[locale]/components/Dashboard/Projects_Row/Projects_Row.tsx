@@ -11,25 +11,20 @@ interface Projects_RowProps {
 
 const Projects_Row = memo(({ projects, footprint }: Projects_RowProps) => {
   return (
-    <div className="mb-20 sm:mb-24 lg:mb-28">
-      <h2 className="text-base sm:text-lg font-bold text-white mb-8 sm:mb-10">
+    <div className="projects-section mb-6 sm:mb-8 lg:mb-20 xl:mb-24">
+      <h2 className="text-base sm:text-lg font-bold text-white mb-4 sm:mb-6 lg:mb-8 xl:mb-10">
         Proyectos vigentes
       </h2>
       
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-12 sm:gap-16 lg:gap-20">
-        <div className="xl:col-span-2">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-0">
-            <div className="relative">
-              <Project_Card data={projects[0]} />
-              <div className="absolute right-0 top-1/2 transform -translate-y-1/2 w-px h-4/5 bg-gray-400/30"></div>
-            </div>
-            <div className="relative">
-              <Project_Card data={projects[1]} />
-            </div>
-          </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-10 xl:gap-16 min-h-[250px]">
+        <div className="relative">
+          <Project_Card data={projects[0]} />
+          <div className="absolute right-0 top-1/2 transform -translate-y-1/2 w-px h-4/5 bg-gray-400/30"></div>
         </div>
-        
-        <div className="xl:col-span-1">
+        <div className="relative">
+          <Project_Card data={projects[1]} />
+        </div>
+        <div className="h-full">
           <Carbon_Footprint_Card data={footprint} />
         </div>
       </div>

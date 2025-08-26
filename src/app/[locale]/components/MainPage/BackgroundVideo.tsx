@@ -26,6 +26,18 @@ export function BackgroundVideo() {
             loop={true}
             onReady={showVideo}
             muted
+            config={{
+              youtube: {
+                playerVars: {
+                  vq: 'hd1080',
+                  modestbranding: 1,
+                  rel: 0,
+                  showinfo: 0,
+                  iv_load_policy: 3,
+                  cc_load_policy: 0
+                }
+              }
+            }}
           />
         </div>
       </ClientOnly>

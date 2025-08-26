@@ -15,13 +15,13 @@ import { useSidebarSync } from "../../hooks/useSidebarSync";
 import { useTransition } from "../../context/Transition_Context";
 
 const menuItems = [
-  { nameKey: "inicio", href: "/en/dashboard", icon: PiHouse },
-  { nameKey: "intercambiar", href: "/en/dashboard/intercambiar", icon: PiArrowsClockwise },
-  { nameKey: "quemarToken", href: "/en/dashboard/quemar-token", icon: PiFire },
-  { nameKey: "compensar", href: "/en/dashboard/compensar", icon: PiCurrencyDollar },
-  { nameKey: "ayuda", href: "/en/dashboard/ayuda", icon: PiQuestion },
-  { nameKey: "configuracion", href: "/en/dashboard/configuracion", icon: PiGear },
-  { nameKey: "cerrarSesion", href: "/logout", icon: PiSignOut },
+  { nameKey: "inicio", href: "/en/dashboard", icon: PiHouse, disabled: false },
+  { nameKey: "intercambiar", href: "/en/dashboard/intercambiar", icon: PiArrowsClockwise, disabled: true },
+  { nameKey: "quemarToken", href: "/en/dashboard/quemar-token", icon: PiFire, disabled: true },
+  { nameKey: "compensar", href: "/en/dashboard/compensar", icon: PiCurrencyDollar, disabled: true },
+  { nameKey: "ayuda", href: "/en/dashboard/ayuda", icon: PiQuestion, disabled: true },
+  { nameKey: "configuracion", href: "/en/dashboard/configuracion", icon: PiGear, disabled: true },
+  { nameKey: "cerrarSesion", href: "/logout", icon: PiSignOut, disabled: false },
 ];
 
 const SideBarDashboard = memo(() => {
@@ -29,6 +29,7 @@ const SideBarDashboard = memo(() => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [clickedIndex, setClickedIndex] = useState<number | null>(null);
+  const [showTooltip, setShowTooltip] = useState<number | null>(null);
 
   const { isTransitioning, startTransition } = useTransition();
 
@@ -45,7 +46,9 @@ const SideBarDashboard = memo(() => {
     }
   }, [pathname, activeIndex]);
 
-  const handleItemClick = useCallback(async (index: number, href: string) => {
+  const handleItemClick = useCallback(async (index: number, href: string, disabled: boolean) => {
+    if (disabled) return;
+    
     console.log("Click - index:", index, "current:", activeIndex);
     if (index === activeIndex || isTransitioning) return;
     
@@ -72,10 +75,11 @@ const SideBarDashboard = memo(() => {
 
   const handleMouseLeave = useCallback(() => {
     setHoveredIndex(null);
+    setShowTooltip(null);
   }, []);
 
   return (
-    <div className="bg-gradient-to-b from-teal-dark via-teal-medium to-teal text-white h-full relative overflow-hidden">
+    <div className="sidebar-navigation bg-gradient-to-b from-teal-dark via-teal-medium to-teal text-white h-full relative overflow-hidden">
       <div className="relative h-full py-6">
         <nav className="relative px-4">
           <ul className="space-y-1 relative">
@@ -84,15 +88,22 @@ const SideBarDashboard = memo(() => {
               const isActive = index === activeIndex;
               const isHovered = index === hoveredIndex;
               const isClicked = index === clickedIndex;
-              const isDisabled = isTransitioning;
+              const isDisabled = item.disabled || isTransitioning;
               
-
+              const handleMouseEnter = () => {
+                if (!isTransitioning) {
+                  setHoveredIndex(index);
+                  if (item.disabled) {
+                    setTimeout(() => setShowTooltip(index), 500);
+                  }
+                }
+              };
               
               return (
                 <li key={item.nameKey} className="relative z-10">
                   <button
-                    onClick={() => handleItemClick(index, item.href)}
-                    onMouseEnter={() => handleMouseEnter(index)}
+                    onClick={() => handleItemClick(index, item.href, item.disabled)}
+                    onMouseEnter={handleMouseEnter}
                     onMouseLeave={handleMouseLeave}
                     className={`flex items-center gap-4 px-6 py-4 rounded-xl transition-all duration-300 ease-out relative w-full text-left h-14 group
                       ${isActive
@@ -111,7 +122,9 @@ const SideBarDashboard = memo(() => {
                             ? "text-white"
                             : isHovered
                               ? "text-white scale-110"
-                              : "text-white"
+                              : item.disabled
+                                ? "text-gray-400"
+                                : "text-white"
                         }`}
                       />
                     </div>
@@ -120,7 +133,9 @@ const SideBarDashboard = memo(() => {
                       className={`text-sm transition-all duration-300 leading-none ${
                         isActive
                           ? "font-semibold text-white"
-                          : "font-medium text-white"
+                          : item.disabled
+                            ? "font-medium text-gray-400"
+                            : "font-medium text-white"
                       }`}
                     >
                       {item.nameKey === "inicio" ? "Home" : 
@@ -140,6 +155,15 @@ const SideBarDashboard = memo(() => {
                       isHovered && !isActive ? "bg-white/5" : ""
                     }`} />
                   </button>
+                  
+                  {showTooltip === index && item.disabled && (
+                    <div className="absolute left-full ml-2 top-1/2 transform -translate-y-1/2 z-50">
+                      <div className="bg-black/90 text-white text-xs px-3 py-2 rounded-lg shadow-lg whitespace-nowrap backdrop-blur-sm border border-white/20">
+                        Pronto podrás acceder a esta opción
+                        <div className="absolute left-0 top-1/2 transform -translate-x-1 -translate-y-1/2 w-2 h-2 bg-black/90 rotate-45 border-l border-b border-white/20"></div>
+                      </div>
+                    </div>
+                  )}
                 </li>
               );
             })}

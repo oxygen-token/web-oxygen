@@ -2,6 +2,7 @@
 import DashboardLayout from "../components/DashboardLayout/DashboardLayout";
 import Dashboard_Main from "../components/Dashboard/Dashboard_Main/Dashboard_Main";
 import Animated_Page from "../components/ui/Animated_Page";
+import AuthLoading from "../components/ui/Auth_Loading";
 
 // Datos de ejemplo
 const mockData = {
@@ -20,7 +21,7 @@ const mockData = {
     },
     {
       title: "m² salvados",
-      value: "X",
+      value: "5",
       icon: "/assets/images/imgTrees.jpg",
       description: "Área protegida"
     }
@@ -82,10 +83,12 @@ const mockData = {
 
 export default function DashboardPage() {
   return (
-    <DashboardLayout>
-      <Animated_Page>
-        <Dashboard_Main {...mockData} />
-      </Animated_Page>
-    </DashboardLayout>
+    <AuthLoading requireAuth={true}>
+      <DashboardLayout>
+        <Animated_Page>
+          <Dashboard_Main {...mockData} />
+        </Animated_Page>
+      </DashboardLayout>
+    </AuthLoading>
   );
 } 

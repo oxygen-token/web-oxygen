@@ -22,6 +22,36 @@ body {
   margin: 0;
 }
 
+input {
+  background-color: #00caa61a !important;
+  border: none !important;
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+input::placeholder {
+  color: rgba(209, 213, 219, 0.559) !important;
+}
+
+input:focus {
+  background-color: #00caa61a !important;
+  border: 1px solid rgba(34, 197, 94, 0.7) !important;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.5s ease-out forwards;
+}
+
 .anteSala {
   display: flex;
   justify-content: center;
@@ -51,4 +81,18 @@ body {
   .line {
     min-width: 300px;
   }
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.navbar-transparent {
+  background: transparent !important;
+  backdrop-filter: none !important;
 }

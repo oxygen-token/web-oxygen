@@ -48,13 +48,13 @@ const Earnings_Card = memo(({ data }: Earnings_CardProps) => {
     >
       <div className="flex justify-between items-start mb-2 sm:mb-3">
         <div className="space-y-0.5">
-          <h3 className="text-xs sm:text-sm font-semibold text-white">
+          <h3 className="text-sm sm:text-base font-semibold text-white">
             Tus ganancias
           </h3>
-          <p className="text-xs text-white">
+          <p className="text-xs sm:text-sm text-white">
             Últimos 12 meses
           </p>
-          <p className="text-base sm:text-lg font-bold text-white">
+          <p className="text-lg sm:text-xl font-bold text-white">
             ${totalEarnings.toLocaleString()}
           </p>
         </div>

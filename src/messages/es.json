@@ -72,6 +72,7 @@
     "home": "Inicio",
     "us": "Nosotros",
     "project": "Proyectos",
+    "community": "Comunidad",
     "calculator": "Calculadora",
     "buy": "Comprar",
     "login": "Iniciar sesión",
@@ -88,6 +89,19 @@
     "joinus-link": "Unite",
     "news": "Suscribite a nuestro newsletter",
     "news-button": "Enviar"
+  },
+  "Blog": {
+    "title": "Comunidad",
+    "subtitle": "Descubrí las últimas noticias, insights e historias sobre conservación ambiental y nuestra misión de proteger los bosques nativos.",
+    "allPosts": "Todos los Posts",
+    "searchPlaceholder": "Buscar posts...",
+    "views": "vistas",
+    "comments": "comentarios",
+    "aboutSection": "Sobre Nuestra Comunidad",
+    "aboutText": "Compartimos insights sobre conservación forestal, bonos de carbono e iniciativas ambientales. Mantenete actualizado con nuestros últimos proyectos y logros.",
+    "articles": "artículos",
+    "updated": "Actualizado regularmente",
+    "moreComing": "Más artículos próximamente..."
   },
   "AboutUs": {
     "title": "Ésto es Oxygen.",
@@ -156,6 +170,7 @@
     "lastname-field": "Apellido",
     "company-field": "Nombre de la empresa (opcional)",
     "country-field": "País",
+    "affiliate-field": "Código de afiliado (opcional)",
     "email-field": "Correo electrónico",
     "password-field": "Crear contraseña",
     "verify-password-field": "Verificar contraseña",
@@ -163,6 +178,7 @@
     "lastname-placeholder": "Ingresá tu apellido",
     "company-placeholder": "Ingresá tu empresa",
     "country-placeholder": "Seleccioná tu país",
+    "affiliate-placeholder": "Ingresá tu código de afiliado",
     "email-placeholder": "Ingresá tu correo electrónico",
     "password-placeholder": "Elegí tu contraseña",
     "verify-password-placeholder": "Repetí tu contraseña",
@@ -189,6 +205,22 @@
     "ayuda": "Ayuda",
     "configuracion": "Configuración",
     "cerrarSesion": "Cerrar Sesión"
+  },
+  "dashboard": {
+    "tour": {
+      "metrics": "Aquí puedes ver tus métricas principales: bonos de carbono, CO₂ absorbido y área protegida",
+      "projects": "Encuentra tus proyectos activos y el impacto de tu huella de carbono",
+      "earnings": "Visualiza tus ganancias y el crecimiento de tu inversión en el tiempo",
+      "social": "Comparte tu impacto ambiental en redes sociales y obtén tu certificado",
+      "restart": "Reiniciar tour"
+    }
+  },
+  "common": {
+    "back": "Atrás",
+    "close": "Cerrar",
+    "finish": "Finalizar",
+    "next": "Siguiente",
+    "skip": "Saltar"
   },
   "Calculator": {
     "title": "Calculadora de Huella de Carbono",
@@ -264,6 +296,15 @@
       "credits": "Créditos de carbono necesarios:",
       "compensate": "Compensar mi huella",
       "seeProjects": "Ver proyectos de compensación"
+    },
+    "verificationModal": {
+      "title": "Código de Verificación",
+      "description": "Por favor ingresa los 6 dígitos recibidos en el email de login",
+      "emailDetails": "Hemos enviado un código de verificación a tu email. Revisa tu bandeja de entrada y copia los 6 dígitos exactos que recibiste.",
+      "verifying": "Verificando...",
+      "errorMessage": "Código incorrecto. Inténtalo de nuevo.",
+      "cancelButton": "Cancelar",
+      "verifyButton": "Verificar"
     },
     "sources": {
       "button": "Fuentes",

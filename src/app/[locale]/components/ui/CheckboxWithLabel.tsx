@@ -40,10 +40,10 @@ export const CheckboxWithLabel = forwardRef<HTMLInputElement, Props>(
             </svg>
           </div>
         </div>
-        <span className="font-medium text-sm/5">
+        <span className="font-medium text-sm/5 text-white">
           {label}
           {props.required && (
-            <span className="font-normal text-neutral-700"> *</span>
+            <span className="font-normal text-white"> *</span>
           )}
         </span>
       </label>

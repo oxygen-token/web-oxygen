@@ -1,16 +1,23 @@
 "use client";
 import { memo } from "react";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { CarbonFootprintData } from "../types";
-import { PiThermometer, PiGlobe } from "react-icons/pi";
 
 interface Carbon_Footprint_CardProps {
   data: CarbonFootprintData;
 }
 
 const Carbon_Footprint_Card = memo(({ data }: Carbon_Footprint_CardProps) => {
+  const router = useRouter();
+
+  const handleCalculateClick = () => {
+    router.push('/calculadora');
+  };
+
   return (
     <div 
-      className="dashboard-card rounded-xl p-3 sm:p-4 backdrop-blur-sm border border-white/20"
+      className="carbon-footprint-card dashboard-card rounded-xl p-3 sm:p-4 backdrop-blur-sm border border-white/20 h-44 w-full flex flex-col justify-between"
       style={{
         background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.2) 100%)',
         boxShadow: '0 4px 16px 0 rgba(0, 0, 0, 0.1)',
@@ -18,36 +25,59 @@ const Carbon_Footprint_Card = memo(({ data }: Carbon_Footprint_CardProps) => {
         WebkitBackdropFilter: 'blur(8px)'
       }}
     >
-      <div className="flex items-start justify-between mb-2 sm:mb-3">
-        <h3 className="text-xs sm:text-sm font-semibold text-gray-800">
-          Tú huella
-        </h3>
-        <div className="flex items-center space-x-1 sm:space-x-1.5">
-          <PiGlobe className="w-3 h-3 sm:w-4 sm:h-4 text-white" />
-          <div className="relative">
-            <PiThermometer className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-white" />
-            <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 w-1 h-3 bg-red-500 rounded-full"></div>
+      <div className="grid grid-cols-2 h-full gap-0">
+        {/* Columna Izquierda - Información + Texto */}
+        <div className="flex flex-col justify-between">
+          <div>
+            <h3 className="text-sm sm:text-base font-semibold text-white mb-2">
+              Tú huella
+            </h3>
+            <div className="flex items-baseline space-x-1">
+              <p className="text-xl sm:text-2xl font-bold text-white">
+                0,00
+              </p>
+              <p className="text-sm text-white/80">
+                {data.unit} / {data.period}
+              </p>
+            </div>
           </div>
+          
+          <button 
+            onClick={handleCalculateClick}
+            className="w-full py-3 px-4 rounded-xl font-semibold text-sm transition-all duration-200 text-white cursor-pointer"
+            style={{
+              background: 'linear-gradient(135deg, #0d9488 0%, #14b8a6 50%, #0d9488 100%)',
+              border: '1px solid rgba(255, 255, 255, 0.2)',
+              boxShadow: '0 4px 15px rgba(13, 148, 136, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2)',
+              color: 'white'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'linear-gradient(135deg, #0f766e 0%, #0d9488 50%, #0f766e 100%)';
+              e.currentTarget.style.boxShadow = '0 6px 20px rgba(13, 148, 136, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3)';
+              e.currentTarget.style.transform = 'scale(1.02)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'linear-gradient(135deg, #0d9488 0%, #14b8a6 50%, #0d9488 100%)';
+              e.currentTarget.style.boxShadow = '0 4px 15px rgba(13, 148, 136, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2)';
+              e.currentTarget.style.transform = 'scale(1)';
+            }}
+          >
+            Calcular tú huella de carbono
+          </button>
+        </div>
+        
+        {/* Columna Derecha - Logo */}
+        <div className="flex items-center justify-center m-0 p-0 w-full h-full">
+          <Image
+            src="/assets/images/mundo.png"
+            alt="Mundo"
+            width={120}
+            height={120}
+            className="w-20 h-20 sm:w-24 sm:h-24 lg:w-28 lg:h-28 m-0 p-0"
+            style={{ margin: 0, padding: 0, display: 'block' }}
+          />
         </div>
       </div>
-      
-      <div className="mb-3 sm:mb-4">
-        <div className="text-center">
-          <p className="text-lg sm:text-xl font-bold text-gray-800 mb-1">
-            {data.value}
-          </p>
-          <p className="text-xs text-gray-600">
-            {data.unit} / {data.period}
-          </p>
-        </div>
-      </div>
-      
-      <button 
-        className="w-full py-2 sm:py-2.5 px-3 sm:px-4 rounded-lg font-semibold transition-colors bg-white border border-gray-200"
-        style={{ color: '#006A6A' }}
-      >
-        Compensar
-      </button>
     </div>
   );
 });

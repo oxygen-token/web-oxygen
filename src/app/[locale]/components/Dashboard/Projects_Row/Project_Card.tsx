@@ -10,7 +10,7 @@ interface Project_CardProps {
 
 const Project_Card = memo(({ data }: Project_CardProps) => {
   return (
-    <div className="dashboard-card rounded-xl p-4 sm:p-5 flex items-center space-x-5 sm:space-x-6">
+    <div className="project-card dashboard-card rounded-xl p-4 sm:p-5 flex items-center space-x-5 sm:space-x-6">
       <div className="flex-shrink-0">
         <div className="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 rounded-lg overflow-hidden border-2 border-white/30">
           <Image
