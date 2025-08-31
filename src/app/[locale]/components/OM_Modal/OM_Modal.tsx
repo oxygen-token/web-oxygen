@@ -289,30 +289,32 @@ export default function OM_Modal({ show, onClose }: OM_Modal_Props) {
             
             <div className="om-content">
               <div className="om-details">
-                <div className="w-16 h-16 mx-auto mb-4 bg-white/20 rounded-full flex items-center justify-center overflow-hidden shadow-lg backdrop-blur-sm border border-white/30">
-                  <svg className="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
-                  </svg>
-                </div>
-                <h3>¡Bienvenido!</h3>
-                <p>Tu balance actual</p>
+                <h3 className="text-xs font-bold text-white mb-3 text-center">
+                  Bienvenid@ a la colaboración LUMEN x OXYGEN
+                </h3>
                 
-                <div className="bg-white/20 rounded-xl p-8 backdrop-blur-sm border border-white/30 shadow-inner w-full max-w-xs">
-                  <div className="space-y-3">
-                    <div className="text-5xl font-bold text-white drop-shadow-lg" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.8), 0 0 20px rgba(255,255,255,0.3)' }}>
-                      {amount.toFixed(1)}
-                    </div>
-                    <div className="text-xl font-semibold text-white drop-shadow-md" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.8), 0 0 10px rgba(255,255,255,0.2)' }}>
-                      OM Tokens
-                    </div>
+                <div className="space-y-3 text-white text-center">
+                  <p className="text-xs" style={{ fontSize: '12px !important' }}>
+                    Por haber ido a la fiesta y registrarte, ya tenés <span className="font-bold text-xs" style={{ fontSize: '12px !important' }}>{amount.toFixed(1)} tokens OM</span> en tu cuenta.
+                  </p>
+                  
+                  <p className="text-xs font-semibold" style={{ fontSize: '12px !important' }}>¿Y eso qué significa?</p>
+                  
+                  <div className="space-y-2 text-xs leading-relaxed">
+                    <p style={{ fontSize: '12px !important' }}>Cada OM representa 1 m² real de bosque protegido en La Florencia, Formosa. Es tu pedacito de Naturaleza. Literal.</p>
+                    <p style={{ fontSize: '12px !important' }}>Ese bosque absorbe CO₂ y genera bonos de carbono (tokens OC). Con el tiempo, vas acumulando OC que podés cambiar por USDT (dólares digitales).</p>
                   </div>
+                  
+                  <p className="font-semibold text-xs mt-4" style={{ fontSize: '12px !important' }}>
+                    En resumen: bailaste, salvaste bosque, y empezaste a ganar.
+                  </p>
                 </div>
                 
                 <button
                   onClick={handleClose}
-                  className="om-contact-btn"
+                  className="om-contact-btn mt-6"
                 >
-                  Go to my dashboard
+                  Seguí el tour por tu Dashboard
                 </button>
               </div>
             </div>

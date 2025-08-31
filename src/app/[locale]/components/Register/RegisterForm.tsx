@@ -26,8 +26,11 @@ const RegisterForm = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [isVerifying, setIsVerifying] = useState(false);
   const [verificationStatus, setVerificationStatus] = useState<"idle" | "success" | "failed">("idle");
+  const [showToast, setShowToast] = useState(false);
+  const [desktopMessageShown, setDesktopMessageShown] = useState(false);
   const [userCountry, setUserCountry] = useState("");
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [showStepErrors, setShowStepErrors] = useState(false);
 
   const {
     register,
@@ -54,6 +57,20 @@ const RegisterForm = () => {
     };
     detectCountry();
   }, [setValue]);
+
+  useEffect(() => {
+    if (verificationStatus === "success") {
+      setShowToast(true);
+      setDesktopMessageShown(true);
+      const timer = setTimeout(() => {
+        setShowToast(false);
+        setTimeout(() => {
+          setVerificationStatus("idle");
+        }, 300);
+      }, 4000);
+      return () => clearTimeout(timer);
+    }
+  }, [verificationStatus]);
 
   const error = (field: keyof FormData) => {
     return formState.errors[field]?.message as string;
@@ -141,6 +158,13 @@ const RegisterForm = () => {
 
   const nextStep = () => {
     if (currentStep < 3 && !isTransitioning) {
+      if (!canProceedToNext()) {
+        setShowStepErrors(true);
+        setTimeout(() => setShowStepErrors(false), 3000);
+        return;
+      }
+      
+      setShowStepErrors(false);
       setIsTransitioning(true);
       
       setTimeout(() => {
@@ -162,15 +186,44 @@ const RegisterForm = () => {
   };
 
   const canProceedToNext = () => {
+    const fullName = watch("fullName");
+    const email = watch("email");
+    const password = watch("password");
+    const terms = watch("terms");
+
     switch (currentStep) {
       case 1:
-        return watch("fullName") && watch("email") && watch("password");
+        const isValid = fullName && fullName.trim().length > 0 && 
+                       email && email.trim().length > 0 && 
+                       password && password.trim().length >= 8;
+        console.log("Step 1 validation:", { fullName, email, password, isValid });
+        return isValid;
       case 2:
         return true;
       case 3:
-        return watch("terms");
+        return terms === true;
       default:
         return false;
+    }
+  };
+
+  const getMissingFieldsMessage = () => {
+    const fullName = watch("fullName");
+    const email = watch("email");
+    const password = watch("password");
+    const terms = watch("terms");
+
+    switch (currentStep) {
+      case 1:
+        const missing = [];
+        if (!fullName || !fullName.trim()) missing.push("Full name");
+        if (!email || !email.trim()) missing.push("Email");
+        if (!password || password.length < 8) missing.push("Password (min 8 characters)");
+        return missing.length > 0 ? `Please complete: ${missing.join(", ")}` : "";
+      case 3:
+        return !terms ? "Please accept the terms and conditions" : "";
+      default:
+        return "";
     }
   };
 
@@ -203,7 +256,23 @@ const RegisterForm = () => {
         variant="large"
         type="password"
         id="password"
-        label="Password"
+        label={
+          <div className="flex items-center justify-between">
+            <span>Password</span>
+            {watch("password") && (
+              <span className={`text-xs ${
+                watch("password").length >= 8 
+                  ? "text-green-400" 
+                  : "text-orange-400"
+              }`}>
+                {watch("password").length}/8
+                {watch("password").length < 8 && (
+                  <span className="ml-1">({8 - watch("password").length})</span>
+                )}
+              </span>
+            )}
+          </div>
+        }
         placeholder="Choose your password"
         error={error("password")}
         {...register("password", {
@@ -212,7 +281,7 @@ const RegisterForm = () => {
         })}
       />
 
-      <div className="flex-1 flex items-end">
+      <div className="flex items-end">
         <Star_Border
           as="button"
           type="button"
@@ -221,7 +290,7 @@ const RegisterForm = () => {
           color="cyan"
           speed="4s"
           thickness={3}
-          className="w-full py-3 px-4 text-base font-semibold"
+          className="w-full py-1.5 px-2 text-xs font-medium"
         >
           Next
         </Star_Border>
@@ -244,13 +313,13 @@ const RegisterForm = () => {
         variant="large"
         id="companyName"
         label="Company"
-        placeholder="Enter your company name (optional)"
+        placeholder="optional"
         error={error("companyName")}
         {...register("companyName")}
       />
 
-      <div className="flex-1 flex items-end">
-        <div className="flex gap-3 w-full">
+      <div className="flex items-end">
+        <div className="flex flex-col gap-2 w-full">
           <Star_Border
             as="button"
             type="button"
@@ -259,7 +328,7 @@ const RegisterForm = () => {
             color="cyan"
             speed="4s"
             thickness={3}
-            className="flex-1 py-3 px-4 text-base font-semibold"
+            className="w-full py-1.5 px-2 text-xs font-medium opacity-70"
           >
             Previous
           </Star_Border>
@@ -271,7 +340,7 @@ const RegisterForm = () => {
             color="cyan"
             speed="4s"
             thickness={3}
-            className="flex-1 py-3 px-4 text-base font-semibold"
+            className="w-full py-1.5 px-2 text-xs font-medium"
           >
             Next
           </Star_Border>
@@ -300,29 +369,15 @@ const RegisterForm = () => {
             )}
           </div>
         }
-        placeholder="Enter affiliate code (optional)"
+        placeholder="optional"
         error={error("affiliateCode")}
         {...register("affiliateCode")}
       />
       
-      {verificationStatus === "success" && (
-        <div className="p-3 bg-teal-accent/20 border border-teal-accent/30 text-white text-sm rounded-lg">
-          <div>+5 OM guaranteed</div>
-          <div>with this sign up</div>
-        </div>
-      )}
 
-      <CheckboxWithLabel
-        id="terms"
-        label={t("terms-and-conditions")}
-        {...register("terms", { required: "You must accept the terms and conditions" })}
-      />
-      <div className="text-red-500 text-xs/3 min-h-3">
-        {error("terms")}
-      </div>
 
-      <div className="flex-1 flex items-end">
-        <div className="flex gap-3 w-full">
+      <div className="flex items-end">
+        <div className="flex flex-col gap-2 w-full">
           <Star_Border
             as="button"
             type="button"
@@ -331,7 +386,7 @@ const RegisterForm = () => {
             color="cyan"
             speed="4s"
             thickness={3}
-            className="flex-1 py-3 px-4 text-base font-semibold"
+            className="w-full py-1.5 px-2 text-xs font-medium opacity-70"
           >
             Previous
           </Star_Border>
@@ -342,19 +397,172 @@ const RegisterForm = () => {
             color="cyan"
             speed="4s"
             thickness={3}
-            className="flex-1 py-3 px-4 text-base font-semibold"
+            className="w-full py-1.5 px-2 text-xs font-medium"
           >
-            {isSubmitting ? "Creating Account..." : "Create Account"}
+            {isSubmitting ? "Creating..." : "Create"}
           </Star_Border>
+        </div>
+      </div>
+
+      <div className="mt-4">
+        <CheckboxWithLabel
+          id="terms"
+          label={t("terms-and-conditions")}
+          className="text-white/60 text-xs"
+          {...register("terms", { required: "You must accept the terms and conditions" })}
+        />
+        <div className="text-red-500 text-xs/3 min-h-3 mt-1">
+          {error("terms")}
         </div>
       </div>
     </div>
   );
 
+  const renderDesktopForm = () => (
+    <div className="flex flex-col gap-4 w-full">
+      <div className="grid grid-cols-2 gap-4">
+        <InputWithLabel
+          variant="large"
+          id="fullName"
+          label="Full name"
+          placeholder="Enter your full name"
+          error={error("fullName")}
+          {...register("fullName", { required: "Full name is required" })}
+        />
+
+        <InputWithLabel
+          variant="large"
+          id="email"
+          label="Email"
+          placeholder="Enter your email"
+          error={error("email")}
+          {...register("email", {
+            required: "Email is required",
+            pattern: { value: /.+@.+\.[a-zA-Z]+/, message: "Invalid email format" },
+          })}
+        />
+      </div>
+
+      <div className="grid grid-cols-2 gap-4">
+        <InputWithLabel
+          variant="large"
+          type="password"
+          id="password"
+          label="Password"
+          placeholder="Choose your password"
+          error={error("password")}
+          {...register("password", {
+            required: "Password is required",
+            minLength: { value: 8, message: "Password must be at least 8 characters" },
+          })}
+        />
+
+        <InputWithLabel
+          variant="large"
+          id="country"
+          label="Country"
+          value={userCountry}
+          disabled
+          className="opacity-70"
+        />
+      </div>
+
+      <InputWithLabel
+        variant="large"
+        id="companyName"
+        label="Company"
+        placeholder="Enter your company name (optional)"
+        error={error("companyName")}
+        {...register("companyName")}
+      />
+
+      <div className="grid grid-cols-2 gap-4">
+        <InputWithLabel
+          variant="large"
+          id="affiliateCode"
+          label={
+            <div className="flex items-center gap-2">
+              <span>Affiliate code</span>
+              {watch("affiliateCode") && (
+                <button
+                  type="button"
+                  onClick={handleVerifyAffiliate}
+                  disabled={isVerifying}
+                  className={`${getVerifyButtonClass()} transition-all duration-300 ease-in-out`}
+                >
+                  {getVerifyButtonText()}
+                </button>
+              )}
+            </div>
+          }
+          placeholder="optional"
+          error={error("affiliateCode")}
+          {...register("affiliateCode")}
+        />
+
+        <div className={`bg-teal-accent/20 border border-teal-accent/30 text-white text-sm rounded-lg p-3 flex flex-col justify-center transition-all duration-300 ease-in-out ${
+          desktopMessageShown 
+            ? "opacity-100 scale-100" 
+            : "opacity-0 scale-95"
+        }`}>
+          <div className="font-semibold">+5 OM guaranteed</div>
+          <div className="text-xs opacity-90">with this sign up</div>
+        </div>
+      </div>
+
+      <div className="flex items-center gap-3 mt-2">
+        <CheckboxWithLabel
+          id="terms"
+          label={t("terms-and-conditions")}
+          className="text-white/60 text-xs"
+          {...register("terms", { required: "You must accept the terms and conditions" })}
+        />
+      </div>
+      <div className="text-red-500 text-xs/3 min-h-3">
+        {error("terms")}
+      </div>
+
+      <Star_Border
+        as="button"
+        type="submit"
+        disabled={!watch("terms") || isSubmitting}
+        color="cyan"
+        speed="4s"
+        thickness={3}
+        className="w-full py-3 px-6 text-base font-medium mt-4"
+      >
+        {isSubmitting ? "Creating Account..." : "Create Account"}
+      </Star_Border>
+    </div>
+  );
+
   return (
     <div className="flex flex-col items-center relative">
+      {showToast && (
+        <div className={`fixed -bottom-20 left-1/2 transform -translate-x-1/4 z-50 lg:hidden ${showToast ? 'animate-toast-in' : 'animate-toast-out'}`}>
+          <div className="bg-teal-accent/95 backdrop-blur-sm border border-teal-accent/30 text-white text-sm rounded-lg p-3 shadow-lg">
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+              <div>
+                <div className="font-semibold">+5 OM guaranteed</div>
+                <div className="text-xs opacity-90">with this sign up</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      
       <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-lg mt-2 mb-2">
-        <div className="h-[500px] flex flex-col">
+        <div className="hidden lg:block">
+          {renderDesktopForm()}
+        </div>
+        
+        <div className="lg:hidden h-[400px] flex flex-col">
+          {showStepErrors && (
+            <div className="bg-red-500/20 border border-red-500/30 text-red-300 text-sm rounded-lg p-3 mb-3 animate-pulse">
+              {getMissingFieldsMessage()}
+            </div>
+          )}
           <div className="flex-1 flex items-start justify-center overflow-hidden">
             <div 
               className={`w-full transition-all duration-400 ease-out ${
@@ -369,7 +577,7 @@ const RegisterForm = () => {
             </div>
           </div>
 
-          <div className="h-16 flex items-center justify-center">
+          <div className="h-4 flex items-center justify-center">
             {renderStepIndicator()}
           </div>
         </div>

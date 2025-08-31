@@ -30,18 +30,10 @@ const userDashboardData = {
   projects: [
     {
       id: "1",
-      name: "Mi Proyecto Araucarias",
-      location: "Misiones",
+      name: "La Florencia",
+      location: "Formosa",
       price: "$15.00 / tnCO2",
-      image: "/assets/images/araucariasBuy.png",
-      status: "active" as const
-    },
-    {
-      id: "2",
-      name: "Mi Proyecto Salta",
-      location: "Salta",
-      price: "$12.50 / tnCO2",
-      image: "/assets/images/proyectoSalta.png",
+      image: "/assets/images/forestHD.jpg",
       status: "active" as const
     }
   ],

@@ -209,9 +209,9 @@
   "dashboard": {
     "tour": {
       "metrics": "Here you can see your main metrics: carbon credits, absorbed CO₂ and protected area",
-      "projects": "Find your active projects and the impact of your carbon footprint",
-      "earnings": "Visualize your earnings and the growth of your investment over time",
-      "social": "Share your environmental impact on social networks and get your certificate",
+      "projects": "A good first step to become a Carbon Neutral Person is to know, Check out our Carbon Footprint Calculator",
+      "earnings": "Meet the forest you are protecting: La Florencia! The Yagueretes thank you",
+      "social": "Other options will be enabled soon. Stay tuned for more features!",
       "restart": "Restart tour"
     }
   },

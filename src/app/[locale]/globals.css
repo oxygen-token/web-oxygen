@@ -52,6 +52,44 @@ input:focus {
   animation: fade-in 0.5s ease-out forwards;
 }
 
+@keyframes toast-in {
+  0% {
+    opacity: 0;
+    transform: translateY(100%) translateX(-50%) scale(0.95);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translateY(10%) translateX(-50%) scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) translateX(-50%) scale(1);
+  }
+}
+
+@keyframes toast-out {
+  0% {
+    opacity: 1;
+    transform: translateY(0) translateX(-50%) scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translateY(10%) translateX(-50%) scale(1.02);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(100%) translateX(-50%) scale(0.95);
+  }
+}
+
+.animate-toast-in {
+  animation: toast-in 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+}
+
+.animate-toast-out {
+  animation: toast-out 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+}
+
 .anteSala {
   display: flex;
   justify-content: center;

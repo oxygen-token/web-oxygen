@@ -27,6 +27,7 @@ const Star_Border = <T extends React.ElementType = "button">({
   return (
     <Component 
       className={`relative inline-block rounded-[20px] transition-all duration-300 hover:scale-105 hover:shadow-lg ${className} ${disabled ? 'opacity-50 cursor-not-allowed hover:scale-100 hover:shadow-none' : 'cursor-pointer'}`} 
+      disabled={disabled}
       {...(rest as any)}
       style={{
         padding: `${thickness}px 0`,

@@ -209,9 +209,9 @@
   "dashboard": {
     "tour": {
       "metrics": "Aquí puedes ver tus métricas principales: bonos de carbono, CO₂ absorbido y área protegida",
-      "projects": "Encuentra tus proyectos activos y el impacto de tu huella de carbono",
-      "earnings": "Visualiza tus ganancias y el crecimiento de tu inversión en el tiempo",
-      "social": "Comparte tu impacto ambiental en redes sociales y obtén tu certificado",
+      "projects": "Un buen primer paso para convertirte en una Persona Carbono Neutral es conocer, Revisa nuestra Calculadora de Huella de Carbono",
+      "earnings": "Conoce el bosque que estás protegiendo: ¡La Florencia! Los Yagueretes te agradecen",
+      "social": "Otras opciones estarán habilitadas próximamente. ¡Mantente atento a más funciones!",
       "restart": "Reiniciar tour"
     }
   },

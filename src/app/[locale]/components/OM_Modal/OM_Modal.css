@@ -213,16 +213,17 @@
 }
 
 .om-details h3 {
-  font-size: 2rem;
+  font-size: 18px !important;
   font-weight: 700;
   margin: 0;
   color: #ffffff;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8), 0 0 20px rgba(255, 255, 255, 0.3);
   letter-spacing: 0.5px;
+  line-height: 1.5;
 }
 
 .om-details p {
-  font-size: 1.1rem;
+  font-size: 12px !important;
   color: #ffffff;
   margin: 0;
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8), 0 0 10px rgba(255, 255, 255, 0.2);

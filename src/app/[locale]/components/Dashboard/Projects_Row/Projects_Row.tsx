@@ -22,7 +22,7 @@ const Projects_Row = memo(({ projects, footprint }: Projects_RowProps) => {
           <div className="absolute right-0 top-1/2 transform -translate-y-1/2 w-px h-4/5 bg-gray-400/30"></div>
         </div>
         <div className="relative">
-          <Project_Card data={projects[1]} />
+          {/* Empty space - project removed */}
         </div>
         <div className="h-full">
           <Carbon_Footprint_Card data={footprint} />
