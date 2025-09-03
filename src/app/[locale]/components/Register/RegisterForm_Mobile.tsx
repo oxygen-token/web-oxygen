@@ -9,6 +9,7 @@ import Link from "next/link";
 
 import { InputWithLabel } from "../ui/InputWithLabel";
 import { CheckboxWithLabel } from "../ui/CheckboxWithLabel";
+
 import Star_Border from "../ui/Star_Border";
 
 interface FormData {
@@ -68,7 +69,7 @@ const RegisterForm_Mobile = () => {
     console.log("Email:", data.email);
     
     try {
-      const response = await fetch("http://localhost:10001/register", {
+      const response = await fetch("https://backend-render-main.onrender.com/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -107,7 +108,7 @@ const RegisterForm_Mobile = () => {
 
     setIsVerifying(true);
     try {
-      const response = await fetch("http://localhost:10001/verify-affiliate-code", {
+              const response = await fetch("https://backend-render-main.onrender.com/verify-affiliate-code", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+
 export async function POST(request: NextRequest) {
   try {
     console.log("📡 POST /api/update-profile-status recibido");
     
     // Enviar la petición al backend
-    const backendResponse = await fetch('http://localhost:10001/update-profile-status', {
+    const backendResponse = await fetch('https://backend-render-main.onrender.com/update-profile-status', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

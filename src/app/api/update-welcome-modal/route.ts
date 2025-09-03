@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+
 export async function POST(request: NextRequest) {
   try {
     console.log("📡 POST /api/update-welcome-modal recibido");
     
     // Enviar la petición al backend
-    const backendResponse = await fetch('http://localhost:10001/update-welcome-modal', {
+    const backendResponse = await fetch('https://backend-render-main.onrender.com/update-welcome-modal', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

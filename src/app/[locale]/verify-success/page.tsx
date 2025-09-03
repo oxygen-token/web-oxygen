@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useState, useEffect } from "react";
 
+
 import Navbar from "../components/Navbar/Navbar";
 import Footer from "../components/Footer/Footer";
 import Light_Rays from "../components/ui/Light_Rays";
@@ -32,7 +33,7 @@ const VerifySuccess = () => {
 
       console.log("Starting email verification...");
       try {
-        const response = await fetch("http://localhost:10001/verify-email", {
+        const response = await fetch("https://backend-render-main.onrender.com/verify-email", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

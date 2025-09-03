@@ -1,5 +1,5 @@
 //const BASE_URL = "https://backend-render-main.onrender.com";
-const BASE_URL = "http://localhost:10001";
+const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "https://backend-render-main.onrender.com";
 
 // Simple thin wrapper around fetch()
 // TODO: use something like axios if/when API use grows more complex

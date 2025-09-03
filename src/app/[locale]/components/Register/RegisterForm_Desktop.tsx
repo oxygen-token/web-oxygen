@@ -10,6 +10,7 @@ import Link from "next/link";
 import { InputWithLabel } from "../ui/InputWithLabel";
 import { CheckboxWithLabel } from "../ui/CheckboxWithLabel";
 
+
 interface FormData {
   fullName: string;
   email: string;
@@ -64,7 +65,7 @@ const RegisterForm_Desktop = () => {
     console.log("Email:", data.email);
     
     try {
-      const response = await fetch("http://localhost:10001/register", {
+      const response = await fetch("https://backend-render-main.onrender.com/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -103,7 +104,7 @@ const RegisterForm_Desktop = () => {
 
     setIsVerifying(true);
     try {
-      const response = await fetch("http://localhost:10001/verify-affiliate-code", {
+              const response = await fetch("https://backend-render-main.onrender.com/verify-affiliate-code", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+
 export async function POST(request: NextRequest) {
   try {
     console.log("📡 POST /api/update-onboarding-step recibido");
@@ -9,7 +10,7 @@ export async function POST(request: NextRequest) {
     console.log("📋 Body recibido:", body);
     
     // Enviar la petición al backend
-    const backendResponse = await fetch('http://localhost:10001/update-onboarding-step', {
+    const backendResponse = await fetch('https://backend-render-main.onrender.com/update-onboarding-step', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
