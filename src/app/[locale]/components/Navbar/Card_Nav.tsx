@@ -187,8 +187,18 @@ const Card_Nav: React.FC<CardNavProps> = ({
         className={`card-nav ${isExpanded ? "open" : ""} block h-16 p-0 relative overflow-hidden`}
       >
         <div className="card-nav-top absolute inset-x-0 top-0 h-16 flex items-center justify-between px-5 z-[2]">
+          <div className="logo-container flex items-center">
+            <Link href="/" onClick={closeMenu}>
+              <Image
+                src={logoNav}
+                alt="Oxygen"
+                className="logo max-w-[150px] object-cover"
+              />
+            </Link>
+          </div>
+
           <div
-            className={`hamburger-menu ${isHamburgerOpen ? "open" : ""} group h-full flex flex-col items-center justify-center cursor-pointer gap-[6px] order-2`}
+            className={`hamburger-menu ${isHamburgerOpen ? "open" : ""} group h-full flex flex-col items-center justify-center cursor-pointer gap-[6px]`}
             onClick={toggleMenu}
             role="button"
             aria-label={isExpanded ? "Close menu" : "Open menu"}
@@ -205,16 +215,6 @@ const Card_Nav: React.FC<CardNavProps> = ({
                 isHamburgerOpen ? "-translate-y-[4px] -rotate-45" : ""
               } group-hover:opacity-75`}
             />
-          </div>
-
-          <div className="logo-container flex items-center order-1">
-            <Link href="/" onClick={closeMenu}>
-              <Image
-                src={logoNav}
-                alt="Oxygen"
-                className="logo max-w-[150px] object-cover"
-              />
-            </Link>
           </div>
         </div>
 

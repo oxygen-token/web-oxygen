@@ -69,7 +69,7 @@ const RegisterForm_Mobile = () => {
     console.log("Email:", data.email);
     
     try {
-      const response = await fetch("https://backend-render-main.onrender.com/register", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL || "https://backend-render-main.onrender.com"}/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -108,7 +108,7 @@ const RegisterForm_Mobile = () => {
 
     setIsVerifying(true);
     try {
-              const response = await fetch("https://backend-render-main.onrender.com/verify-affiliate-code", {
+              const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL || "https://backend-render-main.onrender.com"}/verify-affiliate-code`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

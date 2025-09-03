@@ -33,7 +33,7 @@ const VerifySuccess = () => {
 
       console.log("Starting email verification...");
       try {
-        const response = await fetch("https://backend-render-main.onrender.com/verify-email", {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL || "https://backend-render-main.onrender.com"}/verify-email`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

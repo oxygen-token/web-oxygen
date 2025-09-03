@@ -48,7 +48,7 @@ const Dashboard_Main = memo(({
       
       // Verificar welcomeModalShown y onboardingStep del backend
       const shouldShowWelcomeModal = !user.welcomeModalShown;
-      const shouldShowOnboardingTour = user.onboardingStep === "pending" || user.onboardingStep === "welcome_shown";
+      const shouldShowOnboardingTour = user.onboardingStep === "pending" || user.onboardingStep === "skipped";
       
       console.log("📊 Estado del onboarding:", {
         welcomeModalShown: user.welcomeModalShown,
@@ -87,12 +87,9 @@ const Dashboard_Main = memo(({
       // 1. Marcar modal de bienvenida como mostrado
       const modalUpdated = await updateWelcomeModal();
       if (modalUpdated) {
-        // 2. Actualizar onboarding step a "welcome_shown"
-        const stepUpdated = await updateOnboardingStep("welcome_shown");
-        if (stepUpdated) {
-          // 3. Marcar perfil como completado
-          await updateProfileStatus();
-        }
+        // 2. Marcar perfil como completado
+        await updateProfileStatus();
+        // 3. El tour se iniciará automáticamente, pero NO haremos API calls hasta que el usuario interactúe
       }
     } catch (error) {
       console.error("Error en el flujo de onboarding:", error);

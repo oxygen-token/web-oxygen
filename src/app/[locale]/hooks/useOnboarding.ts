@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { post } from '../../../utils/request';
 
 interface OnboardingData {
   onboardingStep: string;
@@ -13,13 +14,7 @@ export const useOnboarding = () => {
     setIsUpdating(true);
     try {
       console.log("📡 Enviando POST /update-welcome-modal...");
-      const response = await fetch('/api/update-welcome-modal', {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      const response = await post("/update-welcome-modal");
       
       if (response.ok) {
         const data = await response.json();
@@ -41,14 +36,7 @@ export const useOnboarding = () => {
     setIsUpdating(true);
     try {
       console.log(`📡 Enviando POST /update-onboarding-step con step: ${step}...`);
-      const response = await fetch('/api/update-onboarding-step', {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ onboardingStep: step }),
-      });
+      const response = await post("/update-onboarding-step", { onboardingStep: step });
       
       if (response.ok) {
         const data = await response.json();
@@ -70,13 +58,7 @@ export const useOnboarding = () => {
     setIsUpdating(true);
     try {
       console.log("📡 Enviando POST /update-profile-status...");
-      const response = await fetch('/api/update-profile-status', {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      const response = await post("/update-profile-status");
       
       if (response.ok) {
         const data = await response.json();

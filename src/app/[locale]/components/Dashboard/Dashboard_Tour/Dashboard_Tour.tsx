@@ -30,6 +30,7 @@ interface Dashboard_Tour_Props {
 const Dashboard_Tour = ({ shouldShowTour }: Dashboard_Tour_Props) => {
   const [run, setRun] = useState(false);
   const [mounted, setMounted] = useState(false);
+
   const isMobile = useIsMobile();
   const t = useTranslations("dashboard");
   const common = useTranslations("common");
@@ -87,11 +88,11 @@ const Dashboard_Tour = ({ shouldShowTour }: Dashboard_Tour_Props) => {
       try {
         // Marcar onboarding como completado en el backend
         if (status === STATUS.FINISHED) {
-          console.log("✅ Tour completado, marcando como 'tour_completed'");
-          await updateOnboardingStep("tour_completed");
+          console.log("✅ Tour completado, marcando como 'paso_4'");
+          await updateOnboardingStep("paso_4");
         } else if (status === STATUS.SKIPPED) {
-          console.log("⏭️ Tour saltado, marcando como 'tour_skipped'");
-          await updateOnboardingStep("tour_skipped");
+          console.log("⏭️ Tour saltado, marcando como 'skipped'");
+          await updateOnboardingStep("skipped");
         }
       } catch (error) {
         console.error("❌ Error al marcar onboarding como completado:", error);

@@ -49,6 +49,15 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const checkAuth = async () => {
     try {
       console.log("🔍 Verificando autenticación...");
+      console.log("🍪 Cookies disponibles:", document.cookie);
+      
+      const jwtCookie = document.cookie.split('; ').find(row => row.startsWith('jwt='));
+      if (jwtCookie) {
+        console.log("🍪 JWT cookie encontrado:", jwtCookie);
+      } else {
+        console.log("❌ No se encontró JWT cookie");
+      }
+      
       const res = await get("/session");
       const data = await res.json();
       
