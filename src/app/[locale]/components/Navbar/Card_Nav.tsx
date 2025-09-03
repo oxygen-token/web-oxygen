@@ -85,6 +85,15 @@ const Card_Nav: React.FC<CardNavProps> = ({
       ]
     },
     {
+      label: t("community"),
+      bgColor: "linear-gradient(135deg, rgba(1, 33, 56, 0.95) 0%, rgba(0, 106, 106, 0.95) 50%, rgba(0, 202, 166, 0.95) 100%)",
+      textColor: "#fff",
+      links: [
+        { label: t("community"), href: "/blog", ariaLabel: t("community") },
+        { label: t("blog"), href: "/blog", ariaLabel: t("blog") }
+      ]
+    },
+    {
       label: user ? t("helloUser", { username: capitalizeFirstLetter(user.username) }) : t("login"),
       bgColor: "linear-gradient(135deg, rgba(1, 33, 56, 0.95) 0%, rgba(0, 106, 106, 0.95) 50%, rgba(0, 202, 166, 0.95) 100%)",
       textColor: "#fff",

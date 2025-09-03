@@ -45,7 +45,7 @@ const Login = () => {
           />
         </div>
         
-        <div className="relative z-10 flex flex-col items-center lg:items-start">
+        <div className="relative z-10 flex flex-col items-center lg:items-start -mt-12 lg:mt-0">
           <Rotating_Text
             staticText="Take action"
             rotatingTexts={["and preserve", "environment", "our future", "the planet"]}

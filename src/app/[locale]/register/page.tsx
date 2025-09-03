@@ -38,7 +38,7 @@ const Register = () => {
           />
         </div>
         
-        <div className="relative z-10 flex flex-col items-center lg:items-start">
+        <div className="relative z-10 flex flex-col items-center lg:items-start -mt-16 lg:mt-0">
           <Rotating_Text
             staticText="Take action"
             rotatingTexts={["and preserve", "the environment", "our future", "the planet"]}
