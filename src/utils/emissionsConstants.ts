@@ -7,6 +7,8 @@ export interface EmissionOption {
   multiplier?: number; // para ajustes (Q2, Q10, Q13, Q14)
 }
 
+
+
 export interface Question {
   id: string;
   titleKey: string;
