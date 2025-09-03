@@ -169,7 +169,7 @@ const NavBarDashboard = () => {
         </button>
       </div>
 
-      <div className={`lg:hidden fixed top-16 left-0 right-0 bg-teal-dark/95 backdrop-blur-md border-b border-white/10 transition-all duration-300 ease-in-out transform z-40 mobile-menu ${
+      <div className={`lg:hidden fixed top-16 left-0 right-0 bg-teal-dark/95 border-b border-white/10 transition-transform duration-200 ease-out z-40 mobile-menu ${
         mobileNavOpen 
           ? 'opacity-100 translate-y-0' 
           : 'opacity-0 translate-y-[-100%] pointer-events-none'
@@ -208,9 +208,9 @@ const NavBarDashboard = () => {
                       <button
                         key={item.nameKey}
                         onClick={() => handleItemClick(index, item.href, item.disabled)}
-                        className={`flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-300 w-full text-left group
+                        className={`flex items-center gap-4 px-4 py-3 rounded-xl transition-colors duration-150 w-full text-left group
                           ${isActive
-                            ? "bg-white/20 backdrop-blur-sm font-semibold shadow-lg border border-white/30"
+                            ? "bg-white/20 font-semibold shadow-lg border border-white/30"
                             : "bg-transparent text-white hover:bg-white/10"
                           }
                           ${isDisabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}
@@ -218,7 +218,7 @@ const NavBarDashboard = () => {
                         disabled={isDisabled}
                       >
                         <Icon
-                          className={`text-xl transition-all duration-300 flex-shrink-0 ${
+                          className={`text-xl flex-shrink-0 ${
                             isActive
                               ? "text-white"
                               : item.disabled
@@ -228,7 +228,7 @@ const NavBarDashboard = () => {
                         />
                         <div className="flex items-center justify-between w-full">
                           <span
-                            className={`text-sm transition-all duration-300 ${
+                            className={`text-sm ${
                               isActive
                                 ? "font-semibold text-white"
                                 : item.disabled

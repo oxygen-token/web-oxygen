@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useLayoutEffect, useRef, useState, useEffect } from "react";
-import { gsap } from "gsap";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 import Image from "next/image";
@@ -142,14 +141,6 @@ const Card_Nav: React.FC<CardNavProps> = ({
     if (!isExpanded) {
       setIsHamburgerOpen(true);
       setIsExpanded(true);
-      const navEl = navRef.current;
-      if (navEl) {
-        gsap.to(navEl, {
-          height: calculateHeight(),
-          duration: 0.4,
-          ease: "power3.out",
-        });
-      }
     } else {
       closeMenu();
     }
@@ -158,14 +149,6 @@ const Card_Nav: React.FC<CardNavProps> = ({
   const closeMenu = () => {
     setIsHamburgerOpen(false);
     setIsExpanded(false);
-    const navEl = navRef.current;
-    if (navEl) {
-      gsap.to(navEl, {
-        height: 64,
-        duration: 0.4,
-        ease: "power3.out",
-      });
-    }
   };
 
   const setCardRef = (i: number) => (el: HTMLDivElement | null) => {
@@ -201,7 +184,7 @@ const Card_Nav: React.FC<CardNavProps> = ({
     >
       <nav
         ref={navRef}
-        className={`card-nav ${isExpanded ? "open" : ""} block h-16 p-0 relative overflow-hidden will-change-[height] backdrop-blur`}
+        className={`card-nav ${isExpanded ? "open" : ""} block h-16 p-0 relative overflow-hidden`}
       >
         <div className="card-nav-top absolute inset-x-0 top-0 h-16 flex items-center justify-between px-5 z-[2]">
           <div
