@@ -8,7 +8,6 @@ import { useAuth } from "../../context/Auth_Context";
 import { 
   PiListBold, 
   PiXBold, 
-  PiBell, 
   PiUser, 
   PiHouse, 
   PiArrowsClockwise, 
@@ -16,11 +15,7 @@ import {
   PiCurrencyDollar, 
   PiQuestion, 
   PiGear, 
-  PiSignOut,
-  PiUsers,
-  PiFolderOpen,
-  PiFileText,
-  PiGlobe
+  PiSignOut
 } from "react-icons/pi";
 import { usePathname } from "next/navigation";
 import LanguageSelect from "../Navbar/LanguageSelect";
@@ -38,10 +33,6 @@ const NavBarDashboard = () => {
 
   const menuItems = [
     { nameKey: "inicio", href: `/${locale}/dashboard`, icon: PiHouse, disabled: false },
-    { nameKey: "nosotros", href: "/nosotros", icon: PiUsers, disabled: false },
-    { nameKey: "proyectos", href: "/proyectos", icon: PiFolderOpen, disabled: false },
-    { nameKey: "whitepaper", href: "/whitepaper", icon: PiFileText, disabled: false },
-    { nameKey: "community", href: "/blog", icon: PiGlobe, disabled: false },
     { nameKey: "intercambiar", href: `/${locale}/dashboard/intercambiar`, icon: PiArrowsClockwise, disabled: true },
     { nameKey: "quemarToken", href: `/${locale}/dashboard/quemar-token`, icon: PiFire, disabled: true },
     { nameKey: "compensar", href: `/${locale}/dashboard/compensar`, icon: PiCurrencyDollar, disabled: true },
@@ -245,7 +236,7 @@ const NavBarDashboard = () => {
                                   : "font-medium text-white"
                             }`}
                           >
-                            {t(item.nameKey)}
+                            {sidebarT(item.nameKey)}
                           </span>
                           {item.nameKey !== "inicio" && (
                             <span className="text-xs text-gray-500 opacity-60 font-light">
