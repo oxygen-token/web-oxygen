@@ -98,7 +98,7 @@ const VerifySuccess = () => {
           <Rotating_Text
             staticText="Take action"
             rotatingTexts={["and preserve", "environment", "our future", "the planet"]}
-            mainClassName="text-4xl font-medium text-white text-center lg:text-start"
+            mainClassName="text-[1.75rem] lg:text-4xl font-medium text-white text-center lg:text-start"
             boxClassName="bg-green-600 text-white px-4 py-2 rounded-lg"
             rotationInterval={3000}
             transition={{ duration: 0.6, ease: "easeInOut" }}
