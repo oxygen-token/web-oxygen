@@ -132,13 +132,11 @@ const NavBarDashboard = () => {
           <div className="flex items-center space-x-4">
             {user ? (
               <div className="flex items-center space-x-3">
-                <div className="flex items-center space-x-2">
-                  <div className="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center">
-                    <PiUser className="text-white text-sm" />
-                  </div>
-                  <span className="text-white text-sm font-medium">
-                    {capitalizeFirstLetter(user.username.split(' ')[0])}
-                  </span>
+                <span className="text-white text-sm font-medium">
+                  {capitalizeFirstLetter(user.username.split(' ')[0])}
+                </span>
+                <div className="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center">
+                  <PiUser className="text-white text-sm" />
                 </div>
                 <button
                   onClick={handleLogout}
@@ -146,19 +144,6 @@ const NavBarDashboard = () => {
                 >
                   {t("logout")}
                 </button>
-                <button
-                  onClick={() => {
-                    console.log("🔍 Estado actual:", { user });
-                    console.log("🍪 Cookies:", document.cookie);
-                    console.log("💾 LocalStorage:", Object.keys(localStorage));
-                  }}
-                  className="px-2 py-1 text-xs border border-yellow-400 text-yellow-400 rounded-full hover:bg-yellow-400 hover:text-black transition-colors"
-                  title="Debug info"
-                >
-                  🐛
-                </button>
-
-
                 <div className="h-6 w-px bg-white/20" />
                 <LanguageSelect className="text-white" />
               </div>

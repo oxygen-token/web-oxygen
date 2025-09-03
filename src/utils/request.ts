@@ -41,7 +41,33 @@ export async function get(
   body?: any,
   headers?: Record<string, string>
 ) {
-  return apiRequest(url, "GET", body, headers);
+  const fullUrl = `${BASE_URL}${url}`;
+  console.log(`Making GET request to:`, fullUrl);
+  console.log("Request headers:", {
+    "Content-Type": "application/json",
+    ...headers,
+  });
+  
+  // Log cookies antes de la petición
+  console.log("🍪 Cookies antes de GET:", document.cookie);
+  
+  const res = await fetch(fullUrl, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      ...headers,
+    },
+    credentials: "include",
+  });
+
+  console.log(`Response status: ${res.status} for GET ${url}`);
+  console.log("Response headers:", Object.fromEntries(res.headers.entries()));
+  
+  // Log cookies después de la petición
+  console.log("🍪 Cookies después de GET:", document.cookie);
+
+  if (res.ok) return res;
+  throw res;
 }
 
 export async function post(
@@ -49,5 +75,35 @@ export async function post(
   body?: any,
   headers?: Record<string, string>
 ) {
-  return apiRequest(url, "POST", body, headers);
+  const fullUrl = `${BASE_URL}${url}`;
+  console.log(`Making POST request to:`, fullUrl);
+  console.log("Request headers:", {
+    "Content-Type": "application/json",
+    ...headers,
+  });
+  if (body) {
+    console.log("Request body:", body);
+  }
+  
+  // Log cookies antes de la petición
+  console.log("🍪 Cookies antes de POST:", document.cookie);
+  
+  const res = await fetch(fullUrl, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      ...headers,
+    },
+    body: JSON.stringify(body),
+    credentials: "include",
+  });
+
+  console.log(`Response status: ${res.status} for POST ${url}`);
+  console.log("Response headers:", Object.fromEntries(res.headers.entries()));
+  
+  // Log cookies después de la petición
+  console.log("🍪 Cookies después de POST:", document.cookie);
+
+  if (res.ok) return res;
+  throw res;
 }

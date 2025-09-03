@@ -7,6 +7,8 @@ interface User {
   username: string;
   email?: string;
   isFirstLogin?: boolean;
+  welcomeModalShown?: boolean;
+  onboardingStep?: string;
 }
 
 interface AuthContextType {
@@ -46,18 +48,37 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const checkAuth = async () => {
     try {
+      console.log("🔍 Verificando autenticación...");
       const res = await get("/session");
       const data = await res.json();
+      
+      console.log("📡 Respuesta del endpoint /session:", data);
       
       if (data.loggedIn) {
         const username = data.fullName || data.username;
         const isFirstLogin = data.isFirstLogin || false;
-        setUser({ username: username, isFirstLogin: isFirstLogin });
+        const welcomeModalShown = data.welcomeModalShown || false;
+        const onboardingStep = data.onboardingStep || "pending";
+        
+        console.log("✅ Usuario autenticado:", {
+          username,
+          isFirstLogin,
+          welcomeModalShown,
+          onboardingStep
+        });
+        
+        setUser({ 
+          username: username, 
+          isFirstLogin: isFirstLogin,
+          welcomeModalShown: welcomeModalShown,
+          onboardingStep: onboardingStep
+        });
       } else {
+        console.log("❌ Usuario no autenticado");
         setUser(null);
       }
     } catch (error) {
-      console.error("Error checking auth:", error);
+      console.error("❌ Error checking auth:", error);
       setUser(null);
     } finally {
       setLoading(false);
@@ -68,6 +89,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     setHasLoggedOut(false);
     setIsLoggingOut(false);
     
+    console.log("🔐 Iniciando login para:", email);
+    console.log("🍪 Cookies ANTES del login:", document.cookie);
+    
     try {
       const loginData = {
         email: email,
@@ -77,16 +101,34 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       const response = await post("/login", loginData);
       const responseData = await response.json();
       
+      console.log("📡 Respuesta del login:", responseData);
+      console.log("🍪 Cookies DESPUÉS del login:", document.cookie);
+      
       if (responseData.success || response.status === 201) {
         const username = responseData.user?.fullName || responseData.fullName || email.split('@')[0];
         const isFirstLogin = responseData.isFirstLogin || false;
-        setUser({ username: username, isFirstLogin: isFirstLogin });
+        const welcomeModalShown = responseData.user?.welcomeModalShown || false;
+        const onboardingStep = responseData.user?.onboardingStep || "pending";
+        
+        console.log("✅ Login exitoso, estableciendo usuario:", {
+          username,
+          isFirstLogin,
+          welcomeModalShown,
+          onboardingStep
+        });
+        
+        setUser({ 
+          username: username, 
+          isFirstLogin: isFirstLogin,
+          welcomeModalShown: welcomeModalShown,
+          onboardingStep: onboardingStep
+        });
         setLoading(false);
       } else {
         throw new Error("Login failed");
       }
     } catch (error) {
-      console.error("Login error in context:", error);
+      console.error("❌ Login error in context:", error);
       throw error;
     }
   };
@@ -281,10 +323,19 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   useEffect(() => {
+    console.log("🔄 useEffect checkAuth ejecutándose:", {
+      isLoggingOut,
+      hasLoggedOut,
+      isDevMode
+    });
+    
     if (!isLoggingOut && !hasLoggedOut) {
+      console.log("✅ Ejecutando checkAuth...");
       checkAuth();
+    } else {
+      console.log("⏸️ Saltando checkAuth:", { isLoggingOut, hasLoggedOut });
     }
-  }, [isDevMode, isLoggingOut, hasLoggedOut]);
+  }, [isLoggingOut, hasLoggedOut]);
 
   // Efecto adicional para limpiar el estado cuando se hace logout
   useEffect(() => {

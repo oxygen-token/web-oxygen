@@ -46,18 +46,27 @@ const Dashboard_Main = memo(({
     if (user) {
       console.log("🔍 Verificando estado del onboarding para usuario:", user);
       
-      // Por ahora, asumimos que siempre se debe mostrar (esto se puede cambiar cuando tengamos las variables del backend)
-      // TODO: Verificar welcomeModalShown y onboardingStep del backend
-      setShouldShowModal(true);
-      setShouldShowTour(false); // El tour se activa cuando se acepta el modal
+      // Verificar welcomeModalShown y onboardingStep del backend
+      const shouldShowWelcomeModal = !user.welcomeModalShown;
+      const shouldShowOnboardingTour = user.onboardingStep === "pending" || user.onboardingStep === "welcome_shown";
       
-      // Si el usuario ya vio el modal, no mostrarlo
-      if (user.isFirstLogin === false) {
-        console.log("👤 Usuario ya no es primer login, ocultando modal");
-        setShouldShowModal(false);
-      } else {
-        console.log("🆕 Usuario es primer login, mostrando modal");
+      console.log("📊 Estado del onboarding:", {
+        welcomeModalShown: user.welcomeModalShown,
+        onboardingStep: user.onboardingStep,
+        shouldShowWelcomeModal,
+        shouldShowOnboardingTour
+      });
+      
+      setShouldShowModal(shouldShowWelcomeModal);
+      setShouldShowTour(shouldShowOnboardingTour);
+      
+      // Si debe mostrar el modal, activarlo
+      if (shouldShowWelcomeModal) {
+        console.log("🆕 Usuario debe ver modal de bienvenida, mostrando...");
         setShowAffiliateBanner(true);
+      } else {
+        console.log("👤 Usuario ya vio modal de bienvenida, ocultando...");
+        setShowAffiliateBanner(false);
       }
     }
   }, [user]);
