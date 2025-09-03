@@ -7,7 +7,7 @@ import { capitalizeFirstLetter } from "../../../../utils/stringUtils";
 import { useAuth } from "../../context/Auth_Context";
 import LanguageSelect from "./LanguageSelect";
 import { usePathname } from "next/navigation";
-import { PiListBold, PiXBold, PiUser, PiHouse, PiQuestion, PiGear, PiSignOut } from "react-icons/pi";
+import { PiListBold, PiXBold, PiUser, PiHouse, PiQuestion, PiGear, PiSignOut, PiTree, PiUsers, PiFileText, PiCurrencyDollar } from "react-icons/pi";
 
 import logoNav from "../../../../../public/assets/images/logo.png";
 
@@ -58,9 +58,9 @@ function Navbar() {
   const menuItems = [
     { nameKey: "home", href: "/", icon: PiHouse, disabled: false },
     { nameKey: "us", href: "/nosotros", icon: PiUser, disabled: false },
-    { nameKey: "project", href: "/proyectos", icon: PiQuestion, disabled: false },
-    { nameKey: "community", href: "/blog", icon: PiGear, disabled: false },
-    { nameKey: "whitepaper", href: "/whitepaper", icon: PiSignOut, disabled: false },
+    { nameKey: "project", href: "/proyectos", icon: PiTree, disabled: false },
+    { nameKey: "community", href: "/blog", icon: PiUsers, disabled: false },
+    { nameKey: "whitepaper", href: "/whitepaper", icon: PiFileText, disabled: false },
   ];
 
   return (
@@ -113,8 +113,9 @@ function Navbar() {
               <li>
                 <Link
                   href="/comprar"
-                  className="border border-current px-3 py-1 rounded-full hover:bg-teal-medium/20 transition-colors duration-200"
+                  className="border border-current px-3 py-1 rounded-full hover:bg-teal-medium/20 transition-colors duration-200 flex items-center gap-2"
                 >
+                  <PiCurrencyDollar className="text-sm" />
                   {t("buy")}
                 </Link>
               </li>
@@ -183,31 +184,31 @@ function Navbar() {
                       <Link
                         key={item.nameKey}
                         href={item.href}
-                        className="flex items-center gap-4 px-4 py-3 rounded-xl transition-colors duration-150 w-full text-left group bg-transparent text-white hover:bg-white/10 cursor-pointer"
+                        className="flex items-center justify-end gap-4 px-4 py-3 rounded-xl transition-colors duration-150 w-full group bg-transparent text-white hover:bg-white/10 cursor-pointer"
                         onClick={() => setMobileNavOpen(false)}
                       >
-                        <Icon className="text-xl flex-shrink-0 text-white" />
                         <span className="text-sm font-medium text-white">
                           {t(item.nameKey)}
                         </span>
+                        <Icon className="text-xl flex-shrink-0 text-white" />
                       </Link>
                     );
                   })}
                   <Link
                     href={`/${locale}/dashboard`}
-                    className="flex items-center gap-4 px-4 py-3 rounded-xl transition-colors duration-150 w-full text-left group bg-transparent text-white hover:bg-white/10 cursor-pointer"
+                    className="flex items-center justify-end gap-4 px-4 py-3 rounded-xl transition-colors duration-150 w-full group bg-transparent text-white hover:bg-white/10 cursor-pointer"
                     onClick={() => setMobileNavOpen(false)}
                   >
-                    <PiHouse className="text-xl flex-shrink-0 text-white" />
                     <span className="text-sm font-medium text-white">
                       {t("dashboard")}
                     </span>
+                    <PiHouse className="text-xl flex-shrink-0 text-white" />
                   </Link>
                 </nav>
               </div>
             ) : (
               <div className="flex flex-col space-y-6">
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-end gap-3">
                   <Link
                     href="/login?panel=login"
                     className="px-4 py-2 text-sm border border-white/30 text-white rounded-full hover:bg-white/10 transition-colors"
@@ -225,25 +226,25 @@ function Navbar() {
                       <Link
                         key={item.nameKey}
                         href={item.href}
-                        className="flex items-center gap-4 px-4 py-3 rounded-xl transition-colors duration-150 w-full text-left group bg-transparent text-white hover:bg-white/10 cursor-pointer"
+                        className="flex items-center justify-end gap-4 px-4 py-3 rounded-xl transition-colors duration-150 w-full group bg-transparent text-white hover:bg-white/10 cursor-pointer"
                         onClick={() => setMobileNavOpen(false)}
                       >
-                        <Icon className="text-xl flex-shrink-0 text-white" />
                         <span className="text-sm font-medium text-white">
                           {t(item.nameKey)}
                         </span>
+                        <Icon className="text-xl flex-shrink-0 text-white" />
                       </Link>
                     );
                   })}
                   <Link
                     href="/comprar"
-                    className="flex items-center gap-4 px-4 py-3 rounded-xl transition-colors duration-150 w-full text-left group bg-transparent text-white hover:bg-white/10 cursor-pointer"
+                    className="flex items-center justify-end gap-4 px-4 py-3 rounded-xl transition-colors duration-150 w-full group bg-transparent text-white hover:bg-white/10 cursor-pointer"
                     onClick={() => setMobileNavOpen(false)}
                   >
-                    <PiGear className="text-xl flex-shrink-0 text-white" />
                     <span className="text-sm font-medium text-white">
                       {t("buy")}
                     </span>
+                    <PiCurrencyDollar className="text-xl flex-shrink-0 text-white" />
                   </Link>
                 </nav>
               </div>
