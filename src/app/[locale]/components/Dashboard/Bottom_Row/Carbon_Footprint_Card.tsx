@@ -1,5 +1,6 @@
 "use client";
 import { memo } from "react";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { CarbonFootprintData } from "../types";
@@ -10,6 +11,7 @@ interface Carbon_Footprint_CardProps {
 
 const Carbon_Footprint_Card = memo(({ data }: Carbon_Footprint_CardProps) => {
   const router = useRouter();
+  const t = useTranslations("Dashboard");
 
   const handleCalculateClick = () => {
     router.push('/calculadora');
@@ -30,7 +32,7 @@ const Carbon_Footprint_Card = memo(({ data }: Carbon_Footprint_CardProps) => {
         <div className="flex flex-col justify-between">
           <div>
             <h3 className="text-sm sm:text-base font-semibold text-white mb-2">
-              Tú huella
+              {t("sections.yourFootprint")}
             </h3>
             <div className="flex items-baseline space-x-1">
               <p className="text-xl sm:text-2xl font-bold text-white">
@@ -62,7 +64,7 @@ const Carbon_Footprint_Card = memo(({ data }: Carbon_Footprint_CardProps) => {
               e.currentTarget.style.transform = 'scale(1)';
             }}
           >
-            Calcular tú huella de carbono
+            {t("sections.calculateFootprint")}
           </button>
         </div>
         

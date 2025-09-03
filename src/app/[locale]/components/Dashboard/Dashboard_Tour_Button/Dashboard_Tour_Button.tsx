@@ -4,10 +4,10 @@ import { useTranslations } from "next-intl";
 
 const Dashboard_Tour_Button = () => {
   const t = useTranslations("dashboard");
-  
-  const resetTour = () => {
-    window.location.reload();
-  };
+  const { resetTour, isFirstVisit } = useDashboardTour();
+
+  // Only show button if tour is completed (not first visit)
+  if (isFirstVisit) return null;
 
   return (
     <button

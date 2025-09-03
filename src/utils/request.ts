@@ -9,7 +9,17 @@ export async function apiRequest(
   body?: any,
   headers?: Record<string, string>
 ) {
-  const res = await fetch(`${BASE_URL}${url}`, {
+  const fullUrl = `${BASE_URL}${url}`;
+  console.log(`Making ${method} request to:`, fullUrl);
+  console.log("Request headers:", {
+    "Content-Type": "application/json",
+    ...headers,
+  });
+  if (body) {
+    console.log("Request body:", body);
+  }
+  
+  const res = await fetch(fullUrl, {
     method,
     headers: {
       "Content-Type": "application/json",
@@ -18,6 +28,9 @@ export async function apiRequest(
     body: JSON.stringify(body),
     credentials: "include", 
   });
+
+  console.log(`Response status: ${res.status} for ${method} ${url}`);
+  console.log("Response headers:", Object.fromEntries(res.headers.entries()));
 
   if (res.ok) return res;
   throw res;

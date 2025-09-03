@@ -1,5 +1,6 @@
 "use client";
 import { memo } from "react";
+import { useTranslations } from "next-intl";
 import Project_Card from "./Project_Card";
 import Carbon_Footprint_Card from "../Bottom_Row/Carbon_Footprint_Card";
 import { ProjectData, CarbonFootprintData } from "../types";
@@ -10,10 +11,12 @@ interface Projects_RowProps {
 }
 
 const Projects_Row = memo(({ projects, footprint }: Projects_RowProps) => {
+  const t = useTranslations("Dashboard");
+  
   return (
-    <div className="projects-section mb-6 sm:mb-8 lg:mb-20 xl:mb-24">
-      <h2 className="text-base sm:text-lg font-bold text-white mb-4 sm:mb-6 lg:mb-8 xl:mb-10">
-        Proyectos vigentes
+    <div className="projects-section mb-8 sm:mb-8 lg:mb-20 xl:mb-24">
+      <h2 className="text-base sm:text-lg font-bold text-white mb-0 sm:mb-6 lg:mb-8 xl:mb-10">
+        {t("sections.currentProjects")}
       </h2>
       
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-10 xl:gap-16 min-h-[250px]">

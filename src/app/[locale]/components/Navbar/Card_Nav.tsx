@@ -89,10 +89,10 @@ const Card_Nav: React.FC<CardNavProps> = ({
       bgColor: "linear-gradient(135deg, rgba(1, 33, 56, 0.95) 0%, rgba(0, 106, 106, 0.95) 50%, rgba(0, 202, 166, 0.95) 100%)",
       textColor: "#fff",
       links: user ? [
+        { label: t("dashboard"), href: `/${locale}/dashboard`, ariaLabel: t("dashboard") },
         { label: t("logout"), href: "#", ariaLabel: t("logout") }
       ] : [
         { label: t("login"), href: "/login?panel=login", ariaLabel: t("login") },
-        { label: t("waitlist"), href: "/login?panel=register", ariaLabel: t("waitlist") },
         { label: t("buy"), href: "/comprar", ariaLabel: t("buy") }
       ]
     }
@@ -150,16 +150,20 @@ const Card_Nav: React.FC<CardNavProps> = ({
         });
       }
     } else {
-      setIsHamburgerOpen(false);
-      setIsExpanded(false);
-      const navEl = navRef.current;
-      if (navEl) {
-        gsap.to(navEl, {
-          height: 64,
-          duration: 0.4,
-          ease: "power3.out",
-        });
-      }
+      closeMenu();
+    }
+  };
+
+  const closeMenu = () => {
+    setIsHamburgerOpen(false);
+    setIsExpanded(false);
+    const navEl = navRef.current;
+    if (navEl) {
+      gsap.to(navEl, {
+        height: 64,
+        duration: 0.4,
+        ease: "power3.out",
+      });
     }
   };
 
@@ -177,16 +181,7 @@ const Card_Nav: React.FC<CardNavProps> = ({
       const currentScrollY = window.scrollY;
       
       if (isExpanded && currentScrollY > lastScrollY.current) {
-        setIsHamburgerOpen(false);
-        setIsExpanded(false);
-        const navEl = navRef.current;
-        if (navEl) {
-          gsap.to(navEl, {
-            height: 64,
-            duration: 0.3,
-            ease: "power3.out",
-          });
-        }
+        closeMenu();
       }
       
       lastScrollY.current = currentScrollY;
@@ -229,7 +224,7 @@ const Card_Nav: React.FC<CardNavProps> = ({
           </div>
 
           <div className="logo-container flex items-center order-1">
-            <Link href="/">
+            <Link href="/" onClick={closeMenu}>
               <Image
                 src={logoNav}
                 alt="Oxygen"
@@ -270,7 +265,13 @@ const Card_Nav: React.FC<CardNavProps> = ({
                     className="nav-card-link inline-flex items-center gap-2 no-underline cursor-pointer transition-all duration-300 hover:opacity-90 hover:scale-105 text-sm font-medium px-2 py-1 rounded-md hover:bg-white/10"
                     href={lnk.href}
                     aria-label={lnk.ariaLabel}
-                    onClick={lnk.label === t("logout") ? handleLogoutClick : undefined}
+                    onClick={(e) => {
+                      if (lnk.label === t("logout")) {
+                        handleLogoutClick(e);
+                      } else {
+                        closeMenu();
+                      }
+                    }}
                   >
                     <svg
                       className="nav-card-link-icon shrink-0 w-4 h-4 drop-shadow-sm"

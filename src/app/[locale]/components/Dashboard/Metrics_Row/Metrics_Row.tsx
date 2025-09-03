@@ -9,7 +9,7 @@ interface Metrics_RowProps {
 
 const Metrics_Row = memo(({ data }: Metrics_RowProps) => {
   return (
-    <div className="metrics-row grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-10 xl:gap-16">
+    <div className="metrics-row grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-4 lg:gap-10 xl:gap-16">
       {data.map((metric, index) => (
         <Metric_Card key={index} data={metric} />
       ))}

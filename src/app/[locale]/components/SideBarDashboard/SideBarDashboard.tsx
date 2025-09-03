@@ -13,15 +13,24 @@ import {
 } from "react-icons/pi";
 import { useSidebarSync } from "../../hooks/useSidebarSync";
 import { useTransition } from "../../context/Transition_Context";
+import { useAuth } from "../../context/Auth_Context";
 
-const menuItems = [
-  { nameKey: "inicio", href: "/en/dashboard", icon: PiHouse, disabled: false },
-  { nameKey: "intercambiar", href: "/en/dashboard/intercambiar", icon: PiArrowsClockwise, disabled: true },
-  { nameKey: "quemarToken", href: "/en/dashboard/quemar-token", icon: PiFire, disabled: true },
-  { nameKey: "compensar", href: "/en/dashboard/compensar", icon: PiCurrencyDollar, disabled: true },
-  { nameKey: "ayuda", href: "/en/dashboard/ayuda", icon: PiQuestion, disabled: true },
-  { nameKey: "configuracion", href: "/en/dashboard/configuracion", icon: PiGear, disabled: true },
-  { nameKey: "cerrarSesion", href: "/logout", icon: PiSignOut, disabled: false },
+interface MenuItem {
+  nameKey: string;
+  href: string | null;
+  icon: any;
+  disabled: boolean;
+  isAction: boolean;
+}
+
+const menuItems: MenuItem[] = [
+  { nameKey: "inicio", href: "/en/dashboard", icon: PiHouse, disabled: false, isAction: false },
+  { nameKey: "intercambiar", href: "/en/dashboard/intercambiar", icon: PiArrowsClockwise, disabled: true, isAction: false },
+  { nameKey: "quemarToken", href: "/en/dashboard/quemar-token", icon: PiFire, disabled: true, isAction: false },
+  { nameKey: "compensar", href: "/en/dashboard/compensar", icon: PiCurrencyDollar, disabled: true, isAction: false },
+  { nameKey: "ayuda", href: "/en/dashboard/ayuda", icon: PiQuestion, disabled: true, isAction: false },
+  { nameKey: "configuracion", href: "/en/dashboard/configuracion", icon: PiGear, disabled: true, isAction: false },
+  { nameKey: "cerrarSesion", href: null, icon: PiSignOut, disabled: false, isAction: true },
 ];
 
 const SideBarDashboard = memo(() => {
@@ -30,8 +39,14 @@ const SideBarDashboard = memo(() => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [clickedIndex, setClickedIndex] = useState<number | null>(null);
   const [showTooltip, setShowTooltip] = useState<number | null>(null);
+  const t = useTranslations("SideBarDashboard");
 
   const { isTransitioning, startTransition } = useTransition();
+  const auth = useAuth();
+  const { forceLogout } = auth;
+  
+  console.log("🔍 Auth context disponible:", auth);
+  console.log("🔍 forceLogout disponible:", typeof forceLogout);
 
   useEffect(() => {
     const currentIndex = menuItems.findIndex(item => {
@@ -46,18 +61,53 @@ const SideBarDashboard = memo(() => {
     }
   }, [pathname, activeIndex]);
 
-  const handleItemClick = useCallback(async (index: number, href: string, disabled: boolean) => {
+  const handleItemClick = useCallback(async (index: number, href: string | null, disabled: boolean, isAction: boolean) => {
     if (disabled) return;
     
-    console.log("Click - index:", index, "current:", activeIndex);
+    console.log("Click - index:", index, "current:", activeIndex, "isAction:", isAction);
+    
+    // Si es una acción (como logout), no cambiar el activeIndex
+    if (isAction) {
+      if (index === 6) { // índice del logout
+        console.log("🔄 Ejecutando forceLogout desde sidebar...");
+        console.log("📍 Ubicación actual:", window.location.pathname);
+        
+        try {
+          console.log("🚀 Llamando a forceLogout()...");
+          forceLogout();
+          console.log("✅ forceLogout() ejecutado exitosamente");
+          
+          // Esperar un poco para que se procese la limpieza
+          await new Promise(resolve => setTimeout(resolve, 100));
+          
+          // Redirigir inmediatamente como hace el navbar
+          console.log("🔄 Redirigiendo a página principal...");
+          const locale = window.location.pathname.split("/")[1];
+          console.log("🌍 Locale detectado:", locale);
+          console.log("🎯 Redirigiendo a:", `/${locale}`);
+          window.location.replace(`/${locale}`);
+        } catch (error) {
+          console.error("❌ Error en forceLogout del sidebar:", error);
+          // Forzar redirección aunque falle
+          const locale = window.location.pathname.split("/")[1];
+          console.log("🌍 Locale detectado (fallback):", locale);
+          console.log("🎯 Redirigiendo a (fallback):", `/${locale}`);
+          window.location.replace(`/${locale}`);
+        }
+      }
+      return;
+    }
+    
     if (index === activeIndex || isTransitioning) return;
     
     console.log("Setting activeIndex to:", index);
     setClickedIndex(index);
     
     try {
-      await startTransition(href);
-      setActiveIndex(index);
+      if (href) {
+        await startTransition(href);
+        setActiveIndex(index);
+      }
     } catch (error) {
       console.error("Navigation error:", error);
     } finally {
@@ -65,7 +115,7 @@ const SideBarDashboard = memo(() => {
         setClickedIndex(null);
       }, 300);
     }
-  }, [activeIndex, isTransitioning, startTransition]);
+  }, [activeIndex, isTransitioning, startTransition, forceLogout]);
 
   const handleMouseEnter = useCallback((index: number) => {
     if (!isTransitioning) {
@@ -102,7 +152,7 @@ const SideBarDashboard = memo(() => {
               return (
                 <li key={item.nameKey} className="relative z-10">
                   <button
-                    onClick={() => handleItemClick(index, item.href, item.disabled)}
+                    onClick={() => handleItemClick(index, item.href, item.disabled, item.isAction)}
                     onMouseEnter={handleMouseEnter}
                     onMouseLeave={handleMouseLeave}
                     className={`flex items-center gap-4 px-6 py-4 rounded-xl transition-all duration-300 ease-out relative w-full text-left h-14 group
@@ -138,13 +188,7 @@ const SideBarDashboard = memo(() => {
                             : "font-medium text-white"
                       }`}
                     >
-                      {item.nameKey === "inicio" ? "Home" : 
-                       item.nameKey === "intercambiar" ? "Exchange" :
-                       item.nameKey === "quemarToken" ? "Burn Token" :
-                       item.nameKey === "compensar" ? "Offset" :
-                       item.nameKey === "ayuda" ? "Help" :
-                       item.nameKey === "configuracion" ? "Settings" :
-                       item.nameKey === "cerrarSesion" ? "Log Out" : item.nameKey}
+                      {t(item.nameKey)}
                     </span>
                     
                     {isActive && (
@@ -159,7 +203,7 @@ const SideBarDashboard = memo(() => {
                   {showTooltip === index && item.disabled && (
                     <div className="absolute left-full ml-2 top-1/2 transform -translate-y-1/2 z-50">
                       <div className="bg-black/90 text-white text-xs px-3 py-2 rounded-lg shadow-lg whitespace-nowrap backdrop-blur-sm border border-white/20">
-                        Pronto podrás acceder a esta opción
+                        {t("comingSoon")}
                         <div className="absolute left-0 top-1/2 transform -translate-x-1 -translate-y-1/2 w-2 h-2 bg-black/90 rotate-45 border-l border-b border-white/20"></div>
                       </div>
                     </div>

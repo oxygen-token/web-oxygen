@@ -79,7 +79,8 @@
     "waitlist": "Join the waitlist",
     "helloUser": "Hello, {username}",
     "logout": "Log out",
-    "whitepaper": "Whitepaper"
+    "whitepaper": "Whitepaper",
+    "dashboard": "Dashboard"
   },
   "Footer": {
     "company": "Company",
@@ -193,9 +194,22 @@
     "terms-and-conditions": "I have read and accept the Terms and Conditions"
   },
   "PostRegister": {
-    "title": "Thanks for signing up for the waitlist!",
-    "message": "Your registration was succesful. We'll be in touch soon!",
-    "back-link": "Back to home"
+    "title": "Account Created Successfully!",
+    "subtitle": "Please check your email to verify your account",
+    "description": "We've sent a verification email to your inbox. Please click the verification link to activate your account and start your journey with Oxygen.",
+    "loginButton": "Go to Login"
+  },
+  "VerifySuccess": {
+    "title": "Email Verified!",
+    "subtitle": "Your account has been successfully activated",
+    "description": "Thank you for verifying your email address. Your Oxygen account is now fully active and you can access all platform functionalities.",
+    "loginButton": "Go to Login",
+    "loadingTitle": "Verifying your email...",
+    "loadingDescription": "Please wait while we verify your email address.",
+    "errorTitle": "Verification Failed",
+    "errorSubtitle": "We couldn't verify your email address",
+    "errorDescription": "Please try again or contact support if the problem persists.",
+    "tryAgainButton": "Try Again"
   },
   "SideBarDashboard": {
     "inicio": "Home",
@@ -204,23 +218,87 @@
     "compensar": "Offset",
     "ayuda": "Help",
     "configuracion": "Settings",
-    "cerrarSesion": "Log Out"
+    "cerrarSesion": "Log Out",
+    "comingSoon": "Coming soon"
+  },
+  "Dashboard": {
+    "metrics": {
+      "carbonCredits": "carbon credits",
+      "carbonCreditsDesc": "Available credits",
+      "co2Absorbed": "CO₂ absorbed",
+      "co2AbsorbedDesc": "Compensated tons",
+      "areaSaved": "m² saved",
+      "areaSavedDesc": "Protected area"
+    },
+    "projects": {
+      "saltaProject": "Salta Project"
+    },
+    "months": {
+      "jan": "Jan",
+      "feb": "Feb",
+      "mar": "Mar",
+      "apr": "Apr",
+      "may": "May",
+      "jun": "Jun",
+      "jul": "Jul",
+      "aug": "Aug",
+      "sep": "Sep",
+      "oct": "Oct",
+      "nov": "Nov",
+      "dec": "Dec"
+    },
+    "footprint": {
+      "unit": "tn CO₂",
+      "period": "year"
+    },
+    "social": {
+      "instagramAction": "Share on Instagram",
+      "linkedinAction": "Share on LinkedIn"
+    },
+    "sections": {
+      "currentProjects": "Current Projects",
+      "yourFootprint": "Your Footprint",
+      "calculateFootprint": "Calculate your carbon footprint",
+      "earnings": "Your Earnings",
+      "last12Months": "Last 12 months",
+      "shareCertificate": "Share your certificate on social media!"
+    }
   },
   "dashboard": {
     "tour": {
       "metrics": "Here you can see your main metrics: carbon credits, absorbed CO₂ and protected area",
-      "projects": "A good first step to become a Carbon Neutral Person is to know, Check out our Carbon Footprint Calculator",
-      "earnings": "Meet the forest you are protecting: La Florencia! The Yagueretes thank you",
-      "social": "Other options will be enabled soon. Stay tuned for more features!",
-      "restart": "Restart tour"
+      "projects": "Meet the forest you are protecting: La Florencia! The Yagueretes thank you",
+      "earnings": "A good first step to become a Carbon Neutral Person is to know, Check out our Carbon Footprint Calculator",
+      "social": "Other options will be enabled soon. Stay tuned for more functions!",
+      "restart": "Restart tour",
+      "next": "Next",
+      "skip": "Skip",
+      "step": "Step",
+      "of": "of",
+      "close": "Close",
+      "progress": "Step {current} of {total}"
     }
+  },
+  "CollaborationBanner": {
+    "title": "Lumen × Oxygen Collaboration",
+    "description": "Thanks to your affiliate code, you have exclusive access to special benefits",
+    "bonus": "+5 OM guaranteed",
+    "learnMore": "Learn more"
+  },
+  "AffiliateSuccessBanner": {
+    "headline": "By going to the party and registering, you now have 5.0 OM tokens in your account.",
+    "explanation": "Each OM represents 1 m² of real protected forest in La Florencia, Formosa. It's your little piece of Nature. Literally. That forest absorbs CO₂ and generates carbon credits (OC tokens). Over time, you will accumulate OC that you can exchange for USDT (digital dollars).",
+    "summary": "In summary: you danced, you saved forest, and you started to earn.",
+    "cta": "Follow the tour through your Dashboard"
   },
   "common": {
     "back": "Back",
     "close": "Close",
     "finish": "Finish",
     "next": "Next",
-    "skip": "Skip"
+    "skip": "Skip",
+    "step": "Step",
+    "of": "of"
   },
   "Calculator": {
     "title": "Carbon Footprint Calculator",

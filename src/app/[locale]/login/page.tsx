@@ -27,7 +27,7 @@ const Login = () => {
           className="absolute inset-0 bg-gradient-to-l from-black via-black/90 to-transparent"
           style={{ zIndex: 2 }}
         />
-        <div style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0, zIndex: 3 }}>
+        <div style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0, zIndex: 3, pointerEvents: 'none' }}>
           <Light_Rays
             raysOrigin="right"
             raysColor="#00CAA6"

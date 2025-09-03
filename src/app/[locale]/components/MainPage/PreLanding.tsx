@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 
@@ -12,9 +12,16 @@ const ANIM_TIMEOUT = 1000;
 export function PreLanding() {
   const layout = useTranslations("Layout");
 
-  const hasEnteredBefore = sessionStorage.getItem("hasEnteredBefore") !== null;
-  const [hidden, setHidden] = useState(hasEnteredBefore);
+  const [hasEnteredBefore, setHasEnteredBefore] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const [showAnimation, setShowAnimation] = useState(false);
+
+  // Verificar sessionStorage solo en el cliente
+  useEffect(() => {
+    const hasEntered = sessionStorage.getItem("hasEnteredBefore") !== null;
+    setHasEnteredBefore(hasEntered);
+    setHidden(hasEntered);
+  }, []);
 
   const handleHidePrevHome = () => {
     setShowAnimation(true);

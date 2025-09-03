@@ -24,7 +24,7 @@ export const InputWithLabel = forwardRef<HTMLInputElement, Props>(
     forwardedRef
   ) => {
     return (
-      <div className={cn("flex flex-col justify-between", className)}>
+      <div className={cn("flex flex-col justify-between min-h-[80px]", className)}>
         <label className="font-medium text-base/5 mb-2 text-white" htmlFor={id}>
           {label}
           {props.required && (
@@ -54,7 +54,7 @@ export const InputWithLabel = forwardRef<HTMLInputElement, Props>(
           id={id}
           {...props}
         />
-        <div className="mt-1 text-red-500 text-xs/3 min-h-3">{error}</div>
+        <div className="mt-1 text-red-500 text-xs/3 min-h-4">{error}</div>
         {children}
       </div>
     );

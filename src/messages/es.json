@@ -79,7 +79,8 @@
     "waitlist": "Únete a la lista de espera",
     "helloUser": "Hola, {username}",
     "logout": "Cerrar sesión",
-    "whitepaper": "Whitepaper"
+    "whitepaper": "Whitepaper",
+    "dashboard": "Dashboard"
   },
   "Footer": {
     "company": "Empresa",
@@ -193,9 +194,22 @@
     "terms-and-conditions": "Acepto los Términos y Condiciones"
   },
   "PostRegister": {
-    "title": "¡Gracias por sumarte a la lista de espera!",
-    "message": "Fuiste registrado exitosamente. ¡Estaremos en contacto pronto!",
-    "back-link": "Volver al inicio"
+    "title": "¡Cuenta Creada Exitosamente!",
+    "subtitle": "Por favor revisa tu email para verificar tu cuenta",
+    "description": "Hemos enviado un email de verificación a tu bandeja de entrada. Por favor haz clic en el enlace de verificación para activar tu cuenta y comenzar tu viaje con Oxygen.",
+    "loginButton": "Ir al Login"
+  },
+  "VerifySuccess": {
+    "title": "¡Email Verificado!",
+    "subtitle": "Tu cuenta ha sido activada exitosamente",
+    "description": "Gracias por verificar tu dirección de email. Tu cuenta en Oxygen está ahora completamente activa y puedes acceder a todas las funcionalidades de la plataforma.",
+    "loginButton": "Ir al Login",
+    "loadingTitle": "Verificando tu email...",
+    "loadingDescription": "Por favor espera mientras verificamos tu dirección de email.",
+    "errorTitle": "Verificación Fallida",
+    "errorSubtitle": "No pudimos verificar tu dirección de email",
+    "errorDescription": "Por favor intenta nuevamente o contacta soporte si el problema persiste.",
+    "tryAgainButton": "Intentar Nuevamente"
   },
   "SideBarDashboard": {
     "inicio": "Inicio",
@@ -204,23 +218,87 @@
     "compensar": "Compensar",
     "ayuda": "Ayuda",
     "configuracion": "Configuración",
-    "cerrarSesion": "Cerrar Sesión"
+    "cerrarSesion": "Cerrar Sesión",
+    "comingSoon": "Pronto podrás acceder a esta opción"
+  },
+  "Dashboard": {
+    "metrics": {
+      "carbonCredits": "bonos de carbono",
+      "carbonCreditsDesc": "Créditos disponibles",
+      "co2Absorbed": "CO₂ absorbido",
+      "co2AbsorbedDesc": "Toneladas compensadas",
+      "areaSaved": "m² salvados",
+      "areaSavedDesc": "Área protegida"
+    },
+    "projects": {
+      "saltaProject": "Proyecto Salta"
+    },
+    "months": {
+      "jan": "Ene",
+      "feb": "Feb",
+      "mar": "Mar",
+      "apr": "Abr",
+      "may": "May",
+      "jun": "Jun",
+      "jul": "Jul",
+      "aug": "Ago",
+      "sep": "Sep",
+      "oct": "Oct",
+      "nov": "Nov",
+      "dec": "Dic"
+    },
+    "footprint": {
+      "unit": "tn CO₂",
+      "period": "año"
+    },
+    "social": {
+      "instagramAction": "Publica en Instagram",
+      "linkedinAction": "Publica en LinkedIn"
+    },
+    "sections": {
+      "currentProjects": "Proyectos vigentes",
+      "yourFootprint": "Tú huella",
+      "calculateFootprint": "Calcular tú huella de carbono",
+      "earnings": "Tus ganancias",
+      "last12Months": "Últimos 12 meses",
+      "shareCertificate": "¡Compartí tu certificado en las redes sociales!"
+    }
   },
   "dashboard": {
     "tour": {
       "metrics": "Aquí puedes ver tus métricas principales: bonos de carbono, CO₂ absorbido y área protegida",
-      "projects": "Un buen primer paso para convertirte en una Persona Carbono Neutral es conocer, Revisa nuestra Calculadora de Huella de Carbono",
-      "earnings": "Conoce el bosque que estás protegiendo: ¡La Florencia! Los Yagueretes te agradecen",
+      "projects": "Conoce el bosque que estás protegiendo: ¡La Florencia! Los Yagueretes te agradecen",
+      "earnings": "Un buen primer paso para convertirte en una Persona Carbono Neutral es conocer, revisa nuestra Calculadora de Huella de Carbono",
       "social": "Otras opciones estarán habilitadas próximamente. ¡Mantente atento a más funciones!",
-      "restart": "Reiniciar tour"
+      "restart": "Reiniciar tour",
+      "next": "Siguiente",
+      "skip": "Saltar",
+      "step": "Paso",
+      "of": "de",
+      "close": "Cerrar",
+      "progress": "Paso {current} de {total}"
     }
+  },
+  "CollaborationBanner": {
+    "title": "Colaboración Lumen × Oxygen",
+    "description": "Gracias a tu código de afiliado, tienes acceso exclusivo a beneficios especiales",
+    "bonus": "+5 OM garantizados",
+    "learnMore": "Conocer más"
+  },
+  "AffiliateSuccessBanner": {
+    "headline": "Por haber ido a la fiesta y registrarte, ya tenés 5.0 tokens OM en tu cuenta.",
+    "explanation": "Cada OM representa 1 m² real de bosque protegido en La Florencia, Formosa. Es tu pedacito de Naturaleza. Literal. Ese bosque absorbe CO₂ y genera bonos de carbono (tokens OC). Con el tiempo, vas acumulando OC que podés cambiar por USDT (dólares digitales).",
+    "summary": "En resumen: bailaste, salvaste bosque, y empezaste a ganar.",
+    "cta": "Seguí el tour por tu Dashboard"
   },
   "common": {
     "back": "Atrás",
     "close": "Cerrar",
     "finish": "Finalizar",
     "next": "Siguiente",
-    "skip": "Saltar"
+    "skip": "Saltar",
+    "step": "Paso",
+    "of": "de"
   },
   "Calculator": {
     "title": "Calculadora de Huella de Carbono",

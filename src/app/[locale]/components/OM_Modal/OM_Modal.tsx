@@ -1,326 +1,206 @@
 "use client";
-import { useState, useEffect, useRef, useCallback, useMemo } from "react";
+import { useState, useEffect, useRef } from "react";
 import "./OM_Modal.css";
 
 interface OM_Modal_Props {
   show: boolean;
   onClose: () => void;
+  onButtonClick: () => void;
 }
 
-const ANIMATION_CONFIG = {
-  SMOOTH_DURATION: 600,
-  INITIAL_DURATION: 1500,
-  INITIAL_X_OFFSET: 70,
-  INITIAL_Y_OFFSET: 60,
-  DEVICE_BETA_OFFSET: 20,
-} as const;
-
-const clamp = (value: number, min = 0, max = 100): number =>
-  Math.min(Math.max(value, min), max);
-
-const round = (value: number, precision = 3): number =>
-  parseFloat(value.toFixed(precision));
-
-const adjust = (
-  value: number,
-  fromMin: number,
-  fromMax: number,
-  toMin: number,
-  toMax: number
-): number =>
-  round(toMin + ((toMax - toMin) * (value - fromMin)) / (fromMax - fromMin));
-
-const easeInOutCubic = (x: number): number =>
-  x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
-
-export default function OM_Modal({ show, onClose }: OM_Modal_Props) {
+export default function OM_Modal({ show, onClose, onButtonClick }: OM_Modal_Props) {
   const [isVisible, setIsVisible] = useState(false);
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [amount, setAmount] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
-  const wrapRef = useRef<HTMLDivElement>(null);
-  const cardRef = useRef<HTMLDivElement>(null);
-
-  const animationHandlers = useMemo(() => {
-    let rafId: number | null = null;
-
-    const updateCardTransform = (
-      offsetX: number,
-      offsetY: number,
-      card: HTMLElement,
-      wrap: HTMLElement
-    ) => {
-      const width = card.clientWidth;
-      const height = card.clientHeight;
-
-      const percentX = clamp((100 / width) * offsetX);
-      const percentY = clamp((100 / height) * offsetY);
-
-      const centerX = percentX - 50;
-      const centerY = percentY - 50;
-
-      const properties = {
-        "--pointer-x": `${percentX}%`,
-        "--pointer-y": `${percentY}%`,
-        "--background-x": `${adjust(percentX, 0, 100, 35, 65)}%`,
-        "--background-y": `${adjust(percentY, 0, 100, 35, 65)}%`,
-        "--pointer-from-center": `${clamp(Math.hypot(percentY - 50, percentX - 50) / 50, 0, 1)}`,
-        "--pointer-from-top": `${percentY / 100}`,
-        "--pointer-from-left": `${percentX / 100}`,
-        "--rotate-x": `${round(-(centerX / 5))}deg`,
-        "--rotate-y": `${round(centerY / 4)}deg`,
-      };
-
-      Object.entries(properties).forEach(([property, value]) => {
-        wrap.style.setProperty(property, value);
-      });
-    };
-
-    const createSmoothAnimation = (
-      duration: number,
-      startX: number,
-      startY: number,
-      card: HTMLElement,
-      wrap: HTMLElement
-    ) => {
-      const startTime = performance.now();
-      const targetX = wrap.clientWidth / 2;
-      const targetY = wrap.clientHeight / 2;
-
-      const animationLoop = (currentTime: number) => {
-        const elapsed = currentTime - startTime;
-        const progress = clamp(elapsed / duration);
-        const easedProgress = easeInOutCubic(progress);
-
-        const currentX = adjust(easedProgress, 0, 1, startX, targetX);
-        const currentY = adjust(easedProgress, 0, 1, startY, targetY);
-
-        updateCardTransform(currentX, currentY, card, wrap);
-
-        if (progress < 1) {
-          rafId = requestAnimationFrame(animationLoop);
-        }
-      };
-
-      rafId = requestAnimationFrame(animationLoop);
-    };
-
-    return {
-      updateCardTransform,
-      createSmoothAnimation,
-      cancelAnimation: () => {
-        if (rafId) {
-          cancelAnimationFrame(rafId);
-          rafId = null;
-        }
-      },
-    };
-  }, []);
-
-  const handlePointerMove = useCallback(
-    (event: PointerEvent) => {
-      const card = cardRef.current;
-      const wrap = wrapRef.current;
-
-      if (!card || !wrap || !animationHandlers) return;
-
-      const rect = card.getBoundingClientRect();
-      const offsetX = event.clientX - rect.left;
-      const offsetY = event.clientY - rect.top;
-      
-      console.log('Mouse move:', { offsetX, offsetY });
-      
-      animationHandlers.updateCardTransform(
-        offsetX,
-        offsetY,
-        card,
-        wrap
-      );
-    },
-    [animationHandlers]
-  );
-
-  const handlePointerEnter = useCallback(() => {
-    const card = cardRef.current;
-    const wrap = wrapRef.current;
-
-    if (!card || !wrap || !animationHandlers) return;
-
-    animationHandlers.cancelAnimation();
-    wrap.classList.add("active");
-    card.classList.add("active");
-  }, [animationHandlers]);
-
-  const handlePointerLeave = useCallback(
-    (event: PointerEvent) => {
-      const card = cardRef.current;
-      const wrap = wrapRef.current;
-
-      if (!card || !wrap || !animationHandlers) return;
-
-      animationHandlers.createSmoothAnimation(
-        ANIMATION_CONFIG.SMOOTH_DURATION,
-        event.offsetX,
-        event.offsetY,
-        card,
-        wrap
-      );
-      wrap.classList.remove("active");
-      card.classList.remove("active");
-    },
-    [animationHandlers]
-  );
-
-  useEffect(() => {
-    const card = cardRef.current;
-    const wrap = wrapRef.current;
-
-    if (!card || !wrap || !animationHandlers) return;
-
-    const pointerMoveHandler = handlePointerMove as EventListener;
-    const pointerEnterHandler = handlePointerEnter as EventListener;
-    const pointerLeaveHandler = handlePointerLeave as EventListener;
-
-    card.addEventListener("pointerenter", pointerEnterHandler);
-    card.addEventListener("pointermove", pointerMoveHandler);
-    card.addEventListener("pointerleave", pointerLeaveHandler);
-    
-    wrap.addEventListener("pointerenter", pointerEnterHandler);
-    wrap.addEventListener("pointermove", pointerMoveHandler);
-    wrap.addEventListener("pointerleave", pointerLeaveHandler);
-
-    const initialX = wrap.clientWidth - ANIMATION_CONFIG.INITIAL_X_OFFSET;
-    const initialY = ANIMATION_CONFIG.INITIAL_Y_OFFSET;
-
-    animationHandlers.updateCardTransform(initialX, initialY, card, wrap);
-    animationHandlers.createSmoothAnimation(
-      ANIMATION_CONFIG.INITIAL_DURATION,
-      initialX,
-      initialY,
-      card,
-      wrap
-    );
-
-    return () => {
-      card.removeEventListener("pointerenter", pointerEnterHandler);
-      card.removeEventListener("pointermove", pointerMoveHandler);
-      card.removeEventListener("pointerleave", pointerLeaveHandler);
-      wrap.removeEventListener("pointerenter", pointerEnterHandler);
-      wrap.removeEventListener("pointermove", pointerMoveHandler);
-      wrap.removeEventListener("pointerleave", pointerLeaveHandler);
-      animationHandlers.cancelAnimation();
-    };
-  }, [animationHandlers, handlePointerMove, handlePointerEnter, handlePointerLeave]);
+  const modalRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (show) {
       setIsVisible(true);
-      setIsLoading(false);
-      setAmount(0);
+      document.body.style.overflow = 'hidden';
       
-      const modalTimer = setTimeout(() => {
-        setIsModalVisible(true);
-        let currentAmount = 0;
-        const targetAmount = 5;
-        const increment = 0.3;
-        const interval = setInterval(() => {
-          currentAmount += increment;
-          if (currentAmount >= targetAmount) {
-            currentAmount = targetAmount;
-            clearInterval(interval);
-          }
-          setAmount(currentAmount);
-        }, 40);
-        
-        return () => clearInterval(interval);
-      }, 50);
+      // Crear y agregar el modal directamente al body
+      const modalElement = document.createElement('div');
+      modalElement.id = 'om-modal-portal';
+      modalElement.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+      `;
       
-      return () => clearTimeout(modalTimer);
-    }
-  }, [show]);
-
-  const handleClose = () => {
-    setIsModalVisible(false);
-    setTimeout(() => {
-      setIsVisible(false);
-      setTimeout(() => {
-        onClose();
-      }, 200);
-    }, 400);
-  };
-
-  if (!show) return null;
-
-  return (
-    <div className="fixed inset-0 z-[200] flex items-center justify-center p-8">
-      <div 
-        className={`absolute inset-0 bg-gradient-to-br from-black/80 via-teal-900/20 to-green-900/20 backdrop-blur-md transition-all duration-500 ease-out ${
-          isVisible ? 'opacity-100' : 'opacity-0'
-        }`}
-        onClick={() => {}}
-      />
+      // Crear el backdrop
+      const backdrop = document.createElement('div');
+      backdrop.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0);
+        backdrop-filter: blur(0px);
+        z-index: 9999;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      `;
       
-      <div
-        ref={wrapRef}
-        className={`om-card-wrapper mx-4 my-12 transition-all duration-500 ease-out ${
-          isModalVisible 
-            ? 'scale-100 opacity-100 translate-y-0' 
-            : 'scale-90 opacity-0 translate-y-4'
-        }`}
-        style={{
-          "--pointer-x": "50%",
-          "--pointer-y": "50%",
-          "--pointer-from-center": "0",
-          "--pointer-from-top": "0.5",
-          "--pointer-from-left": "0.5",
-          "--card-opacity": "0",
-          "--rotate-x": "0deg",
-          "--rotate-y": "0deg",
-          "--background-x": "50%",
-          "--background-y": "50%",
-          "--behind-gradient": "radial-gradient(farthest-side circle at var(--pointer-x) var(--pointer-y),hsla(160,100%,90%,var(--card-opacity)) 4%,hsla(160,50%,80%,calc(var(--card-opacity)*0.75)) 10%,hsla(160,25%,70%,calc(var(--card-opacity)*0.5)) 50%,hsla(160,0%,60%,0) 100%),radial-gradient(35% 52% at 55% 20%,#00ffaac4 0%,#073aff00 100%),radial-gradient(100% 100% at 50% 50%,#00c1ffff 1%,#073aff00 76%),conic-gradient(from 124deg at 50% 50%,#00ffaaff 0%,#07c6ffff 40%,#07c6ffff 60%,#00ffaaff 100%)",
-          "--inner-gradient": "linear-gradient(145deg,#0d9488 0%,#14b8a6 50%,#0d9488 100%)",
-        } as React.CSSProperties}
-      >
-        <section ref={cardRef} className="om-card">
-          <div className="om-inside">
-            <div className="om-shine" />
-            <div className="om-glare" />
+      // Crear el modal
+      const modalContent = document.createElement('div');
+      modalContent.style.cssText = `
+        position: relative;
+        background: linear-gradient(135deg, rgba(0, 106, 106, 0.75) 0%, rgba(0, 202, 166, 0.65) 30%, rgba(1, 33, 56, 0.7) 70%, rgba(11, 136, 153, 0.8) 100%);
+        backdrop-filter: blur(30px);
+        border: 2px solid rgba(0, 202, 166, 0.8);
+        border-radius: 1rem;
+        padding: 1.5rem 2rem;
+        max-width: 28rem;
+        width: 100%;
+        max-height: 90vh;
+        overflow-y: auto;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), inset 0 2px 8px rgba(255, 255, 255, 0.3);
+        transform: scale(0.9) translateY(20px);
+        opacity: 0;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 10000;
+        margin: -1.5rem 0;
+      `;
+      
+      // Agregar contenido del modal
+              modalContent.innerHTML = `
+          <div style="text-align: center; color: white;">
+            <div style="margin-bottom: 1.5rem;">
+              <div class="logo-container">
+                <img src="/assets/images/oxygen blanco.png" alt="Oxygen" style="height: 12rem; width: auto;">
+                <img src="/assets/images/lumensonus_logo-12.png" alt="Lumen Sonus" style="height: 4rem; width: auto;">
+              </div>
+              <h2 style="font-size: 1.125rem; font-weight: bold; line-height: 1.25; margin-bottom: 1.5rem;">
+                Por haber ido a la fiesta y registrarte, ya tenés 5.0 tokens OM en tu cuenta.
+              </h2>
+            </div>
             
-            <div className="om-content">
-              <div className="om-details">
-                <h3 className="text-xs font-bold text-white mb-3 text-center">
-                  Bienvenid@ a la colaboración LUMEN x OXYGEN
-                </h3>
-                
-                <div className="space-y-3 text-white text-center">
-                  <p className="text-xs" style={{ fontSize: '12px !important' }}>
-                    Por haber ido a la fiesta y registrarte, ya tenés <span className="font-bold text-xs" style={{ fontSize: '12px !important' }}>{amount.toFixed(1)} tokens OM</span> en tu cuenta.
-                  </p>
-                  
-                  <p className="text-xs font-semibold" style={{ fontSize: '12px !important' }}>¿Y eso qué significa?</p>
-                  
-                  <div className="space-y-2 text-xs leading-relaxed">
-                    <p style={{ fontSize: '12px !important' }}>Cada OM representa 1 m² real de bosque protegido en La Florencia, Formosa. Es tu pedacito de Naturaleza. Literal.</p>
-                    <p style={{ fontSize: '12px !important' }}>Ese bosque absorbe CO₂ y genera bonos de carbono (tokens OC). Con el tiempo, vas acumulando OC que podés cambiar por USDT (dólares digitales).</p>
-                  </div>
-                  
-                  <p className="font-semibold text-xs mt-4" style={{ fontSize: '12px !important' }}>
-                    En resumen: bailaste, salvaste bosque, y empezaste a ganar.
-                  </p>
-                </div>
-                
-                <button
-                  onClick={handleClose}
-                  className="om-contact-btn mt-6"
-                >
-                  Seguí el tour por tu Dashboard
-                </button>
+            <div style="margin-bottom: 1.5rem; text-align: left;">
+              <p style="font-size: 0.875rem; line-height: 1.5; margin-bottom: 1.5rem;">
+                Cada OM representa 1 m² real de bosque protegido en La Florencia, Formosa. Es tu pedacito de Naturaleza. Literal. Ese bosque absorbe CO₂ y genera bonos de carbono (tokens OC). Con el tiempo, vas acumulando OC que podés cambiar por USDT (dólares digitales).
+              </p>
+              <p style="font-weight: 600; font-size: 0.875rem; margin-bottom: 1.5rem;">
+                En resumen: bailaste, salvaste bosque, y empezaste a ganar.
+              </p>
+            </div>
+
+          <button id="om-modal-button" style="
+            width: 100%;
+            position: relative;
+            display: inline-block;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            padding: 3px 0;
+          ">
+            <div style="
+              position: relative;
+              border: 2px solid rgba(0, 202, 166, 0.8);
+              color: white;
+              text-align: center;
+              font-size: 16px;
+              padding: 16px 26px;
+              border-radius: 20px;
+              transition: all 0.3s ease;
+              background: linear-gradient(135deg, rgba(3, 77, 77, 0.9) 0%, rgba(0, 106, 106, 0.85) 100%);
+              backdrop-filter: blur(10px);
+              box-shadow: 0 8px 32px rgba(3, 77, 77, 0.4), inset 0 2px 8px rgba(255, 255, 255, 0.1);
+            ">
+              <div style="line-height: 1.25;">
+                <div>Ingresa al dashboard</div>
+                <div>e inicia al tour</div>
               </div>
             </div>
-          </div>
-        </section>
-      </div>
-    </div>
-  );
+          </button>
+        </div>
+      `;
+      
+      // Agregar elementos al DOM
+      modalElement.appendChild(backdrop);
+      modalElement.appendChild(modalContent);
+      document.body.appendChild(modalElement);
+      
+      // Animar entrada del modal
+      setTimeout(() => {
+        backdrop.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+        backdrop.style.backdropFilter = 'blur(4px)';
+        modalContent.style.transform = 'scale(1) translateY(0)';
+        modalContent.style.opacity = '1';
+      }, 10);
+      
+      // Agregar event listener al botón
+      const button = modalContent.querySelector('#om-modal-button');
+      if (button) {
+        button.addEventListener('click', onButtonClick);
+        
+        // Efecto hover
+        const buttonDiv = button.querySelector('div');
+        if (buttonDiv) {
+          button.addEventListener('mouseenter', () => {
+            buttonDiv.style.background = 'linear-gradient(135deg, rgba(3, 77, 77, 0.95) 0%, rgba(0, 106, 106, 0.9) 100%)';
+            buttonDiv.style.borderColor = 'rgba(0, 202, 166, 0.9)';
+            buttonDiv.style.transform = 'scale(1.02)';
+            buttonDiv.style.boxShadow = '0 10px 35px rgba(3, 77, 77, 0.5), inset 0 2px 8px rgba(255, 255, 255, 0.15)';
+          });
+          
+          button.addEventListener('mouseleave', () => {
+            buttonDiv.style.background = 'linear-gradient(135deg, rgba(3, 77, 77, 0.9) 0%, rgba(0, 106, 106, 0.85) 100%)';
+            buttonDiv.style.borderColor = 'rgba(0, 202, 166, 0.8)';
+            buttonDiv.style.transform = 'scale(1)';
+            buttonDiv.style.boxShadow = '0 8px 32px rgba(3, 77, 77, 0.4), inset 0 2px 8px rgba(255, 255, 255, 0.1)';
+          });
+        }
+      }
+      
+      // No cerrar al hacer click afuera - modal solo se cierra con el botón
+      // backdrop.addEventListener('click', onClose);
+      
+      modalRef.current = modalElement;
+      
+    } else {
+      // Animar salida del modal antes de removerlo
+      if (modalRef.current) {
+        const backdrop = modalRef.current.querySelector('div:first-child');
+        const modal = modalRef.current.querySelector('div:last-child');
+        
+        if (backdrop && modal) {
+          // Animar salida
+          (backdrop as HTMLElement).style.backgroundColor = 'rgba(0, 0, 0, 0)';
+          (backdrop as HTMLElement).style.backdropFilter = 'blur(0px)';
+          (modal as HTMLElement).style.transform = 'scale(0.9) translateY(20px)';
+          (modal as HTMLElement).style.opacity = '0';
+          
+          // Remover después de la animación
+          setTimeout(() => {
+            if (modalRef.current) {
+              document.body.removeChild(modalRef.current);
+              modalRef.current = null;
+            }
+          }, 400);
+        } else {
+          // Fallback si no se encuentran los elementos
+          document.body.removeChild(modalRef.current);
+          modalRef.current = null;
+        }
+      }
+    }
+
+    return () => {
+      // Cleanup: remover modal si existe
+      if (modalRef.current) {
+        document.body.removeChild(modalRef.current);
+        modalRef.current = null;
+      }
+      document.body.style.overflow = '';
+    };
+  }, [show, onClose, onButtonClick]);
+
+  // No renderizar nada en el componente React
+  return null;
 }

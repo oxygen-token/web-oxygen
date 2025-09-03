@@ -19,11 +19,19 @@ const LoginForm = () => {
   const locale = pathname.split("/")[1];
 
   const onSubmit = async (data: Record<string, string>) => {
+    console.log("Form data received:", data);
+    console.log("Email:", data.email);
+    console.log("Password:", data.password);
+    
     try {
+      console.log("Calling login function...");
       await login(data.email, data.password);
+      console.log("Login successful, redirecting to dashboard...");
+      console.log("Redirect URL:", `/${locale}/dashboard`);
       router.push(`/${locale}/dashboard`);
     } catch (err) {
-      console.error(JSON.stringify(err));
+      console.error("Login error in form:", err);
+      console.error("Error JSON:", JSON.stringify(err));
       if ((err as Response).status === 401) {
         setError("root", {
           type: "400",

@@ -58,6 +58,12 @@ function Navbar() {
           ))}
           {user ? (
             <li className="flex items-center gap-4">
+              <Link
+                href={`/${locale}/dashboard`}
+                className="border border-teal-400 px-3 py-1 rounded-full text-teal-400 hover:bg-teal-400 hover:text-white transition-colors duration-200"
+              >
+                {t("dashboard")}
+              </Link>
               <span className="border border-current px-3 py-1 rounded-full">
                 {t("helloUser", { username: capitalizeFirstLetter(user.username) })}
               </span>

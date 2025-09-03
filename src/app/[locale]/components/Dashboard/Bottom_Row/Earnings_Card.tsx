@@ -1,27 +1,26 @@
 "use client";
 import { memo } from "react";
+import { useTranslations } from "next-intl";
 import { EarningsData } from "../types";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area, AreaChart } from 'recharts';
+
+// Función para mostrar guiones en lugar de números
+const formatNumber = (num: number): string => {
+  return "--,---";
+};
 
 interface Earnings_CardProps {
   data: EarningsData;
 }
 
 const Earnings_Card = memo(({ data }: Earnings_CardProps) => {
-  const chartData = [
-    { month: 'Ene', value: 1500 },
-    { month: 'Feb', value: 1800 },
-    { month: 'Mar', value: 2200 },
-    { month: 'Abr', value: 1900 },
-    { month: 'May', value: 2800 },
-    { month: 'Jun', value: 2400 },
-    { month: 'Jul', value: 3200 },
-    { month: 'Ago', value: 3800 },
-    { month: 'Sep', value: 4200 },
-    { month: 'Oct', value: 4800 },
-    { month: 'Nov', value: 5200 },
-    { month: 'Dic', value: 5800 }
-  ];
+  const t = useTranslations("Dashboard");
+  
+  // Usar los datos reales del prop data
+  const chartData = data.chartData.map(item => ({
+    month: item.month,
+    value: item.value
+  }));
 
   const totalEarnings = chartData.reduce((sum, d) => sum + d.value, 0);
 
@@ -30,7 +29,7 @@ const Earnings_Card = memo(({ data }: Earnings_CardProps) => {
       return (
         <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-1.5">
           <p className="text-xs font-medium text-gray-600">{`${label}`}</p>
-          <p className="text-xs font-bold text-gray-800">{`$${payload[0].value.toLocaleString()}`}</p>
+          <p className="text-xs font-bold text-gray-800">{`$--,---`}</p>
         </div>
       );
     }
@@ -49,13 +48,13 @@ const Earnings_Card = memo(({ data }: Earnings_CardProps) => {
       <div className="flex justify-between items-start mb-2 sm:mb-3">
         <div className="space-y-0.5">
           <h3 className="text-sm sm:text-base font-semibold text-white">
-            Tus ganancias
+            {t("sections.earnings")}
           </h3>
           <p className="text-xs sm:text-sm text-white">
-            Últimos 12 meses
+            {t("sections.last12Months")}
           </p>
           <p className="text-lg sm:text-xl font-bold text-white">
-            ${totalEarnings.toLocaleString()}
+            $--,---
           </p>
         </div>
       </div>

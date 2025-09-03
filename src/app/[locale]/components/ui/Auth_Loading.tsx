@@ -18,12 +18,32 @@ const AuthLoading = ({ children, requireAuth = false, redirectTo = "/login" }: A
   const locale = pathname.split("/")[1];
 
   useEffect(() => {
+    console.log("AuthLoading useEffect:", {
+      loading,
+      requireAuth,
+      user,
+      isDevMode,
+      pathname,
+      locale
+    });
+    
     if (!loading && requireAuth && !user && !isDevMode) {
+      console.log("Redirecting to login:", `/${locale}${redirectTo}`);
       router.push(`/${locale}${redirectTo}`);
     }
   }, [loading, user, requireAuth, redirectTo, router, locale, isDevMode]);
 
+  console.log("AuthLoading render:", {
+    loading,
+    requireAuth,
+    user,
+    isDevMode,
+    willShowLoading: loading && !isDevMode,
+    willShowChildren: !(requireAuth && !user && !isDevMode)
+  });
+
   if (loading && !isDevMode) {
+    console.log("Showing loading screen");
     return (
       <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-teal-dark via-teal-medium to-teal">
         <div className="text-center">
@@ -35,9 +55,11 @@ const AuthLoading = ({ children, requireAuth = false, redirectTo = "/login" }: A
   }
 
   if (requireAuth && !user && !isDevMode) {
+    console.log("User not authenticated, showing nothing");
     return null;
   }
 
+  console.log("Showing dashboard content");
   return <>{children}</>;
 };
 

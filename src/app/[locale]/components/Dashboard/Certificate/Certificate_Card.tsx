@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 
 interface Props {
@@ -15,6 +16,7 @@ const Certificate_SubCard: React.FC<{
   area, 
   socialPlatform 
 }) => {
+  const t = useTranslations("Dashboard");
   const getSocialIcon = () => {
     switch (socialPlatform) {
       case 'instagram':
@@ -37,9 +39,9 @@ const Certificate_SubCard: React.FC<{
   const getSocialText = () => {
     switch (socialPlatform) {
       case 'instagram':
-        return 'Publica en Instagram';
+        return t("social.instagramAction");
       case 'linkedin':
-        return 'Publica en LinkedIn';
+        return t("social.linkedinAction");
       default:
         return '';
     }
@@ -90,12 +92,13 @@ const Certificate_Card: React.FC<Props> = ({
   certificateId,
   area
 }) => {
+  const t = useTranslations("Dashboard");
   return (
     <div className="relative rounded-lg p-4">
       <div className="mb-4">
         <h3 className="text-white font-bold text-sm mb-1" style={{ color: 'white !important' }}>#{certificateId}</h3>
         <p className="text-white text-xs" style={{ color: 'white !important' }}>
-          ¡Compartí tu certificado en las redes sociales!
+          {t("sections.shareCertificate")}
         </p>
       </div>
       

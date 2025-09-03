@@ -6,6 +6,7 @@ interface DevContextType {
   mockUser: {
     username: string;
     email: string;
+    isFirstLogin: boolean;
   } | null;
 }
 
@@ -24,12 +25,9 @@ interface DevProviderProps {
 }
 
 export const DevProvider = ({ children }: DevProviderProps) => {
-  const isDevMode = process.env.NEXT_PUBLIC_BYPASS_AUTH === "true";
+  const isDevMode = false; // Volver a false ahora que el backend funciona
   
-  const mockUser = isDevMode ? {
-    username: "dev_user",
-    email: "dev@oxygen.com"
-  } : null;
+  const mockUser = null; // No usar mockUser
 
   const value = {
     isDevMode,
