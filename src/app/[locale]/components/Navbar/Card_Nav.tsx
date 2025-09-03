@@ -72,7 +72,8 @@ const Card_Nav: React.FC<CardNavProps> = ({
       textColor: "#fff",
       links: [
         { label: t("home"), href: "/", ariaLabel: t("home") },
-        { label: t("us"), href: "/nosotros", ariaLabel: t("us") }
+        { label: t("us"), href: "/nosotros", ariaLabel: t("us") },
+        { label: t("community"), href: "/blog", ariaLabel: t("community") }
       ]
     },
     {
@@ -82,15 +83,6 @@ const Card_Nav: React.FC<CardNavProps> = ({
       links: [
         { label: t("project"), href: "/proyectos", ariaLabel: t("project") },
         { label: t("whitepaper"), href: "/whitepaper", ariaLabel: t("whitepaper") }
-      ]
-    },
-    {
-      label: t("community"),
-      bgColor: "linear-gradient(135deg, rgba(1, 33, 56, 0.95) 0%, rgba(0, 106, 106, 0.95) 50%, rgba(0, 202, 166, 0.95) 100%)",
-      textColor: "#fff",
-      links: [
-        { label: t("community"), href: "/blog", ariaLabel: t("community") },
-        { label: t("blog"), href: "/blog", ariaLabel: t("blog") }
       ]
     },
     {
@@ -256,7 +248,7 @@ const Card_Nav: React.FC<CardNavProps> = ({
           {(items || []).slice(0, 3).map((item, idx) => (
             <div
               key={`${item.label}-${idx}`}
-              className="nav-card select-none relative flex flex-col gap-3 p-4 rounded-lg min-w-0 flex-1 h-auto min-h-[80px] shadow-lg border border-white/10 backdrop-blur-sm"
+              className="nav-card select-none relative flex flex-col justify-center p-6 rounded-lg min-w-0 flex-1 h-auto min-h-[100px] shadow-lg border border-white/10 backdrop-blur-sm"
               ref={setCardRef(idx)}
               style={{ 
                 background: item.bgColor, 
@@ -264,14 +256,11 @@ const Card_Nav: React.FC<CardNavProps> = ({
                 boxShadow: "0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)"
               }}
             >
-              <div className="nav-card-label font-semibold text-lg mb-2 text-white drop-shadow-lg">
-                {item.label}
-              </div>
-              <div className="nav-card-links mt-auto flex flex-col gap-2">
+              <div className="nav-card-links flex flex-col gap-3 justify-center">
                 {item.links?.map((lnk, i) => (
                   <Link
                     key={`${lnk.label}-${i}`}
-                    className="nav-card-link inline-flex items-center gap-2 no-underline cursor-pointer transition-all duration-300 hover:opacity-90 hover:scale-105 text-sm font-medium px-2 py-1 rounded-md hover:bg-white/10"
+                    className="nav-card-link inline-flex items-center gap-3 no-underline cursor-pointer transition-all duration-300 hover:opacity-90 hover:scale-105 text-sm font-medium px-3 py-2 rounded-md hover:bg-white/10"
                     href={lnk.href}
                     aria-label={lnk.ariaLabel}
                     onClick={(e) => {
