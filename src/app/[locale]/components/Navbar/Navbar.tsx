@@ -184,7 +184,7 @@ function Navbar() {
                       <Link
                         key={item.nameKey}
                         href={item.href}
-                        className="flex items-center justify-end gap-4 px-4 py-3 rounded-xl transition-colors duration-150 w-full group bg-transparent text-white hover:bg-white/10 cursor-pointer"
+                        className="flex items-center justify-end gap-4 px-4 py-3 rounded-xl transition-colors duration-150 w-full group bg-transparent text-white hover:bg-white/10 active:bg-transparent focus:bg-transparent cursor-pointer"
                         onClick={() => setMobileNavOpen(false)}
                       >
                         <span className="text-sm font-medium text-white">
@@ -196,7 +196,7 @@ function Navbar() {
                   })}
                   <Link
                     href={`/${locale}/dashboard`}
-                    className="flex items-center justify-end gap-4 px-4 py-3 rounded-xl transition-colors duration-150 w-full group bg-transparent text-white hover:bg-white/10 cursor-pointer"
+                    className="flex items-center justify-end gap-4 px-4 py-3 rounded-xl transition-colors duration-150 w-full group bg-transparent text-white hover:bg-white/10 active:bg-transparent focus:bg-transparent cursor-pointer"
                     onClick={() => setMobileNavOpen(false)}
                   >
                     <span className="text-sm font-medium text-white">
@@ -226,7 +226,7 @@ function Navbar() {
                       <Link
                         key={item.nameKey}
                         href={item.href}
-                        className="flex items-center justify-end gap-4 px-4 py-3 rounded-xl transition-colors duration-150 w-full group bg-transparent text-white hover:bg-white/10 cursor-pointer"
+                        className="flex items-center justify-end gap-4 px-4 py-3 rounded-xl transition-colors duration-150 w-full group bg-transparent text-white hover:bg-white/10 active:bg-transparent focus:bg-transparent cursor-pointer"
                         onClick={() => setMobileNavOpen(false)}
                       >
                         <span className="text-sm font-medium text-white">
@@ -238,7 +238,7 @@ function Navbar() {
                   })}
                   <Link
                     href="/comprar"
-                    className="flex items-center justify-end gap-4 px-4 py-3 rounded-xl transition-colors duration-150 w-full group bg-transparent text-white hover:bg-white/10 cursor-pointer"
+                    className="flex items-center justify-end gap-4 px-4 py-3 rounded-xl transition-colors duration-150 w-full group bg-transparent text-white hover:bg-white/10 active:bg-transparent focus:bg-transparent cursor-pointer"
                     onClick={() => setMobileNavOpen(false)}
                   >
                     <span className="text-sm font-medium text-white">
