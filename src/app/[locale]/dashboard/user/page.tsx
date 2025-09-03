@@ -106,6 +106,11 @@ export default function UserDashboardPage() {
     setIsVerified(true);
   };
 
+  const handleOMModalButtonClick = () => {
+    setShowOMModal(false);
+    setIsVerified(true);
+  };
+
   return (
     <>
       <DashboardLayout>
@@ -134,7 +139,7 @@ export default function UserDashboardPage() {
         onSubmit={handleCodeSubmit}
       />
       
-      <OM_Modal show={showOMModal} onClose={handleCloseOMModal} />
+      <OM_Modal show={showOMModal} onClose={handleCloseOMModal} onButtonClick={handleOMModalButtonClick} />
     </>
   );
 } 

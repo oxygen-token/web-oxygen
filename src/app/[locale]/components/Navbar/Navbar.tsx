@@ -92,14 +92,7 @@ function Navbar() {
                   {t("buy")}
                 </Link>
               </li>
-              <li>
-                <Link
-                  href="/login?panel=register"
-                  className="border border-current px-3 py-1 rounded-full hover:bg-teal-medium/20 transition-colors duration-200"
-                >
-                  {t("waitlist")}
-                </Link>
-              </li>
+
             </>
           )}
           <LanguageSelect />

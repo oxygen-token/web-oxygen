@@ -8,6 +8,9 @@ const Certificate_Example: React.FC = () => {
         <Certificate_Card
           certificateId="SoyCarbonoNeutral"
           area="48 M²"
+          socialPlatform="instagram"
+          socialText="Publica en Instagram"
+          hasBorder={false}
         />
       </div>
     </div>

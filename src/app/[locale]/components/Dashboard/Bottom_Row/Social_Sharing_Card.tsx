@@ -12,6 +12,9 @@ const Social_Sharing_Card = memo(({ data }: Social_Sharing_CardProps) => {
     <Certificate_Card
       certificateId="SoyCarbonoNeutral"
       area={data.certificateValue}
+      socialPlatform="instagram"
+      socialText="Publica en Instagram"
+      hasBorder={false}
     />
   );
 });

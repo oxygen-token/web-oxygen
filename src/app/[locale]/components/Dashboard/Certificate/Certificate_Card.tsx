@@ -5,6 +5,9 @@ import Image from 'next/image';
 interface Props {
   certificateId: string;
   area: string;
+  socialPlatform: 'instagram' | 'linkedin';
+  socialText: string;
+  hasBorder?: boolean;
 }
 
 const Certificate_SubCard: React.FC<{ 
@@ -90,7 +93,10 @@ const Certificate_SubCard: React.FC<{
 
 const Certificate_Card: React.FC<Props> = ({
   certificateId,
-  area
+  area,
+  socialPlatform,
+  socialText,
+  hasBorder
 }) => {
   const t = useTranslations("Dashboard");
   return (

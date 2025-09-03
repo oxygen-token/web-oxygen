@@ -79,7 +79,7 @@ const Dashboard_Tour = ({ shouldShowTour }: Dashboard_Tour_Props) => {
   const handleCallback = async (data: CallBackProps) => {
     const { status, type, index } = data;
     
-    if ([STATUS.FINISHED, STATUS.SKIPPED].includes(status)) {
+    if (status === STATUS.FINISHED || status === STATUS.SKIPPED) {
       console.log("🎯 Tour terminado o saltado, marcando onboarding como completado...");
       setRun(false);
       completeTour();
@@ -102,7 +102,7 @@ const Dashboard_Tour = ({ shouldShowTour }: Dashboard_Tour_Props) => {
     
     if (type === 'step:after' && isMobile) {
       const currentStep = steps[index];
-      if (currentStep && currentStep.target) {
+      if (currentStep && currentStep.target && typeof currentStep.target === 'string') {
         const targetElement = document.querySelector(currentStep.target);
         if (targetElement) {
           targetElement.scrollIntoView({
@@ -175,7 +175,6 @@ const Dashboard_Tour = ({ shouldShowTour }: Dashboard_Tour_Props) => {
           backgroundColor: "#1F2937",
           textColor: "#F9FAFB",
           arrowColor: "#1F2937",
-          spotlightPadding: isMobile ? 8 : 16,
         },
         tooltip: {
           backgroundColor: "#1F2937",
