@@ -6,6 +6,11 @@
     "subtitle-1": "Protegemos árboles de ser talados y conservamos ",
     "subtitle-2": "ecosistemas",
     "button": "Comenzá",
+    "banner-action": "Tomá acción",
+    "banner-environment": "ambiente",
+    "banner-preserve": "y preservá",
+    "banner-future": "nuestro futuro",
+    "banner-planet": "el planeta",
     "data-content-1": "hectareas",
     "data-content-11": "de bosque",
     "data-content-2": "estadios",
@@ -79,8 +84,8 @@
     "waitlist": "Únete a la lista de espera",
     "helloUser": "Hola, {username}",
     "logout": "Cerrar sesión",
-    "whitepaper": "Whitepaper",
-    "dashboard": "Dashboard"
+    "whitepaper": "Documento técnico",
+    "dashboard": "Panel de control"
   },
   "Footer": {
     "company": "Empresa",
@@ -164,12 +169,12 @@
     "login-cta": "Registrate"
   },
   "Register": {
-    "register-back": "Atrás",
+    "register-back": "Ir a Iniciar Sesión",
     "register-title": "Tomá acción y preservá el ambiente",
     "register-form-title": "¡Bienvenido!",
     "firstname-field": "Nombre",
     "lastname-field": "Apellido",
-    "company-field": "Nombre de la empresa (opcional)",
+    "company-field": "Nombre de la empresa",
     "country-field": "País",
     "affiliate-field": "Código de afiliado (opcional)",
     "email-field": "Correo electrónico",
@@ -191,6 +196,18 @@
     "must-accept-tc": "Debe aceptar los Términos y Condiciones para registrarse",
     "server-error": "Ocurrió un error inesperado. Por favor intente de nuevo.",
     "register-btn": "Registrarse",
+    "create-account": "Crear",
+    "creating-account": "Creando Cuenta...",
+    "please-complete": "Por favor completá:",
+    "next": "Siguiente",
+    "previous": "Anterior",
+    "optional": "opcional",
+    "affiliate-code": "Código de afiliado",
+    "verify": "verificar",
+    "verifying": "verificando...",
+    "success": "Éxito",
+    "invalid-code": "Código inválido",
+    "om-guaranteed": "+5 OM garantizado",
     "terms-and-conditions": "Acepto los Términos y Condiciones"
   },
   "PostRegister": {

@@ -275,7 +275,7 @@ const RegisterForm_Desktop = () => {
             disabled={!watch("terms") || isSubmitting}
             className="w-full py-3 px-6 text-base font-medium mt-4 bg-teal-accent text-white rounded-lg hover:bg-teal-accent/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
-            {isSubmitting ? "Creating Account..." : "Create Account"}
+            {isSubmitting ? t("creating-account") : t("create-account")}
           </button>
         </div>
 

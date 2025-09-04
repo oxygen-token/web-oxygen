@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
+import { useTranslations } from "next-intl";
 import "./OM_Modal.css";
 
 interface OM_Modal_Props {
@@ -11,6 +12,7 @@ interface OM_Modal_Props {
 export default function OM_Modal({ show, onClose, onButtonClick }: OM_Modal_Props) {
   const [isVisible, setIsVisible] = useState(false);
   const modalRef = useRef<HTMLDivElement | null>(null);
+  const t = useTranslations("AffiliateSuccessBanner");
 
   useEffect(() => {
     if (show) {
@@ -77,16 +79,16 @@ export default function OM_Modal({ show, onClose, onButtonClick }: OM_Modal_Prop
                 <img src="/assets/images/lumensonus_logo-12.png" alt="Lumen Sonus" style="height: 4rem; width: auto;">
               </div>
               <h2 style="font-size: 1.125rem; font-weight: bold; line-height: 1.25; margin-bottom: 1.5rem;">
-                Por haber ido a la fiesta y registrarte, ya tenés 5.0 tokens OM en tu cuenta.
+                ${t("headline")}
               </h2>
             </div>
             
             <div style="margin-bottom: 1.5rem; text-align: left;">
               <p style="font-size: 0.875rem; line-height: 1.5; margin-bottom: 1.5rem;">
-                Cada OM representa 1 m² real de bosque protegido en La Florencia, Formosa. Es tu pedacito de Naturaleza. Literal. Ese bosque absorbe CO₂ y genera bonos de carbono (tokens OC). Con el tiempo, vas acumulando OC que podés cambiar por USDT (dólares digitales).
+                ${t("explanation")}
               </p>
               <p style="font-weight: 600; font-size: 0.875rem; margin-bottom: 1.5rem;">
-                En resumen: bailaste, salvaste bosque, y empezaste a ganar.
+                ${t("summary")}
               </p>
             </div>
 
@@ -113,8 +115,7 @@ export default function OM_Modal({ show, onClose, onButtonClick }: OM_Modal_Prop
               box-shadow: 0 8px 32px rgba(3, 77, 77, 0.4), inset 0 2px 8px rgba(255, 255, 255, 0.1);
             ">
               <div style="line-height: 1.25;">
-                <div>Ingresa al dashboard</div>
-                <div>e inicia al tour</div>
+                ${t("cta")}
               </div>
             </div>
           </button>

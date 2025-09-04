@@ -34,7 +34,7 @@ export const InputWithLabel = forwardRef<HTMLInputElement, Props>(
         <input
           ref={forwardedRef}
           className={cn(
-            "!border-0 px-4 !placeholder:text-gray-300 !text-white/90",
+            "!border-0 px-4 !placeholder:text-gray-300 !placeholder:text-[10px] !text-white/90",
             "outline-2 focus-visible:outline-green focus-visible:!border focus-visible:!border-green-500/70",
             "transition-all duration-200 appearance-none",
             "focus:!bg-[#00caa61a] hover:!bg-[#00caa61a]",

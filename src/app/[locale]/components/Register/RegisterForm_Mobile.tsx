@@ -138,9 +138,9 @@ const RegisterForm_Mobile = () => {
   };
 
   const getVerifyButtonText = () => {
-    if (isVerifying) return "verifying...";
-    if (verificationStatus === "success") return "Success";
-    return "verify";
+    if (isVerifying) return t("verifying");
+    if (verificationStatus === "success") return t("success");
+    return t("verify");
   };
 
   const getVerifyButtonClass = () => {
@@ -227,37 +227,37 @@ const RegisterForm_Mobile = () => {
     switch (currentStep) {
       case 1:
         const missing = [];
-        if (!fullName || !fullName.trim()) missing.push("Full name");
-        if (!email || !email.trim()) missing.push("Email");
-        if (!password || password.length < 8) missing.push("Password (min 8 characters)");
-        return missing.length > 0 ? `Please complete: ${missing.join(", ")}` : "";
+        if (!fullName || !fullName.trim()) missing.push(t("firstname-field"));
+        if (!email || !email.trim()) missing.push(t("email-field"));
+        if (!password || password.length < 8) missing.push(`${t("password-field")} (min 8 characters)`);
+        return missing.length > 0 ? `${t("please-complete")} ${missing.join(", ")}` : "";
       case 3:
-        return !terms ? "Please accept the terms and conditions" : "";
+        return !terms ? t("must-accept-tc") : "";
       default:
         return "";
     }
   };
 
   const renderStep1 = () => (
-    <div className="flex flex-col gap-6 w-full max-w-sm h-full">
+    <div className="flex flex-col gap-6 w-full max-w-[320px] h-full">
       <InputWithLabel
         variant="large"
         id="fullName"
-        label="Full name"
-        placeholder="Enter your full name"
+        label={t("firstname-field")}
+        placeholder={t("firstname-placeholder")}
         error={errors.fullName?.message}
-        {...register("fullName", { required: "Full name is required" })}
+        {...register("fullName", { required: t("required-field") })}
       />
 
       <InputWithLabel
         variant="large"
         id="email"
-        label="Email"
-        placeholder="Enter your email"
+        label={t("email-field")}
+        placeholder={t("email-placeholder")}
         error={errors.email?.message}
         {...register("email", {
-          required: "Email is required",
-          pattern: { value: /.+@.+\.[a-zA-Z]+/, message: "Invalid email format" },
+          required: t("required-field"),
+          pattern: { value: /.+@.+\.[a-zA-Z]+/, message: t("email-invalid") },
         })}
       />
 
@@ -267,7 +267,7 @@ const RegisterForm_Mobile = () => {
         id="password"
         label={
           <div className="flex items-center justify-between">
-            <span>Password</span>
+            <span>{t("password-field")}</span>
             {watch("password") && (
               <span className={`text-xs ${
                 watch("password").length >= 8 
@@ -291,7 +291,7 @@ const RegisterForm_Mobile = () => {
       />
 
       <div className="flex items-end">
-        <div className="w-full min-h-[48px] flex items-center">
+        <div className="w-full min-h-[48px] flex items-center justify-center">
           <Star_Border
             as="button"
             type="button"
@@ -300,9 +300,9 @@ const RegisterForm_Mobile = () => {
             color="cyan"
             speed="4s"
             thickness={3}
-            className="w-full py-1.5 px-2 text-xs font-medium"
+            className="w-auto min-w-[120px] py-1.5 px-4 text-xs font-medium"
           >
-            Next
+            {t("next")}
           </Star_Border>
         </div>
       </div>
@@ -310,28 +310,27 @@ const RegisterForm_Mobile = () => {
   );
 
   const renderStep2 = () => (
-    <div className="flex flex-col gap-6 w-full max-w-sm h-full">
+    <div className="flex flex-col gap-6 w-full max-w-[320px] h-full">
       <InputWithLabel
         variant="large"
         id="country"
-        label="Country"
+        label={t("country-field")}
         {...register("country")}
         value={userCountry}
         disabled
-        className="opacity-70"
       />
 
       <InputWithLabel
         variant="large"
         id="companyName"
-        label="Company"
-        placeholder="optional"
+        label={t("company-field")}
+        placeholder={t("optional")}
         error={errors.companyName?.message}
         {...register("companyName")}
       />
 
       <div className="flex items-end">
-        <div className="flex flex-col gap-2 w-full min-h-[48px] justify-center">
+        <div className="flex flex-row gap-4 w-full min-h-[48px] justify-center items-center">
           <Star_Border
             as="button"
             type="button"
@@ -340,9 +339,9 @@ const RegisterForm_Mobile = () => {
             color="cyan"
             speed="4s"
             thickness={3}
-            className="w-full py-1.5 px-2 text-xs font-medium opacity-70"
+            className="w-auto min-w-[120px] py-1.5 px-4 text-xs font-medium opacity-70"
           >
-            Previous
+            {t("previous")}
           </Star_Border>
           <Star_Border
             as="button"
@@ -352,9 +351,9 @@ const RegisterForm_Mobile = () => {
             color="cyan"
             speed="4s"
             thickness={3}
-            className="w-full py-1.5 px-2 text-xs font-medium"
+            className="w-auto min-w-[120px] py-1.5 px-4 text-xs font-medium"
           >
-            Next
+            {t("next")}
           </Star_Border>
         </div>
       </div>
@@ -362,13 +361,13 @@ const RegisterForm_Mobile = () => {
   );
 
   const renderStep3 = () => (
-    <div className="flex flex-col gap-6 w-full max-w-sm h-full">
+    <div className="flex flex-col gap-6 w-full max-w-[320px] h-full">
       <InputWithLabel
         variant="large"
         id="affiliateCode"
         label={
           <div className="flex items-center gap-2">
-            <span>Affiliate code</span>
+            <span>{t("affiliate-code")}</span>
             {watch("affiliateCode") && (
               <button
                 type="button"
@@ -381,7 +380,7 @@ const RegisterForm_Mobile = () => {
             )}
           </div>
         }
-        placeholder="optional"
+        placeholder={t("optional")}
         error={errors.affiliateCode?.message}
         {...register("affiliateCode")}
       />
@@ -394,14 +393,14 @@ const RegisterForm_Mobile = () => {
           : "opacity-0 scale-95"
       }`}>
         {verificationStatus === "success" ? (
-          <div className="font-semibold text-center">+5 OM guaranteed</div>
+          <div className="font-semibold text-center">{t("om-guaranteed")}</div>
         ) : verificationStatus === "failed" ? (
-          <div className="font-semibold text-white text-center">Invalid code</div>
+          <div className="font-semibold text-white text-center">{t("invalid-code")}</div>
         ) : null}
       </div>
 
       <div className="flex items-end">
-        <div className="flex flex-col gap-2 w-full min-h-[48px] justify-center">
+        <div className="flex flex-row gap-4 w-full min-h-[48px] justify-center items-center">
           <Star_Border
             as="button"
             type="button"
@@ -410,9 +409,9 @@ const RegisterForm_Mobile = () => {
             color="cyan"
             speed="4s"
             thickness={3}
-            className="w-full py-1.5 px-2 text-xs font-medium opacity-70"
+            className="w-auto min-w-[120px] py-1.5 px-4 text-xs font-medium opacity-70"
           >
-            Previous
+            {t("previous")}
           </Star_Border>
           <Star_Border
             as="button"
@@ -421,9 +420,9 @@ const RegisterForm_Mobile = () => {
             color="cyan"
             speed="4s"
             thickness={3}
-            className="w-full py-1.5 px-2 text-xs font-medium"
+            className="w-auto min-w-[120px] py-1.5 px-4 text-xs font-medium"
           >
-            {isSubmitting ? "Creating..." : "Create"}
+            {isSubmitting ? t("creating-account") : t("create-account")}
           </Star_Border>
         </div>
       </div>
@@ -433,7 +432,7 @@ const RegisterForm_Mobile = () => {
           id="terms"
           label={t("terms-and-conditions")}
           className="text-white/60 text-xs"
-          {...register("terms", { required: "You must accept the terms and conditions" })}
+          {...register("terms", { required: t("must-accept-tc") })}
         />
         <div className="text-red-500 text-xs/3 min-h-3 mt-1">
           {errors.terms?.message}
@@ -482,7 +481,7 @@ const RegisterForm_Mobile = () => {
           className="text-sm hover:underline flex flex-row items-center gap-1 text-white/80 hover:text-white transition-colors duration-200"
         >
           <PiArrowLeftBold />
-          Return to login
+          {t("register-back")}
         </Link>
       </div>
     </div>

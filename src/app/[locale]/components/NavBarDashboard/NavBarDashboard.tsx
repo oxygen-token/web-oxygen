@@ -112,7 +112,9 @@ const NavBarDashboard = () => {
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 h-16 bg-teal-dark/95 backdrop-blur-md border-b border-white/10 z-50">
+    <nav className={`fixed top-0 left-0 right-0 h-16 backdrop-blur-md border-b border-white/10 z-50 transition-colors duration-200 ${
+      mobileNavOpen ? 'bg-teal-dark/95' : 'bg-teal-dark/20'
+    }`}>
       
       <div className="flex items-center justify-between h-full px-4 lg:px-6">
         <div className="flex items-center space-x-4">
@@ -131,12 +133,12 @@ const NavBarDashboard = () => {
           <div className="flex items-center space-x-4">
             {user ? (
               <div className="flex items-center space-x-3">
-                <span className="text-white text-sm font-medium">
-                  {capitalizeFirstLetter(user.username.split(' ')[0])}
-                </span>
                 <div className="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center">
                   <PiUser className="text-white text-sm" />
                 </div>
+                <span className="text-white text-sm font-medium">
+                  {capitalizeFirstLetter(user.username.split(' ')[0])}
+                </span>
                 <button
                   onClick={handleLogout}
                   className="px-3 py-1.5 text-xs border border-red-400 text-red-400 rounded-full hover:bg-red-400 hover:text-white transition-colors"
@@ -185,15 +187,14 @@ const NavBarDashboard = () => {
                     <span className="text-white text-sm font-medium">
                       {capitalizeFirstLetter(user.username.split(' ')[0])}
                     </span>
-                  </div>
-                  <div className="flex items-center space-x-3">
                     <button
                       onClick={handleLogout}
                       className="px-3 py-1.5 text-xs border border-red-400 text-red-400 rounded-full hover:bg-red-400 hover:text-white transition-colors"
                     >
                       {t("logout")}
                     </button>
-
+                  </div>
+                  <div className="flex items-center space-x-3">
                     <LanguageSelect className="text-white" />
                   </div>
                 </div>

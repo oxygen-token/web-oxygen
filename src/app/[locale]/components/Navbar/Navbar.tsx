@@ -28,6 +28,16 @@ function Navbar() {
   const isDashboardPage = pathname.includes("/dashboard");
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
+  // Debug translations
+  console.log('🌐 Current locale:', locale);
+  console.log('📝 Whitepaper translation:', t("whitepaper"));
+  console.log('📝 Dashboard translation:', t("dashboard"));
+
+  // Force re-render when locale changes
+  useEffect(() => {
+    setMobileNavOpen(false);
+  }, [locale]);
+
   const handleLogout = async () => {
     try {
       await logout();
@@ -65,7 +75,10 @@ function Navbar() {
 
   return (
     <>
-      <nav className={`hidden lg:flex fixed top-0 left-0 h-16 lg:h-[100px] lg:items-center lg w-full px-5 lg:px-20 flex-row items-center text-white backdrop-blur z-50 ${isBlogPage ? 'navbar-transparent' : 'bg-teal-dark/40'}`}>
+      <nav key={`desktop-${locale}`} className={`hidden lg:flex fixed top-0 left-0 h-16 lg:h-[100px] lg:items-center lg w-full px-5 lg:px-20 flex-row items-center text-white backdrop-blur z-50 transition-colors duration-200 ${
+        isBlogPage ? 'navbar-transparent' : 
+        mobileNavOpen ? 'bg-teal-dark/95' : 'bg-teal-dark/20'
+      }`}>
         <Link href="/" className="flex items-center">
           <Image
             src={logoNav}
@@ -125,7 +138,9 @@ function Navbar() {
         </ul>
       </nav>
       
-      <nav className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-teal-dark/95 backdrop-blur-md border-b border-white/10 z-50">
+      <nav key={locale} className={`lg:hidden fixed top-0 left-0 right-0 h-16 backdrop-blur-md border-b border-white/10 z-50 transition-colors duration-200 ${
+        mobileNavOpen ? 'bg-teal-dark/95' : 'bg-teal-dark/20'
+      }`}>
         <div className="flex items-center justify-between h-full px-4">
           <Link href="/" className="flex items-center">
             <Image
@@ -209,6 +224,7 @@ function Navbar() {
             ) : (
               <div className="flex flex-col space-y-6">
                 <div className="flex items-center justify-end gap-3">
+                  <LanguageSelect className="text-white" />
                   <Link
                     href="/login?panel=login"
                     className="px-4 py-2 text-sm border border-white/30 text-white rounded-full hover:bg-white/10 transition-colors"
@@ -216,7 +232,6 @@ function Navbar() {
                   >
                     {t("login")}
                   </Link>
-                  <LanguageSelect className="text-white" />
                 </div>
                 
                 <nav className="space-y-2">

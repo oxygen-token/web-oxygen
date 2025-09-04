@@ -17,12 +17,12 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   return (
     <div className="flex flex-col min-h-screen">
       <NavBarDashboard />
-      <div className="flex flex-1 pt-16">
+      <div className="flex flex-1">
         <div className="hidden lg:block w-64 flex-shrink-0">
           <SideBarDashboard />
         </div>
-        <main className="flex-1 bg-gradient-to-br from-teal-dark via-teal-medium to-teal min-h-[calc(100vh-4rem)] relative overflow-hidden">
-          <div className="h-full p-0 lg:p-8 xl:p-12">
+        <main className="flex-1 bg-gradient-to-br from-teal-dark via-teal-medium to-teal min-h-screen relative overflow-hidden">
+          <div className="h-full pt-16 p-0 lg:p-8 xl:p-12">
             <Page_Transition 
               isTransitioning={isTransitioning}
               className="w-full mx-auto h-full"

@@ -12,6 +12,7 @@ import Rotating_Text from "../components/ui/Rotating_Text";
 
 const Login = () => {
   const t = useTranslations("Login");
+  const layout = useTranslations("Layout");
   const searchParams = useSearchParams();
   const panel = searchParams.get("panel") || "login";
 
@@ -47,8 +48,8 @@ const Login = () => {
         
         <div className="relative z-10 flex flex-col items-center lg:items-start -mt-12 lg:mt-0">
           <Rotating_Text
-            staticText="Take action"
-            rotatingTexts={["and preserve", "environment", "our future", "the planet"]}
+            staticText={layout("banner-action")}
+            rotatingTexts={[layout("banner-preserve"), layout("banner-environment"), layout("banner-future"), layout("banner-planet")]}
             mainClassName="text-[1.75rem] lg:text-4xl font-medium text-white text-center lg:text-start"
             boxClassName="bg-green-600 text-white px-4 py-2 rounded-lg"
             rotationInterval={3000}
