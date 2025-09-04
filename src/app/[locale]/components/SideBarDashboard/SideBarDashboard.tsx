@@ -129,7 +129,7 @@ const SideBarDashboard = memo(() => {
   }, []);
 
   return (
-    <div className="sidebar-navigation bg-gradient-to-b from-teal-dark via-teal-medium to-teal text-white h-full relative overflow-hidden">
+    <div className="sidebar-navigation bg-gradient-to-b from-teal-dark via-teal-medium to-teal text-white h-full relative overflow-hidden z-20">
       <div className="relative h-full py-6">
         <nav className="relative px-4">
           <ul className="space-y-1 relative">

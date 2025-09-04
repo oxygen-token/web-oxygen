@@ -89,6 +89,14 @@ const LoginForm = () => {
             speed="4s"
             thickness={3}
             className="w-full"
+            style={{ 
+              transform: formState.isSubmitting ? 'scale(0.95)' : 'scale(1)',
+              transition: 'transform 0.3s ease'
+            }}
+            onMouseEnter={(e) => !formState.isSubmitting && (e.currentTarget.style.transform = 'scale(0.95)')}
+            onMouseLeave={(e) => !formState.isSubmitting && (e.currentTarget.style.transform = 'scale(1)')}
+            onMouseDown={(e) => !formState.isSubmitting && (e.currentTarget.style.transform = 'scale(0.95)')}
+            onMouseUp={(e) => !formState.isSubmitting && (e.currentTarget.style.transform = 'scale(1)')}
           >
             {t("login-btn")}
           </Star_Border>

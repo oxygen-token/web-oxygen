@@ -319,6 +319,11 @@ const RegisterForm_Mobile = () => {
             speed="4s"
             thickness={3}
             className="w-auto min-w-[120px] py-1.5 px-4 text-xs font-medium"
+            style={{ transform: 'scale(1)' }}
+            onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(0.95)'}
+            onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+            onMouseDown={(e) => e.currentTarget.style.transform = 'scale(0.95)'}
+            onMouseUp={(e) => e.currentTarget.style.transform = 'scale(1)'}
           >
             {t("next")}
           </Star_Border>
@@ -358,6 +363,11 @@ const RegisterForm_Mobile = () => {
             speed="4s"
             thickness={3}
             className="w-auto min-w-[120px] py-1.5 px-4 text-xs font-medium opacity-70"
+            style={{ transform: 'scale(1)' }}
+            onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(0.95)'}
+            onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+            onMouseDown={(e) => e.currentTarget.style.transform = 'scale(0.95)'}
+            onMouseUp={(e) => e.currentTarget.style.transform = 'scale(1)'}
           >
             {t("previous")}
           </Star_Border>
@@ -370,6 +380,11 @@ const RegisterForm_Mobile = () => {
             speed="4s"
             thickness={3}
             className="w-auto min-w-[120px] py-1.5 px-4 text-xs font-medium"
+            style={{ transform: 'scale(1)' }}
+            onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(0.95)'}
+            onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+            onMouseDown={(e) => e.currentTarget.style.transform = 'scale(0.95)'}
+            onMouseUp={(e) => e.currentTarget.style.transform = 'scale(1)'}
           >
             {t("next")}
           </Star_Border>
@@ -428,6 +443,11 @@ const RegisterForm_Mobile = () => {
             speed="4s"
             thickness={3}
             className="w-auto min-w-[120px] py-1.5 px-4 text-xs font-medium opacity-70"
+            style={{ transform: 'scale(1)' }}
+            onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(0.95)'}
+            onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+            onMouseDown={(e) => e.currentTarget.style.transform = 'scale(0.95)'}
+            onMouseUp={(e) => e.currentTarget.style.transform = 'scale(1)'}
           >
             {t("previous")}
           </Star_Border>
@@ -439,8 +459,12 @@ const RegisterForm_Mobile = () => {
             speed="4s"
             thickness={3}
             className="w-auto min-w-[120px] py-1.5 px-4 text-xs font-medium"
+            style={{ 
+              transform: isSubmitting ? 'scale(0.95)' : 'scale(1)',
+              transition: 'transform 0.3s ease'
+            }}
           >
-            {isSubmitting ? t("creating-account") : t("create-account")}
+            {t("create-account")}
           </Star_Border>
         </div>
       </div>

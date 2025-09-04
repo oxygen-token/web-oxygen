@@ -16,13 +16,14 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
 
   return (
     <div className="flex flex-col min-h-screen">
+      <div className="fixed inset-0 bg-gradient-to-br from-teal-dark via-teal-medium to-teal -z-10"></div>
       <NavBarDashboard />
-      <div className="flex flex-1">
-        <div className="hidden lg:block w-64 flex-shrink-0">
+      <div className="flex flex-1 pt-16">
+        <div className="hidden lg:block w-64 flex-shrink-0 relative z-20">
           <SideBarDashboard />
         </div>
-        <main className="flex-1 bg-gradient-to-br from-teal-dark via-teal-medium to-teal min-h-screen relative overflow-hidden">
-          <div className="h-full pt-16 p-0 lg:p-8 xl:p-12">
+        <main className="flex-1 min-h-screen relative overflow-hidden z-10">
+          <div className="h-full p-0 lg:p-8 xl:p-12 relative z-10">
             <Page_Transition 
               isTransitioning={isTransitioning}
               className="w-full mx-auto h-full"
