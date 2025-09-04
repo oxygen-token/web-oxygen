@@ -149,6 +149,14 @@ export class GoogleSheetsService {
       }
 
       const data = await response.json();
+      console.log('Backend response:', data);
+      console.log('Response structure:', {
+        success: data.success,
+        hasData: !!data.data,
+        hasCodes: !!data.data?.codes,
+        codesLength: data.data?.codes?.length
+      });
+      
       if (!data.success || !data.data.codes) {
         throw new Error('Invalid response format from backend');
       }
