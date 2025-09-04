@@ -143,7 +143,12 @@ export class GoogleSheetsService {
       console.log('NEXT_PUBLIC_AFFILIATE_BACKEND_URL value:', process.env.NEXT_PUBLIC_AFFILIATE_BACKEND_URL);
       console.log('Using backend URL:', backendUrl);
       
+      console.log('Making request to:', `${backendUrl}/allAffiliateCodes`);
       const response = await fetch(`${backendUrl}/allAffiliateCodes`);
+      console.log('Response status:', response.status);
+      console.log('Response ok:', response.ok);
+      console.log('Response headers:', Object.fromEntries(response.headers.entries()));
+      
       if (!response.ok) {
         throw new Error(`Failed to fetch affiliate codes: ${response.statusText}`);
       }
