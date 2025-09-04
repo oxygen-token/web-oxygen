@@ -191,6 +191,32 @@ export class GoogleSheetsService {
     }
   }
 
+  async addSampleData(): Promise<boolean> {
+    try {
+      const sampleData = [
+        ['748dpo', 'SI', '', ''],
+        ['abc123', 'NO', 'maria.gonzalez@email.com', '02/09/2025 14:30:25'],
+        ['xyz789', 'NO', 'carlos.rodriguez@empresa.com', '03/09/2025 09:15:42']
+      ];
+
+      const response = await this.sheets.spreadsheets.values.append({
+        spreadsheetId: this.spreadsheetId,
+        range: 'A:D',
+        valueInputOption: 'RAW',
+        insertDataOption: 'INSERT_ROWS',
+        resource: {
+          values: sampleData,
+        },
+      });
+
+      console.log('Sample data added successfully');
+      return true;
+    } catch (error) {
+      console.error('Error adding sample data:', error);
+      return false;
+    }
+  }
+
   async clearSheet(): Promise<boolean> {
     try {
       await this.sheets.spreadsheets.values.clear({

@@ -52,7 +52,7 @@ export async function GET() {
   } catch (error) {
     console.error('Setup error:', error);
     return NextResponse.json(
-      { error: 'Setup failed', details: error.message },
+      { error: 'Setup failed', details: error instanceof Error ? error.message : 'Unknown error' },
       { status: 500 }
     );
   }

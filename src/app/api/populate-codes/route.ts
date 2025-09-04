@@ -23,7 +23,7 @@ export async function GET() {
   } catch (error) {
     console.error('Population error:', error);
     return NextResponse.json(
-      { error: 'Population failed', details: error.message },
+      { error: 'Population failed', details: error instanceof Error ? error.message : 'Unknown error' },
       { status: 500 }
     );
   }

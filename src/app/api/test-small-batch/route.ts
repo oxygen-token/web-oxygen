@@ -28,7 +28,7 @@ export async function GET() {
   } catch (error) {
     console.error('Small batch test error:', error);
     return NextResponse.json(
-      { error: 'Small batch test failed', details: error.message },
+      { error: 'Small batch test failed', details: error instanceof Error ? error.message : 'Unknown error' },
       { status: 500 }
     );
   }
