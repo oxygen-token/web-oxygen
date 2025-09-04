@@ -138,7 +138,12 @@ export class GoogleSheetsService {
     try {
       console.log('Fetching all affiliate codes from backend...');
       
-      const response = await fetch(`${process.env.NEXT_PUBLIC_AFFILIATE_BACKEND_URL || 'http://localhost:10001'}/allAffiliateCodes`);
+      // NUEVO: Log para ver qué URL está usando
+      const backendUrl = process.env.NEXT_PUBLIC_AFFILIATE_BACKEND_URL || 'http://localhost:10001';
+      console.log('NEXT_PUBLIC_AFFILIATE_BACKEND_URL value:', process.env.NEXT_PUBLIC_AFFILIATE_BACKEND_URL);
+      console.log('Using backend URL:', backendUrl);
+      
+      const response = await fetch(`${backendUrl}/allAffiliateCodes`);
       if (!response.ok) {
         throw new Error(`Failed to fetch affiliate codes: ${response.statusText}`);
       }
