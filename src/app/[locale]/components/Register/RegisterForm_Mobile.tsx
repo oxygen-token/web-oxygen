@@ -95,6 +95,24 @@ const RegisterForm_Mobile = () => {
         return;
       }
 
+      try {
+        await fetch('/api/google-sheets', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            fullName: data.fullName,
+            email: data.email,
+            country: data.country,
+            companyName: data.companyName,
+            affiliateCode: data.affiliateCode,
+          }),
+        });
+      } catch (sheetsError) {
+        console.error('Error adding user to Google Sheets:', sheetsError);
+      }
+
       window.location.href = "/post-register";
     } catch (error) {
       console.error("Registration error:", error);
