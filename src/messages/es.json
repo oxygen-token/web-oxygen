@@ -212,8 +212,8 @@
   },
   "PostRegister": {
     "title": "¡Cuenta Creada Exitosamente!",
-    "subtitle": "Por favor revisa tu email para verificar tu cuenta",
-    "description": "Hemos enviado un email de verificación a tu bandeja de entrada. Por favor haz clic en el enlace de verificación para activar tu cuenta y comenzar tu viaje con Oxygen.",
+    "subtitle": "Por favor revisa tu email para verificar tu cuenta. Si no lo encuentras, revisa tu carpeta de spam",
+    "description": "",
     "loginButton": "Ir al Login"
   },
   "VerifySuccess": {
