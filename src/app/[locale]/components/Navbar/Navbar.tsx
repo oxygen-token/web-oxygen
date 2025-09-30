@@ -7,7 +7,7 @@ import { capitalizeFirstLetter } from "../../../../utils/stringUtils";
 import { useAuth } from "../../context/Auth_Context";
 import LanguageSelect from "./LanguageSelect";
 import { usePathname } from "next/navigation";
-import { PiListBold, PiXBold, PiUser, PiHouse, PiQuestion, PiGear, PiSignOut, PiTree, PiUsers, PiFileText, PiCurrencyDollar } from "react-icons/pi";
+import { PiListBold, PiXBold, PiUser, PiHouse, PiQuestion, PiGear, PiSignOut, PiTree, PiUsers, PiFileText, PiCalculator } from "react-icons/pi";
 
 import logoNav from "../../../../../public/assets/images/logo.png";
 
@@ -16,6 +16,7 @@ const links = [
   { nameKey: "us", href: "/nosotros" },
   { nameKey: "project", href: "/proyectos" },
   { nameKey: "community", href: "/blog" },
+  { nameKey: "calculator", href: "/calculadora" },
   { nameKey: "whitepaper", href: "/whitepaper" },
 ];
 
@@ -70,6 +71,7 @@ function Navbar() {
     { nameKey: "us", href: "/nosotros", icon: PiUser, disabled: false },
     { nameKey: "project", href: "/proyectos", icon: PiTree, disabled: false },
     { nameKey: "community", href: "/blog", icon: PiUsers, disabled: false },
+    { nameKey: "calculator", href: "/calculadora", icon: PiCalculator, disabled: false },
     { nameKey: "whitepaper", href: "/whitepaper", icon: PiFileText, disabled: false },
   ];
 
@@ -126,9 +128,8 @@ function Navbar() {
               <li>
                 <Link
                   href="/comprar"
-                  className="border border-current px-3 py-1 rounded-full hover:bg-teal-medium/20 transition-colors duration-200 flex items-center gap-2"
+                  className="border border-current px-3 py-1 rounded-full hover:bg-teal-medium/20 transition-colors duration-200"
                 >
-                  <PiCurrencyDollar className="text-sm" />
                   {t("buy")}
                 </Link>
               </li>
@@ -259,7 +260,6 @@ function Navbar() {
                     <span className="text-sm font-medium text-white">
                       {t("buy")}
                     </span>
-                    <PiCurrencyDollar className="text-xl flex-shrink-0 text-white" />
                   </Link>
                 </nav>
               </div>
