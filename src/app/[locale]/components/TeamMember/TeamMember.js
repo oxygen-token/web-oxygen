@@ -1,7 +1,5 @@
 import Image from "next/image";
-import logoInstagram from "../../../../../public/assets/logos/logoInstagram.png";
-import logoLinkedin from "../../../../../public/assets/logos/logoLinkedin.png";
-import logoTwitter from "../../../../../public/assets/logos/logoTwitter.png";
+import { FaLinkedin, FaInstagram, FaTwitter } from "react-icons/fa";
 import "./teammember.css";
 
 const TeamMember = ({
@@ -12,42 +10,45 @@ const TeamMember = ({
   linkLin,
   linkIg,
   linkTw,
+  isSelected = false,
+  isClicked = false,
 }) => {
   return (
     <>
-      <div className="teamMember">
-        <Image
-          className="teamMemberPicture"
-          src={picture}
-          alt="imagen miembro del equipo"
-        ></Image>
-        <div className="teamMemberDescription">
-          <h3 className="teamMemberName">{name}</h3>
-          <h5>{rol}</h5>
-          <p>{description}</p>
+      <div className={`teamMember ${isSelected ? 'selected' : ''} ${isClicked ? 'clicked' : ''}`}>
+        <div className="teamMemberImageContainer">
+          <Image
+            className="teamMemberPicture"
+            src={picture}
+            alt="imagen miembro del equipo"
+            fill
+          ></Image>
         </div>
-        <div className="teamMemberContact">
-          <a href={linkLin}>
-            <Image
-              className="logoContact"
-              src={logoLinkedin}
-              alt="Linkedin"
-            ></Image>
-          </a>
-          <a href={linkIg}>
-            <Image
-              className="logoContact"
-              src={logoInstagram}
-              alt="Instagram"
-            ></Image>
-          </a>
-          <a href={linkTw}>
-            <Image
-              className="logoContact"
-              src={logoTwitter}
-              alt="Twitter"
-            ></Image>
-          </a>
+        <div className="teamMemberInfo">
+          <h3 className="teamMemberName">{name}</h3>
+          <h5 className="teamMemberRole">{rol}</h5>
+        </div>
+        <div className="teamMemberHover">
+          <div className="teamMemberDescription">
+            <p>{description}</p>
+          </div>
+          <div className="teamMemberContact">
+            <a href={linkLin} target="_blank" rel="noopener noreferrer">
+              <div className="logoContact">
+                <FaLinkedin size={20} />
+              </div>
+            </a>
+            <a href={linkIg} target="_blank" rel="noopener noreferrer">
+              <div className="logoContact">
+                <FaInstagram size={20} />
+              </div>
+            </a>
+            <a href={linkTw} target="_blank" rel="noopener noreferrer">
+              <div className="logoContact">
+                <FaTwitter size={20} />
+              </div>
+            </a>
+          </div>
         </div>
       </div>
     </>

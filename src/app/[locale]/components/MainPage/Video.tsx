@@ -1,6 +1,5 @@
 "use client";
 import { useTranslations } from "next-intl";
-import ReactPlayer from "react-player";
 import { ClientOnly } from "../ClientOnly/ClientOnly";
 
 export function Video() {
@@ -19,26 +18,22 @@ export function Video() {
         <p className="max-w-md">{videointro("text")}</p>
       </div>
 
-      <div className="aspect-video grow max-w-3xl overflow-hidden rounded-xl">
+      <div className="aspect-video grow max-w-3xl overflow-hidden rounded-xl relative">
         <ClientOnly>
-          <ReactPlayer
-            url="https://www.youtube.com/watch?v=ZLd7lNXcinI"
-            width="100%"
-            height="100%"
+          <video
+            className="w-full h-full object-cover"
             controls
-            config={{
-              youtube: {
-                playerVars: {
-                  vq: 'hd1080',
-                  modestbranding: 1,
-                  rel: 0,
-                  showinfo: 0,
-                  iv_load_policy: 3,
-                  cc_load_policy: 0
-                }
-              }
-            }}
-          />
+            preload="metadata"
+            poster="/assets/images/forest.jpg"
+            playsInline
+            muted
+            loop
+            autoPlay
+          >
+            <source src="/assets/videos/forestHD.mp4" type="video/mp4" />
+            Tu navegador no soporta el elemento video.
+          </video>
+          <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent pointer-events-none"></div>
         </ClientOnly>
       </div>
     </section>

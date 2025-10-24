@@ -1,64 +1,324 @@
 .teamMember {
-    max-width: 220px;
-    background-color: #0B273A;
-    border-radius: 20px;
-    height: 530px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: var(--white);
-    position: relative;
-  }
+  width: 280px;
+  height: 365px;
+  background-color: white;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transform-style: preserve-3d;
+  cursor: pointer;
+}
 
-.teamMemberName{
-  color: var(--white);
+.teamMember:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(16, 185, 129, 0.1);
+}
+
+.teamMember::before {
+  content: '';
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 150px;
+  height: 150px;
+  background: radial-gradient(circle, #6EE7B7 0%, #10B981 30%, #047857 100%);
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.teamMemberImageContainer {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  margin-top: 40px;
+  z-index: 2;
+  border-radius: 0;
+  overflow: hidden;
+}
+
+.teamMemberPicture {
+  object-fit: cover;
+  border-radius: 0;
+}
+
+.teamMemberInfo {
+  padding: 20px 20px 40px 20px;
+  text-align: center;
+  z-index: 2;
+  position: relative;
+}
+
+.teamMemberName {
+  color: #1F2937;
   font-family: var(--montserrat);
   text-align: center;
-  font-size: 1.1rem;
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 8px;
 }
-  
-  .teamMemberPicture {
-    width: 80%;
-    height: 35%;
-    padding: 1em;
-    border-radius: 100%;
-  }
-  
-  .teamMemberDescription {
-    padding: 0em 1em;
-  }
 
+.teamMemberRole {
+  color: #6B7280;
+  font-family: var(--dm-sans);
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
 
+.teamMemberHover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at center, rgba(4, 120, 87, 0.8) 0%, rgba(4, 120, 87, 0.5) 70%, rgba(4, 120, 87, 0.2) 100%);
+  backdrop-filter: blur(18px);
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: all 0.5s ease;
+  z-index: 3;
+}
 
-  .teamMemberDescription h5{
-    font-family: var(--dm-sans);
-    text-align: center;
-  }
+.teamMember:hover .teamMemberHover {
+  opacity: 1;
+}
 
-  .teamMemberDescription p {
-    font-family: var(--montserrat);
-    font-size: 13px;
-    text-align: center;
-  }
+.teamMemberDescription {
+  padding: 20px;
+  text-align: center;
+  margin-bottom: 20px;
+}
 
-  .teamMemberContact {
+.teamMemberDescription p {
+  color: #FFFFFF;
+  font-family: var(--montserrat);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  text-align: center;
+  margin: 0;
+  font-weight: 500;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.teamMemberContact {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  justify-content: center;
+  align-items: center;
+}
+
+.logoContact {
+  height: 40px;
+  width: 40px;
+  padding: 8px;
+  color: #FFFFFF;
+  background: rgba(16, 185, 129, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(52, 211, 153, 0.5);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logoContact:hover {
+  transform: scale(1.1);
+  background: rgba(16, 185, 129, 0.2);
+  border-color: rgba(52, 211, 153, 0.8);
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.teamSection {
+  margin-bottom: 60px;
+}
+
+.teamSectionTitle {
+  font-family: var(--montserrat);
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #1F2937;
+  text-align: center;
+  margin-bottom: 30px;
+  position: relative;
+}
+
+.teamSectionTitle::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(135deg, #10B981, #059669);
+  border-radius: 2px;
+}
+
+/* Pagination Dots */
+.paginationDots {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin: 20px 0;
+}
+
+.paginationDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #D1D5DB;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.paginationDot.active {
+  background-color: #10B981;
+  transform: scale(1.2);
+}
+
+/* Carrusel Styles */
+.teamCarousel {
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 0 20px;
+  margin: 0 -20px;
+  width: 100%;
+  max-width: 100%;
+}
+
+.teamCarousel::-webkit-scrollbar {
+  display: none;
+}
+
+.teamCarouselContent {
+  display: flex;
+  gap: 32px;
+  padding: 20px 0;
+  min-width: max-content;
+  width: max-content;
+}
+
+.teamCarouselCard {
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+  scroll-snap-align: center;
+}
+
+.teamCarouselCard.selected .teamMember {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  opacity: 1;
+  filter: none;
+}
+
+/* Solo mostrar detalles cuando está clickeado, no solo seleccionado */
+.teamMember.clicked .teamMemberHover {
+  opacity: 1;
+}
+
+.teamMember.selected:not(.clicked) .teamMemberHover {
+  opacity: 0;
+}
+
+/* Asegurar que las cards no seleccionadas nunca muestren detalles */
+.teamCarouselCard.not-selected .teamMember .teamMemberHover {
+  opacity: 0 !important;
+}
+
+.teamCarouselCard.not-selected .teamMember {
+  opacity: 0.6;
+  filter: grayscale(0.3) brightness(0.8);
+  transform: scale(0.95);
+  transition: all 0.3s ease;
+}
+
+.teamCarouselCard.not-selected .teamMember:hover {
+  opacity: 0.8;
+  filter: grayscale(0.2) brightness(0.9);
+  transform: scale(0.98);
+}
+
+/* Mobile specific styles */
+@media (max-width: 768px) {
+  .paginationDots {
     display: flex;
-    flex-direction: row;
-    gap: 1em;
-    flex-wrap: wrap;
-    justify-content: center;
-    padding: 1em;
-    position: absolute;
-    bottom: 1rem;
-    align-content: center;
   }
-
-  .logoContact{
-    height: 25px;
-    width: 25px;
-  }
-
-  .logoContact:hover{
+  .teamCarousel {
+    position: relative;
+    overflow-x: auto;
+    overflow-y: visible;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    width: 100%;
+    max-width: 100vw;
+    padding: 0;
+    margin: 0;
+    scroll-snap-type: x mandatory;
     cursor: pointer;
-    transform: translateY(-8px);
   }
+  
+  .teamCarouselContent {
+    padding: 20px 20px 40px 20px;
+    display: flex;
+    gap: 32px;
+    min-width: max-content;
+    width: max-content;
+    cursor: pointer;
+  }
+  
+  .teamMember.selected {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Solo mostrar detalles cuando está clickeado en móvil también */
+  .teamMember.clicked .teamMemberHover {
+    opacity: 1;
+  }
+  
+  .teamMember.selected:not(.clicked) .teamMemberHover {
+    opacity: 0;
+  }
+  
+  /* Asegurar que las cards no seleccionadas nunca muestren detalles en móvil */
+  .teamCarouselCard.not-selected .teamMember .teamMemberHover {
+    opacity: 0 !important;
+  }
+  
+  .teamMember:hover {
+    transform: none;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Asegurar que el body no tenga scroll horizontal */
+  body {
+    overflow-x: hidden;
+  }
+  
+  /* Asegurar que el contenedor principal no tenga scroll horizontal */
+  .team {
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100vw;
+  }
+}

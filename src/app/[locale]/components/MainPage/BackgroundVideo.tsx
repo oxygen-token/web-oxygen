@@ -1,44 +1,63 @@
 "use client";
-import ReactPlayer from "react-player";
 import { ClientOnly } from "../ClientOnly/ClientOnly";
-import { useRef } from "react";
+import { useRef, useEffect, useState } from "react";
+
+let globalVideoLoaded = false;
+let globalVideoElement: HTMLVideoElement | null = null;
 
 export function BackgroundVideo() {
   const playerRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isLoaded, setIsLoaded] = useState(globalVideoLoaded);
+
+  useEffect(() => {
+    if (globalVideoLoaded && globalVideoElement) {
+      if (playerRef.current) {
+        playerRef.current.style.opacity = "1";
+      }
+      setIsLoaded(true);
+      return;
+    }
+
+    const video = videoRef.current;
+    if (video && !globalVideoLoaded) {
+      video.load();
+      globalVideoElement = video;
+      globalVideoLoaded = true;
+      setIsLoaded(true);
+    }
+  }, []);
 
   const showVideo = () => {
-    setTimeout(() => playerRef.current?.style.removeProperty("opacity"), 500);
+    setTimeout(() => {
+      if (playerRef.current) {
+        playerRef.current.style.removeProperty("opacity");
+      }
+    }, 100);
   };
 
   return (
-    <div className="fixed -z-50 inset-0 pointer-events-none bg-[url('/assets/images/DronLaFlorencia.webp')] bg-cover bg-no-repeat]">
+    <div className="fixed -z-50 inset-0 pointer-events-none bg-black">
       <ClientOnly>
         <div
           ref={playerRef}
-          className="absolute top-0 left-0 min-h-full min-w-full aspect-video transition-opacity duration-500"
-          style={{ opacity: 0 }}
+          className="absolute top-0 left-0 min-h-full min-w-full aspect-video transition-opacity duration-300"
+          style={{ opacity: isLoaded ? 1 : 0 }}
         >
-          <ReactPlayer
-            url="https://www.youtube.com/watch?v=rmxCvK6rMYU"
-            width="100%"
-            height="100%"
-            playing={true}
-            loop={true}
-            onReady={showVideo}
+          <video
+            ref={videoRef}
+            className="w-full h-full object-cover"
+            autoPlay
+            loop
             muted
-            config={{
-              youtube: {
-                playerVars: {
-                  vq: 'hd1080',
-                  modestbranding: 1,
-                  rel: 0,
-                  showinfo: 0,
-                  iv_load_policy: 3,
-                  cc_load_policy: 0
-                }
-              }
-            }}
-          />
+            playsInline
+            preload="auto"
+            onLoadedData={showVideo}
+            onCanPlayThrough={() => setIsLoaded(true)}
+          >
+            <source src="/assets/videos/forestHD.mp4" type="video/mp4" />
+          </video>
+          <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent pointer-events-none"></div>
         </div>
       </ClientOnly>
     </div>
