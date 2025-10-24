@@ -45,6 +45,7 @@
 .teamMemberPicture {
   object-fit: cover;
   border-radius: 0;
+  transition: opacity 0.3s ease-in-out;
 }
 
 .teamMemberInfo {

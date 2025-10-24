@@ -8,7 +8,7 @@
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
-    background-attachment: fixed;
+    background-attachment: scroll;
     image-rendering: -webkit-optimize-contrast;
     image-rendering: crisp-edges;
     flex-wrap: wrap;
@@ -110,6 +110,15 @@
 
 /* Mobile specific styles to prevent horizontal scroll on entire page */
 @media (max-width: 768px) {
+  .thisIsOxygen {
+    background-image: url("../../public/assets/images/forest-vertical.jpg");
+    background-size: cover;
+    background-position: center top;
+    background-attachment: scroll;
+    padding: 2em 1em;
+    min-height: 400px;
+  }
+  
   .team {
     overflow-x: hidden;
     width: 100%;

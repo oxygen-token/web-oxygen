@@ -108,6 +108,7 @@ const Team_Carousel = ({ teamMembers, sectionTitle }) => {
             <TeamMember
               key={index}
               {...member}
+              priority={index < 3}
             />
           ))}
         </div>
@@ -137,6 +138,7 @@ const Team_Carousel = ({ teamMembers, sectionTitle }) => {
                 {...member}
                 isSelected={selectedMember === index}
                 isClicked={clickedMember === index}
+                priority={index < 2}
               />
             </div>
           ))}

@@ -12,6 +12,7 @@ const TeamMember = ({
   linkTw,
   isSelected = false,
   isClicked = false,
+  priority = false,
 }) => {
   return (
     <>
@@ -22,6 +23,11 @@ const TeamMember = ({
             src={picture}
             alt="imagen miembro del equipo"
             fill
+            loading={priority ? "eager" : "lazy"}
+            priority={priority}
+            placeholder="blur"
+            blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
+            sizes="(max-width: 768px) 280px, 280px"
           ></Image>
         </div>
         <div className="teamMemberInfo">
