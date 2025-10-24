@@ -1,5 +1,5 @@
 // DISABLED: This route clears and resets the Google Sheets
-// import { NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 // import { GoogleSheetsService } from '../../../utils/googleSheets';
 
 export async function GET() {
