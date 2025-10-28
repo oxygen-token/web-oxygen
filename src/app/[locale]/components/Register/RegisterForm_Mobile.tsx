@@ -9,6 +9,7 @@ import Link from "next/link";
 
 import { InputWithLabel } from "../ui/InputWithLabel";
 import { CheckboxWithLabel } from "../ui/CheckboxWithLabel";
+import Loading_Spinner from "../ui/Loading_Spinner";
 
 import Star_Border from "../ui/Star_Border";
 
@@ -464,7 +465,14 @@ const RegisterForm_Mobile = () => {
               transition: 'transform 0.3s ease'
             }}
           >
-            {t("create-account")}
+            {isSubmitting ? (
+              <div className="flex items-center justify-center gap-1">
+                <Loading_Spinner size="sm" color="white" />
+                <span>{t("creating-account")}</span>
+              </div>
+            ) : (
+              t("create-account")
+            )}
           </Star_Border>
         </div>
       </div>

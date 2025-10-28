@@ -127,14 +127,14 @@ export function Hero() {
 
   return (
     <section
-      className="px-5 lg:px-20 pt-32 lg:pt-48 pb-24 text-white"
+      className="px-5 lg:px-20 pt-32 lg:pt-48 pb-48 text-white min-h-screen relative z-10"
       id="home"
     >
       <h1 className="text-4xl/10 lg:text-6xl/snug font-semibold">
         {layout("title")}
       </h1>
 
-      <h3 className="mt-16 lg:mt-20 text-lg lg:text-2xl font-medium text-balance max-w-3xl">
+      <h3 className="mt-16 lg:mt-48 text-lg lg:text-2xl font-medium text-balance max-w-3xl">
         {layout("subtitle-1")}
         {layout("subtitle-2")}
       </h3>

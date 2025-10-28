@@ -37,16 +37,43 @@ export function BackgroundVideo() {
   };
 
   return (
-    <div className="fixed -z-50 inset-0 pointer-events-none bg-black">
+    <div 
+      style={{ 
+        position: 'fixed',
+        top: 0, 
+        left: 0, 
+        right: 0, 
+        bottom: 0, 
+        width: '100vw', 
+        height: '100vh',
+        zIndex: -50,
+        pointerEvents: 'none',
+        backgroundColor: 'black'
+      }}
+    >
       <ClientOnly>
         <div
           ref={playerRef}
-          className="absolute top-0 left-0 min-h-full min-w-full aspect-video transition-opacity duration-300"
-          style={{ opacity: isLoaded ? 1 : 0 }}
+          style={{ 
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            opacity: isLoaded ? 1 : 0,
+            transition: 'opacity 0.3s'
+          }}
         >
           <video
             ref={videoRef}
-            className="w-full h-full object-cover"
+            style={{ 
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%', 
+              height: '100%',
+              objectFit: 'cover'
+            }}
             autoPlay
             loop
             muted

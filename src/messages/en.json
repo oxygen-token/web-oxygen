@@ -230,6 +230,7 @@
   },
   "SideBarDashboard": {
     "inicio": "Home",
+    "mainPage": "Main Page",
     "intercambiar": "Exchange",
     "quemarToken": "Burn Token",
     "compensar": "Offset",

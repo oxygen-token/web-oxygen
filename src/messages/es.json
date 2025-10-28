@@ -230,6 +230,7 @@
   },
   "SideBarDashboard": {
     "inicio": "Inicio",
+    "mainPage": "Página Principal",
     "intercambiar": "Intercambiar",
     "quemarToken": "Quemar Token",
     "compensar": "Compensar",

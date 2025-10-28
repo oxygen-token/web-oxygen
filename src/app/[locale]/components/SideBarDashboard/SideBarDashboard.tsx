@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import { usePathname } from "next/navigation";
 import { 
   PiHouse, 
+  PiGlobe,
   PiArrowsClockwise, 
   PiFire, 
   PiCurrencyDollar, 
@@ -25,6 +26,7 @@ interface MenuItem {
 
 const menuItems: MenuItem[] = [
   { nameKey: "inicio", href: "/en/dashboard", icon: PiHouse, disabled: false, isAction: false },
+  { nameKey: "mainPage", href: "/en", icon: PiGlobe, disabled: false, isAction: false },
   { nameKey: "intercambiar", href: "/en/dashboard/intercambiar", icon: PiArrowsClockwise, disabled: true, isAction: false },
   { nameKey: "quemarToken", href: "/en/dashboard/quemar-token", icon: PiFire, disabled: true, isAction: false },
   { nameKey: "compensar", href: "/en/dashboard/compensar", icon: PiCurrencyDollar, disabled: true, isAction: false },
@@ -53,6 +55,9 @@ const SideBarDashboard = memo(() => {
       if (item.href === "/en/dashboard" && pathname === "/en/dashboard") {
         return true;
       }
+      if (item.href === "/en" && (pathname === "/en" || pathname === "/en/")) {
+        return true;
+      }
       return pathname === item.href;
     });
     
@@ -68,7 +73,7 @@ const SideBarDashboard = memo(() => {
     
     // Si es una acción (como logout), no cambiar el activeIndex
     if (isAction) {
-      if (index === 6) { // índice del logout
+      if (index === 7) { // índice del logout
         console.log("🔄 Ejecutando forceLogout desde sidebar...");
         console.log("📍 Ubicación actual:", window.location.pathname);
         

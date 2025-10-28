@@ -9,6 +9,7 @@ import Link from "next/link";
 
 import { InputWithLabel } from "../ui/InputWithLabel";
 import { CheckboxWithLabel } from "../ui/CheckboxWithLabel";
+import Loading_Spinner from "../ui/Loading_Spinner";
 
 
 interface FormData {
@@ -295,7 +296,14 @@ const RegisterForm_Desktop = () => {
               isSubmitting ? 'scale-105' : 'scale-100'
             }`}
           >
-            {t("create-account")}
+            {isSubmitting ? (
+              <div className="flex items-center justify-center gap-2">
+                <Loading_Spinner size="sm" color="white" />
+                <span>{t("creating-account")}</span>
+              </div>
+            ) : (
+              t("create-account")
+            )}
           </button>
         </div>
 
