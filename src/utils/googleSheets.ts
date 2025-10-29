@@ -60,17 +60,17 @@ export class GoogleSheetsService {
     }
   }
 
-  async updateAffiliateCodeUsage(code: string, email: string): Promise<boolean> {
+  async updateAffiliateCodeUsage(code: string, email: string, sheetName: string = 'Hoja 1'): Promise<boolean> {
     try {
       const response = await this.sheets.spreadsheets.values.get({
         spreadsheetId: this.spreadsheetId,
-        range: 'A:D',
+        range: `${sheetName}!A:D`,
       });
 
       const rows = response.data.values || [];
       let rowIndex = -1;
 
-      for (let i = 0; i < rows.length; i++) {
+      for (let i = 1; i < rows.length; i++) {
         if (rows[i][0] === code) {
           rowIndex = i + 1;
           break;
@@ -93,7 +93,7 @@ export class GoogleSheetsService {
 
       await this.sheets.spreadsheets.values.update({
         spreadsheetId: this.spreadsheetId,
-        range: `A${rowIndex}:D${rowIndex}`,
+        range: `${sheetName}!A${rowIndex}:D${rowIndex}`,
         valueInputOption: 'RAW',
         resource: {
           values: updateValues,
@@ -105,6 +105,75 @@ export class GoogleSheetsService {
     } catch (error) {
       console.error('Error updating affiliate code usage:', error);
       return false;
+    }
+  }
+
+  async verifyAffiliateCode(code: string): Promise<{ isValid: boolean; isUsed: boolean; message: string; sheetFound?: string }> {
+    try {
+      console.log(`Verifying affiliate code: ${code}`);
+      
+      // Buscar en ambas hojas
+      const sheets = ['Hoja 1', 'Hoja 2'];
+      
+      for (const sheetName of sheets) {
+        try {
+          const response = await this.sheets.spreadsheets.values.get({
+            spreadsheetId: this.spreadsheetId,
+            range: `${sheetName}!A:D`,
+          });
+
+          const rows = response.data.values || [];
+          
+          for (let i = 1; i < rows.length; i++) {
+            const row = rows[i];
+            if (row[0] === code) {
+              const isActive = row[1] === 'SI';
+              const isUsed = row[2] && row[2].trim() !== '';
+              
+              if (!isActive) {
+                return {
+                  isValid: false,
+                  isUsed: true,
+                  message: 'Código de afiliado ya utilizado',
+                  sheetFound: sheetName
+                };
+              }
+              
+              if (isUsed) {
+                return {
+                  isValid: false,
+                  isUsed: true,
+                  message: 'Código de afiliado ya utilizado',
+                  sheetFound: sheetName
+                };
+              }
+              
+              return {
+                isValid: true,
+                isUsed: false,
+                message: 'Código de afiliado válido',
+                sheetFound: sheetName
+              };
+            }
+          }
+        } catch (sheetError) {
+          console.log(`Sheet ${sheetName} not found or accessible, trying next sheet`);
+          continue;
+        }
+      }
+      
+      return {
+        isValid: false,
+        isUsed: false,
+        message: 'Código de afiliado no encontrado'
+      };
+    } catch (error) {
+      console.error('Error verifying affiliate code:', error);
+      return {
+        isValid: false,
+        isUsed: false,
+        message: 'Error al verificar el código'
+      };
     }
   }
 

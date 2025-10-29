@@ -9,6 +9,7 @@ interface User {
   isFirstLogin?: boolean;
   welcomeModalShown?: boolean;
   onboardingStep?: string;
+  affiliateCodeUsedAt?: string | null;
 }
 
 interface AuthContextType {
@@ -68,19 +69,22 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         const isFirstLogin = data.isFirstLogin || false;
         const welcomeModalShown = data.welcomeModalShown || false;
         const onboardingStep = data.onboardingStep || "pending";
+        const affiliateCodeUsedAt = data.affiliateCodeUsedAt || null;
         
         console.log("✅ Usuario autenticado:", {
           username,
           isFirstLogin,
           welcomeModalShown,
-          onboardingStep
+          onboardingStep,
+          affiliateCodeUsedAt
         });
         
         setUser({ 
           username: username, 
           isFirstLogin: isFirstLogin,
           welcomeModalShown: welcomeModalShown,
-          onboardingStep: onboardingStep
+          onboardingStep: onboardingStep,
+          affiliateCodeUsedAt: affiliateCodeUsedAt
         });
       } else {
         console.log("❌ Usuario no autenticado");
@@ -118,19 +122,22 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         const isFirstLogin = responseData.isFirstLogin || false;
         const welcomeModalShown = responseData.user?.welcomeModalShown || false;
         const onboardingStep = responseData.user?.onboardingStep || "pending";
+        const affiliateCodeUsedAt = responseData.user?.affiliateCodeUsedAt || null;
         
         console.log("✅ Login exitoso, estableciendo usuario:", {
           username,
           isFirstLogin,
           welcomeModalShown,
-          onboardingStep
+          onboardingStep,
+          affiliateCodeUsedAt
         });
         
         setUser({ 
           username: username, 
           isFirstLogin: isFirstLogin,
           welcomeModalShown: welcomeModalShown,
-          onboardingStep: onboardingStep
+          onboardingStep: onboardingStep,
+          affiliateCodeUsedAt: affiliateCodeUsedAt
         });
         setLoading(false);
       } else {

@@ -309,6 +309,21 @@
     "summary": "In summary: you danced, you saved forest, and you started to earn.",
     "cta": "Follow the tour through your Dashboard"
   },
+  "WelcomeModal": {
+    "title": "Welcome to Oxygen!",
+    "description1": "Welcome to our carbon compensation platform. Here you can directly contribute to forest protection and CO₂ emission reduction.",
+    "description2": "Explore our verified forest projects, calculate your carbon footprint, and participate in the generation of certified carbon credits.",
+    "description3": "Every action you take here has a real impact on environmental conservation.",
+    "cta": "Go to Dashboard"
+  },
+  "AffiliateRewardModal": {
+    "title": "Affiliate code activated!",
+    "reward": "Affiliate reward",
+    "description1": "Thanks to your affiliate code, you have received 5 OM tokens as a reward. Each OM represents 1 m² of protected forest in La Florencia, Formosa.",
+    "description2": "These tokens generate carbon credits (OC) that you can exchange for USDT (digital dollars) as the forest absorbs CO₂.",
+    "description3": "You have started your journey towards sustainability and earnings!",
+    "cta": "Explore my Dashboard"
+  },
   "common": {
     "back": "Back",
     "close": "Close",

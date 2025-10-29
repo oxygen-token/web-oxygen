@@ -10,6 +10,7 @@ import Link from "next/link";
 import { InputWithLabel } from "../ui/InputWithLabel";
 import { CheckboxWithLabel } from "../ui/CheckboxWithLabel";
 import Loading_Spinner from "../ui/Loading_Spinner";
+import { post } from "../../../../utils/request";
 
 
 interface FormData {
@@ -66,20 +67,13 @@ const RegisterForm_Desktop = () => {
     console.log("Email:", data.email);
     
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL || "https://backend-render-main.onrender.com"}/register`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          fullName: data.fullName,
-          email: data.email,
-          password: data.password,
-          country: data.country,
-          ...(data.companyName && { companyName: data.companyName }),
-          ...(data.affiliateCode && { affiliateCode: data.affiliateCode }),
-        }),
-        credentials: "include",
+      const response = await post("/register", {
+        fullName: data.fullName,
+        email: data.email,
+        password: data.password,
+        country: data.country,
+        ...(data.companyName && { companyName: data.companyName }),
+        ...(data.affiliateCode && { affiliateCode: data.affiliateCode }),
       });
 
       if (!response.ok) {
@@ -93,6 +87,10 @@ const RegisterForm_Desktop = () => {
       }
 
       try {
+        // Obtener el tipo de código del backend response
+        const backendResponse = await response.json();
+        const affiliateCodeType = backendResponse.affiliateCodeType || 'code_standard';
+        
         await fetch('/api/google-sheets', {
           method: 'POST',
           headers: {
@@ -104,6 +102,7 @@ const RegisterForm_Desktop = () => {
             country: data.country,
             companyName: data.companyName,
             affiliateCode: data.affiliateCode,
+            affiliateCodeType: affiliateCodeType,
           }),
         });
       } catch (sheetsError) {
@@ -123,15 +122,8 @@ const RegisterForm_Desktop = () => {
 
     setIsVerifying(true);
     try {
-              const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL || "https://backend-render-main.onrender.com"}/verify-affiliate-code`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          code: affiliateCode,
-        }),
-        credentials: "include",
+      const response = await post("/verify-affiliate-code", {
+        code: affiliateCode,
       });
 
       if (response.ok) {

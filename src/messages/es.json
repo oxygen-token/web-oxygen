@@ -309,6 +309,21 @@
     "summary": "En resumen: bailaste, salvaste bosque, y empezaste a ganar.",
     "cta": "Seguí el tour por tu Dashboard"
   },
+  "WelcomeModal": {
+    "title": "¡Bienvenido a Oxygen!",
+    "description1": "Te damos la bienvenida a nuestra plataforma de compensación de carbono. Aquí podrás contribuir directamente a la protección de bosques y la reducción de emisiones de CO₂.",
+    "description2": "Explora nuestros proyectos forestales verificados, calcula tu huella de carbono y participa en la generación de créditos de carbono certificados.",
+    "description3": "Cada acción que realices aquí tiene un impacto real en la conservación del medio ambiente.",
+    "cta": "Ir al Dashboard"
+  },
+  "AffiliateRewardModal": {
+    "title": "¡Código de afiliado activado!",
+    "reward": "Recompensa por afiliación",
+    "description1": "Gracias a tu código de afiliado, has recibido 5 tokens OM como recompensa. Cada OM representa 1 m² de bosque protegido en La Florencia, Formosa.",
+    "description2": "Estos tokens generan créditos de carbono (OC) que puedes intercambiar por USDT (dólares digitales) a medida que el bosque absorbe CO₂.",
+    "description3": "¡Has comenzado tu viaje hacia la sostenibilidad y las ganancias!",
+    "cta": "Explorar mi Dashboard"
+  },
   "common": {
     "back": "Atrás",
     "close": "Cerrar",

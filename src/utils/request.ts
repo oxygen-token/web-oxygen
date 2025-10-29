@@ -1,5 +1,8 @@
-//const BASE_URL = "https://backend-render-main.onrender.com";
-const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "https://backend-render-main.onrender.com";
+// Prefer env override; fallback to localhost in dev, otherwise production URL
+const IS_DEV = typeof process !== 'undefined' && process.env.NODE_ENV === 'development';
+const BASE_URL = IS_DEV
+  ? "http://localhost:10001"
+  : (process.env.NEXT_PUBLIC_BACKEND_URL || "https://backend-render-main.onrender.com");
 
 const getCookieValue = (name: string) => {
   const value = `; ${document.cookie}`;

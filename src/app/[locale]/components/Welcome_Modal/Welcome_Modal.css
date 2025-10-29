@@ -1,0 +1,101 @@
+/* Welcome Modal Styles */
+.welcome-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  z-index: 9999;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.welcome-modal-content {
+  position: relative;
+  background: linear-gradient(135deg, rgba(0, 106, 106, 0.75) 0%, rgba(0, 202, 166, 0.65) 30%, rgba(1, 33, 56, 0.7) 70%, rgba(11, 136, 153, 0.8) 100%);
+  backdrop-filter: blur(30px);
+  border: 2px solid rgba(0, 202, 166, 0.8);
+  border-radius: 1rem;
+  padding: 2rem 2.5rem;
+  max-width: 32rem;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), inset 0 2px 8px rgba(255, 255, 255, 0.3);
+  transform: scale(1) translateY(0);
+  opacity: 1;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 10000;
+  margin: -1.5rem 0;
+}
+
+.welcome-modal-logo {
+  height: 4rem;
+  width: auto;
+  margin-bottom: 0.5rem;
+}
+
+.welcome-modal-tagline {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: rgba(0, 202, 166, 1);
+  margin: 0;
+}
+
+.welcome-modal-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: white;
+  line-height: 1.3;
+}
+
+.welcome-modal-description {
+  text-align: left;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.welcome-modal-description p {
+  margin-bottom: 1rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.welcome-modal-description p:last-child {
+  margin-bottom: 0;
+}
+
+.welcome-modal-button {
+  background: linear-gradient(135deg, rgba(3, 77, 77, 0.9) 0%, rgba(0, 106, 106, 0.85) 100%);
+  border: 2px solid rgba(0, 202, 166, 0.8);
+  border-radius: 0.75rem;
+  padding: 0.875rem 2rem;
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 8px 32px rgba(3, 77, 77, 0.4), inset 0 2px 8px rgba(255, 255, 255, 0.1);
+  width: 100%;
+  max-width: 16rem;
+}
+
+.welcome-modal-button:hover {
+  background: linear-gradient(135deg, rgba(3, 77, 77, 0.95) 0%, rgba(0, 106, 106, 0.9) 100%);
+  border-color: rgba(0, 202, 166, 0.9);
+  transform: scale(1.02);
+  box-shadow: 0 10px 35px rgba(3, 77, 77, 0.5), inset 0 2px 8px rgba(255, 255, 255, 0.15);
+}
+
+.welcome-modal-button-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.welcome-modal-button-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+}

@@ -10,6 +10,7 @@ import Navbar from "../components/Navbar/Navbar";
 import Footer from "../components/Footer/Footer";
 import Light_Rays from "../components/ui/Light_Rays";
 import Rotating_Text from "../components/ui/Rotating_Text";
+import { get } from "../../../utils/request";
 
 const VerifySuccess = () => {
   const t = useTranslations("VerifySuccess");
@@ -33,10 +34,7 @@ const VerifySuccess = () => {
 
       console.log("Starting email verification...");
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL || "https://backend-render-main.onrender.com"}/verify?token=${token}`, {
-          method: "GET",
-          credentials: "include",
-        });
+        const response = await get(`/verify?token=${token}`);
 
         console.log("Response status:", response.status);
         console.log("Response ok:", response.ok);

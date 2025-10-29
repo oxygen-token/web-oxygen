@@ -6,10 +6,12 @@ import Bottom_Row from "../Bottom_Row/Bottom_Row";
 import Dashboard_Tour from "../Dashboard_Tour/Dashboard_Tour";
 import Dashboard_Tour_Button from "../Dashboard_Tour_Button/Dashboard_Tour_Button";
 
-import OM_Modal from "../../OM_Modal/OM_Modal";
+import Affiliate_Reward_Modal from "../../Affiliate_Reward_Modal/Affiliate_Reward_Modal";
+import Welcome_Modal from "../../Welcome_Modal/Welcome_Modal";
 
 import { useAuth } from "../../../context/Auth_Context";
 import { useOnboarding } from "../../../hooks/useOnboarding";
+import { useWelcomeModal } from "../../../hooks/useWelcomeModal";
 import { 
   MetricData, 
   ProjectData, 
@@ -36,9 +38,12 @@ const Dashboard_Main = memo(({
 
   const { user } = useAuth();
   const { updateWelcomeModal, updateOnboardingStep, updateProfileStatus } = useOnboarding();
-  const [showAffiliateBanner, setShowAffiliateBanner] = useState(false);
+  const { updateWelcomeModal: updateWelcomeModalShown } = useWelcomeModal();
+  const [showAffiliateRewardBanner, setShowAffiliateRewardBanner] = useState(false);
+  const [showWelcomeBanner, setShowWelcomeBanner] = useState(false);
   const [modalAccepted, setModalAccepted] = useState(false);
-  const [shouldShowModal, setShouldShowModal] = useState(false);
+  const [shouldShowAffiliateModal, setShouldShowAffiliateModal] = useState(false);
+  const [shouldShowWelcomeModal, setShouldShowWelcomeModal] = useState(false);
   const [shouldShowTour, setShouldShowTour] = useState(false);
 
   useEffect(() => {
@@ -46,27 +51,39 @@ const Dashboard_Main = memo(({
     if (user) {
       console.log("🔍 Verificando estado del onboarding para usuario:", user);
       
-      // Verificar welcomeModalShown y onboardingStep del backend
-      const shouldShowWelcomeModal = !user.welcomeModalShown;
+      // Verificar si el usuario usó un código de afiliado
+      const hasUsedAffiliateCode = user.affiliateCodeUsedAt !== null;
+      const shouldShowAffiliateModal = !user.welcomeModalShown && hasUsedAffiliateCode;
+      const shouldShowWelcomeModalForNewUser = !user.welcomeModalShown && !hasUsedAffiliateCode;
       const shouldShowOnboardingTour = user.onboardingStep === "pending" || user.onboardingStep === "skipped";
       
       console.log("📊 Estado del onboarding:", {
         welcomeModalShown: user.welcomeModalShown,
         onboardingStep: user.onboardingStep,
-        shouldShowWelcomeModal,
+        affiliateCodeUsedAt: user.affiliateCodeUsedAt,
+        hasUsedAffiliateCode,
+        shouldShowAffiliateModal,
+        shouldShowWelcomeModalForNewUser,
         shouldShowOnboardingTour
       });
       
-      setShouldShowModal(shouldShowWelcomeModal);
+      setShouldShowAffiliateModal(shouldShowAffiliateModal);
+      setShouldShowWelcomeModal(shouldShowWelcomeModalForNewUser);
       setShouldShowTour(shouldShowOnboardingTour);
       
-      // Si debe mostrar el modal, activarlo
-      if (shouldShowWelcomeModal) {
-        console.log("🆕 Usuario debe ver modal de bienvenida, mostrando...");
-        setShowAffiliateBanner(true);
+      // Si debe mostrar el modal de afiliado, activarlo
+      if (shouldShowAffiliateModal) {
+        console.log("🆕 Usuario usó código de afiliado y debe ver modal de recompensa, mostrando...");
+        setShowAffiliateRewardBanner(true);
+        setShowWelcomeBanner(false);
+      } else if (shouldShowWelcomeModalForNewUser) {
+        console.log("👋 Usuario nuevo sin código de afiliado, mostrando modal de bienvenida...");
+        setShowAffiliateRewardBanner(false);
+        setShowWelcomeBanner(true);
       } else {
         console.log("👤 Usuario ya vio modal de bienvenida, ocultando...");
-        setShowAffiliateBanner(false);
+        setShowAffiliateRewardBanner(false);
+        setShowWelcomeBanner(false);
       }
     }
   }, [user]);
@@ -75,12 +92,16 @@ const Dashboard_Main = memo(({
 
 
 
-  const handleCloseAffiliateBanner = async () => {
-    setShowAffiliateBanner(false);
+  const handleCloseAffiliateRewardBanner = async () => {
+    setShowAffiliateRewardBanner(false);
   };
 
-  const handleButtonClick = async () => {
-    setShowAffiliateBanner(false);
+  const handleCloseWelcomeBanner = async () => {
+    setShowWelcomeBanner(false);
+  };
+
+  const handleAffiliateRewardButtonClick = async () => {
+    setShowAffiliateRewardBanner(false);
     setModalAccepted(true);
     
     try {
@@ -96,20 +117,34 @@ const Dashboard_Main = memo(({
     }
   };
 
+  const handleWelcomeButtonClick = async () => {
+    setShowWelcomeBanner(false);
+    
+    try {
+      // Marcar modal de bienvenida como mostrado
+      await updateWelcomeModalShown();
+    } catch (error) {
+      console.error("Error al marcar modal de bienvenida como mostrado:", error);
+    }
+  };
+
 
 
   return (
     <>
       <Dashboard_Tour shouldShowTour={modalAccepted && shouldShowTour} />
       <Dashboard_Tour_Button />
-      <OM_Modal 
-        show={showAffiliateBanner && shouldShowModal} 
-        onClose={handleCloseAffiliateBanner}
-        onButtonClick={handleButtonClick}
+      <Affiliate_Reward_Modal 
+        show={showAffiliateRewardBanner && shouldShowAffiliateModal} 
+        onClose={handleCloseAffiliateRewardBanner}
+        onButtonClick={handleAffiliateRewardButtonClick}
       />
       
-
-      
+      <Welcome_Modal 
+        show={showWelcomeBanner && shouldShowWelcomeModal} 
+        onClose={handleCloseWelcomeBanner}
+        onButtonClick={handleWelcomeButtonClick}
+      />
 
       <div className="dashboard-content space-y-8 sm:space-y-6 lg:space-y-6 xl:space-y-8 p-4 sm:p-6 lg:p-0 xl:p-0">
 

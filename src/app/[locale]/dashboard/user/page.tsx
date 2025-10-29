@@ -5,6 +5,8 @@ import Dashboard_Main from "../../components/Dashboard/Dashboard_Main/Dashboard_
 import Animated_Page from "../../components/ui/Animated_Page";
 import OM_Modal from "../../components/OM_Modal/OM_Modal";
 import Code_Modal from "../../components/Code_Modal/Code_Modal";
+import { useAuth } from "../../context/Auth_Context";
+import { useOnboarding } from "../../hooks/useOnboarding";
 
 const userDashboardData = {
   metrics: [
@@ -75,9 +77,27 @@ const userDashboardData = {
 };
 
 export default function UserDashboardPage() {
+  const { user } = useAuth();
+  const { updateWelcomeModal, updateProfileStatus } = useOnboarding();
   const [showCodeModal, setShowCodeModal] = useState(true);
   const [showOMModal, setShowOMModal] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
+
+  useEffect(() => {
+    if (user) {
+      const shouldShowWelcomeModal = !user.welcomeModalShown;
+      console.log("🔍 Estado del usuario en /dashboard/user:", {
+        welcomeModalShown: user.welcomeModalShown,
+        shouldShowWelcomeModal
+      });
+      
+      if (shouldShowWelcomeModal) {
+        setShowOMModal(true);
+      } else {
+        setIsVerified(true);
+      }
+    }
+  }, [user]);
 
   const handleCloseCodeModal = () => {
     return;
@@ -101,14 +121,28 @@ export default function UserDashboardPage() {
     }
   };
 
-  const handleCloseOMModal = () => {
+  const handleCloseOMModal = async () => {
     setShowOMModal(false);
     setIsVerified(true);
+    
+    try {
+      await updateWelcomeModal();
+      await updateProfileStatus();
+    } catch (error) {
+      console.error("Error al actualizar estado del modal:", error);
+    }
   };
 
-  const handleOMModalButtonClick = () => {
+  const handleOMModalButtonClick = async () => {
     setShowOMModal(false);
     setIsVerified(true);
+    
+    try {
+      await updateWelcomeModal();
+      await updateProfileStatus();
+    } catch (error) {
+      console.error("Error al actualizar estado del modal:", error);
+    }
   };
 
   return (
