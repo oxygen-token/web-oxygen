@@ -5,8 +5,7 @@ import { Transition_Provider } from "./context/Transition_Context";
 import { AuthProvider } from "./context/Auth_Context";
 import { DevProvider } from "./context/Dev_Context";
 import Navbar from "./components/Navbar/Navbar";
-import { Analytics } from "@vercel/analytics/react";
-import { SpeedInsights } from "@vercel/speed-insights/next";
+import Vercel_Analytics from "./components/Vercel_Analytics/Vercel_Analytics";
 
 const { NextIntlClientProvider } = require("next-intl");
 const { notFound } = require("next/navigation");
@@ -43,8 +42,7 @@ async function LocaleLayout({ children, params: { locale } }) {
             </AuthProvider>
           </DevProvider>
         </NextIntlClientProvider>
-        <Analytics />
-        <SpeedInsights />
+        <Vercel_Analytics />
       </body>
     </html>
   );
