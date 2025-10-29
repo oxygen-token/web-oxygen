@@ -5,6 +5,7 @@ import { Transition_Provider } from "./context/Transition_Context";
 import { AuthProvider } from "./context/Auth_Context";
 import { DevProvider } from "./context/Dev_Context";
 import Navbar from "./components/Navbar/Navbar";
+import { Analytics } from "@vercel/analytics/react";
 
 const { NextIntlClientProvider } = require("next-intl");
 const { notFound } = require("next/navigation");
@@ -41,6 +42,7 @@ async function LocaleLayout({ children, params: { locale } }) {
             </AuthProvider>
           </DevProvider>
         </NextIntlClientProvider>
+        <Analytics />
       </body>
     </html>
   );

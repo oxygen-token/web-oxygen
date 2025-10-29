@@ -1,8 +1,29 @@
-// Prefer env override; fallback to localhost in dev, otherwise production URL
 const IS_DEV = typeof process !== 'undefined' && process.env.NODE_ENV === 'development';
-const BASE_URL = IS_DEV
-  ? "http://localhost:10001"
-  : (process.env.NEXT_PUBLIC_BACKEND_URL || "https://backend-render-7vh2.onrender.com");
+
+const getBackendUrl = () => {
+  if (IS_DEV) {
+    return "http://localhost:10001";
+  }
+  
+  const envUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+  if (envUrl) {
+    return envUrl;
+  }
+  
+  return "https://backend-render-7vh2.onrender.com";
+};
+
+const BASE_URL = getBackendUrl();
+
+if (typeof window !== 'undefined') {
+  console.log('🔧 Backend URL Configuration:', {
+    envVar: process.env.NEXT_PUBLIC_BACKEND_URL || 'NOT SET',
+    resolvedUrl: BASE_URL,
+    nodeEnv: process.env.NODE_ENV,
+    isDev: IS_DEV,
+    warning: !process.env.NEXT_PUBLIC_BACKEND_URL ? '⚠️ Using fallback URL - Check Vercel environment variables!' : '✅ Using env var'
+  });
+}
 
 const getCookieValue = (name: string) => {
   const value = `; ${document.cookie}`;
