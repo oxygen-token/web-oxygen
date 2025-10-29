@@ -66,6 +66,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       
       if (data.loggedIn) {
         const username = data.fullName || data.username;
+        const email = data.email || "";
         const isFirstLogin = data.isFirstLogin || false;
         const welcomeModalShown = data.welcomeModalShown || false;
         const onboardingStep = data.onboardingStep || "pending";
@@ -73,6 +74,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         
         console.log("✅ Usuario autenticado:", {
           username,
+          email,
           isFirstLogin,
           welcomeModalShown,
           onboardingStep,
@@ -81,6 +83,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         
         setUser({ 
           username: username, 
+          email: email,
           isFirstLogin: isFirstLogin,
           welcomeModalShown: welcomeModalShown,
           onboardingStep: onboardingStep,
@@ -119,6 +122,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       
       if (responseData.success || response.status === 201) {
         const username = responseData.user?.fullName || responseData.fullName || email.split('@')[0];
+        const userEmail = responseData.user?.email || responseData.email || email;
         const isFirstLogin = responseData.isFirstLogin || false;
         const welcomeModalShown = responseData.user?.welcomeModalShown || false;
         const onboardingStep = responseData.user?.onboardingStep || "pending";
@@ -126,6 +130,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         
         console.log("✅ Login exitoso, estableciendo usuario:", {
           username,
+          email: userEmail,
           isFirstLogin,
           welcomeModalShown,
           onboardingStep,
@@ -134,6 +139,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         
         setUser({ 
           username: username, 
+          email: userEmail,
           isFirstLogin: isFirstLogin,
           welcomeModalShown: welcomeModalShown,
           onboardingStep: onboardingStep,

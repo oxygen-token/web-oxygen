@@ -60,11 +60,11 @@ export class GoogleSheetsService {
     }
   }
 
-  async updateAffiliateCodeUsage(code: string, email: string, sheetName: string = 'Hoja 1'): Promise<boolean> {
+  async updateAffiliateCodeUsage(code: string, email: string, sheetName: string = 'Hoja 1', fullName?: string): Promise<boolean> {
     try {
       const response = await this.sheets.spreadsheets.values.get({
         spreadsheetId: this.spreadsheetId,
-        range: `${sheetName}!A:D`,
+        range: `${sheetName}!A:E`,
       });
 
       const rows = response.data.values || [];
@@ -86,6 +86,7 @@ export class GoogleSheetsService {
         [
           code,
           'NO',
+          fullName || '',
           email,
           new Date().toLocaleString('es-AR'),
         ],
@@ -93,7 +94,7 @@ export class GoogleSheetsService {
 
       await this.sheets.spreadsheets.values.update({
         spreadsheetId: this.spreadsheetId,
-        range: `${sheetName}!A${rowIndex}:D${rowIndex}`,
+        range: `${sheetName}!A${rowIndex}:E${rowIndex}`,
         valueInputOption: 'RAW',
         resource: {
           values: updateValues,
@@ -119,7 +120,7 @@ export class GoogleSheetsService {
         try {
           const response = await this.sheets.spreadsheets.values.get({
             spreadsheetId: this.spreadsheetId,
-            range: `${sheetName}!A:D`,
+            range: `${sheetName}!A:E`,
           });
 
           const rows = response.data.values || [];
@@ -127,8 +128,8 @@ export class GoogleSheetsService {
           for (let i = 1; i < rows.length; i++) {
             const row = rows[i];
             if (row[0] === code) {
-              const isActive = row[1] === 'SI';
-              const isUsed = row[2] && row[2].trim() !== '';
+              const isActive = row[1] === 'YES' || row[1] === 'SI';
+              const isUsed = row[3] && row[3].trim() !== '';
               
               if (!isActive) {
                 return {
@@ -180,15 +181,16 @@ export class GoogleSheetsService {
   async initializeSheet(): Promise<boolean> {
     try {
       const headers = [
-        'Codigo',
-        'Habilitado',
+        'Code',
+        'Enabled?',
+        'Name',
         'Email',
         'Date',
       ];
 
       await this.sheets.spreadsheets.values.update({
         spreadsheetId: this.spreadsheetId,
-        range: 'A1:D1',
+        range: 'A1:E1',
         valueInputOption: 'RAW',
         resource: {
           values: [headers],

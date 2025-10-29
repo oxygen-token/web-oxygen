@@ -196,7 +196,7 @@
     "must-accept-tc": "You must accept the Terms and Conditions to register",
     "server-error": "Something went wrong. Please try again.",
     "register-btn": "Sign up",
-    "create-account": "Create",
+    "create-account": "Sign up",
     "creating-account": "Creating...",
     "please-complete": "Please complete:",
     "next": "Next",
@@ -207,7 +207,14 @@
     "verifying": "verifying...",
     "success": "Success",
     "invalid-code": "Invalid code",
+    "code-missing": "Missing affiliate code",
+    "code-invalid-format": "Invalid affiliate code format",
+    "code-not-found": "Affiliate code not found",
+    "code-inactive": "Affiliate code is inactive",
+    "code-already-used": "Affiliate code already used",
+    "code-verification-error": "Error verifying code",
     "om-guaranteed": "+5 OM guaranteed",
+    "with-sign-up": "with this sign up",
     "terms-and-conditions": "I have read and accept the Terms and Conditions"
   },
   "PostRegister": {

@@ -29,6 +29,7 @@ const RegisterForm_Mobile = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [isVerifying, setIsVerifying] = useState(false);
   const [verificationStatus, setVerificationStatus] = useState<"idle" | "success" | "failed">("idle");
+  const [verificationMessage, setVerificationMessage] = useState<string>("");
   const [userCountry, setUserCountry] = useState("Argentina");
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [showStepErrors, setShowStepErrors] = useState(false);
@@ -63,6 +64,7 @@ const RegisterForm_Mobile = () => {
     const affiliateCode = watch("affiliateCode");
     if (affiliateCode !== lastVerifiedCode && (verificationStatus === "success" || verificationStatus === "failed")) {
       setVerificationStatus("idle");
+      setVerificationMessage("");
     }
   }, [watch("affiliateCode"), verificationStatus, lastVerifiedCode]);
 
@@ -125,24 +127,29 @@ const RegisterForm_Mobile = () => {
     if (!affiliateCode) return;
 
     setIsVerifying(true);
+    setVerificationMessage("");
     try {
       const response = await post("/verify-affiliate-code", {
         code: affiliateCode,
       });
 
-      if (response.ok) {
+      const data = await response.json();
+
+      if (data.success) {
         setVerificationStatus("success");
+        setVerificationMessage("");
         setLastVerifiedCode(affiliateCode);
-        // Save the verified affiliate code to localStorage
         localStorage.setItem('affiliateCode', affiliateCode);
         localStorage.setItem('affiliateVerified', 'true');
       } else {
         setVerificationStatus("failed");
+        setVerificationMessage(data.message || "Invalid code");
         setLastVerifiedCode(affiliateCode);
       }
     } catch (error) {
       console.error("Error verifying affiliate code:", error);
       setVerificationStatus("failed");
+      setVerificationMessage("Error verifying code");
     } finally {
       setIsVerifying(false);
     }
@@ -159,6 +166,7 @@ const RegisterForm_Mobile = () => {
     if (verificationStatus === "success") return "text-sm text-teal-accent font-medium";
     return "text-sm text-teal-accent hover:text-teal-light";
   };
+
 
   const renderStepIndicator = () => (
     <div className="flex justify-center mt-6">
@@ -411,7 +419,7 @@ const RegisterForm_Mobile = () => {
         {...register("affiliateCode")}
       />
 
-      <div className={`text-white text-sm rounded-lg p-3 flex flex-col justify-center transition-all duration-300 ease-in-out min-h-[48px] ${
+      <div className={`text-white text-sm rounded-lg p-3 flex flex-col justify-center items-center transition-all duration-300 ease-in-out min-h-[48px] ${
         verificationStatus === "success" 
           ? "bg-teal-accent/20 border border-teal-accent/30 opacity-100 scale-100" 
           : verificationStatus === "failed"

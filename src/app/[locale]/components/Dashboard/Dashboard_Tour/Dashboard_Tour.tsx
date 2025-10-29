@@ -86,13 +86,14 @@ const Dashboard_Tour = ({ shouldShowTour }: Dashboard_Tour_Props) => {
       completeTour();
       
       try {
-        // Marcar onboarding como completado en el backend
+        const currentStepNumber = index + 1;
+        
         if (status === STATUS.FINISHED) {
-          console.log("✅ Tour completado, marcando como 'paso_4'");
-          await updateOnboardingStep("paso_4");
+          console.log("✅ Tour completado, marcando como paso 4");
+          await updateOnboardingStep("paso_4", false, 4);
         } else if (status === STATUS.SKIPPED) {
-          console.log("⏭️ Tour saltado, marcando como 'skipped'");
-          await updateOnboardingStep("skipped");
+          console.log(`⏭️ Tour saltado en paso ${currentStepNumber}, marcando como skipped`);
+          await updateOnboardingStep("skipped", true, currentStepNumber);
         }
       } catch (error) {
         console.error("❌ Error al marcar onboarding como completado:", error);

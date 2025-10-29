@@ -21,7 +21,8 @@ export async function POST(request: NextRequest) {
     const success = await googleSheetsService.updateAffiliateCodeUsage(
       affiliateCode, 
       email, 
-      sheetName
+      sheetName,
+      fullName
     );
 
     if (success) {

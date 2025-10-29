@@ -98,6 +98,14 @@ const Dashboard_Main = memo(({
 
   const handleCloseWelcomeBanner = async () => {
     setShowWelcomeBanner(false);
+    setModalAccepted(true);
+    
+    try {
+      // Marcar modal de bienvenida como mostrado aunque se cierre sin botón
+      await updateWelcomeModalShown();
+    } catch (error) {
+      console.error("Error al marcar modal de bienvenida como mostrado:", error);
+    }
   };
 
   const handleAffiliateRewardButtonClick = async () => {
@@ -119,6 +127,7 @@ const Dashboard_Main = memo(({
 
   const handleWelcomeButtonClick = async () => {
     setShowWelcomeBanner(false);
+    setModalAccepted(true);
     
     try {
       // Marcar modal de bienvenida como mostrado
