@@ -136,12 +136,12 @@ export default function OM_Modal({ show, onClose, onButtonClick }: OM_Modal_Prop
       }, 10);
       
       // Agregar event listener al botón
-      const button = modalContent.querySelector('#om-modal-button');
+      const button = modalContent.querySelector('#om-modal-button') as HTMLElement;
       if (button) {
         button.addEventListener('click', onButtonClick);
         
         // Efecto hover
-        const buttonDiv = button.querySelector('div');
+        const buttonDiv = button.querySelector('div') as HTMLElement;
         if (buttonDiv) {
           button.addEventListener('mouseenter', () => {
             buttonDiv.style.background = 'linear-gradient(135deg, rgba(3, 77, 77, 0.95) 0%, rgba(0, 106, 106, 0.9) 100%)';
@@ -167,15 +167,15 @@ export default function OM_Modal({ show, onClose, onButtonClick }: OM_Modal_Prop
     } else {
       // Animar salida del modal antes de removerlo
       if (modalRef.current) {
-        const backdrop = modalRef.current.querySelector('div:first-child');
-        const modal = modalRef.current.querySelector('div:last-child');
+        const backdrop = modalRef.current.querySelector('div:first-child') as HTMLElement;
+        const modal = modalRef.current.querySelector('div:last-child') as HTMLElement;
         
         if (backdrop && modal) {
           // Animar salida
-          (backdrop as HTMLElement).style.backgroundColor = 'rgba(0, 0, 0, 0)';
-          (backdrop as HTMLElement).style.backdropFilter = 'blur(0px)';
-          (modal as HTMLElement).style.transform = 'scale(0.9) translateY(20px)';
-          (modal as HTMLElement).style.opacity = '0';
+          backdrop.style.backgroundColor = 'rgba(0, 0, 0, 0)';
+          backdrop.style.backdropFilter = 'blur(0px)';
+          modal.style.transform = 'scale(0.9) translateY(20px)';
+          modal.style.opacity = '0';
           
           // Remover después de la animación
           setTimeout(() => {

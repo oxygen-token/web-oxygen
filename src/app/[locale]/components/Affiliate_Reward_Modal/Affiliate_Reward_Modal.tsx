@@ -135,7 +135,7 @@ export default function Affiliate_Reward_Modal({ show, onClose, onButtonClick }:
       }, 10);
       
       // Agregar event listener al botón
-      const button = modalContent.querySelector('#affiliate-reward-modal-button');
+      const button = modalContent.querySelector('#affiliate-reward-modal-button') as HTMLElement;
       if (button) {
         button.addEventListener('click', onButtonClick);
         
@@ -163,8 +163,8 @@ export default function Affiliate_Reward_Modal({ show, onClose, onButtonClick }:
     } else {
       // Animar salida del modal antes de removerlo
       if (modalRef.current) {
-        const backdrop = modalRef.current.querySelector('div:first-child');
-        const modalContent = modalRef.current.querySelector('div:last-child');
+        const backdrop = modalRef.current.querySelector('div:first-child') as HTMLElement;
+        const modalContent = modalRef.current.querySelector('div:last-child') as HTMLElement;
         
         if (backdrop && modalContent) {
           backdrop.style.backgroundColor = 'rgba(0, 0, 0, 0)';
