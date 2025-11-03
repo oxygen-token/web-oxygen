@@ -209,10 +209,10 @@ const SideBarDashboard = memo(() => {
                              ? "bg-red-500/30 backdrop-blur-sm transform translate-x-1 border border-red-400/50 shadow-lg shadow-red-500/20"
                              : "border border-red-600/30"
                            : isActive
-                             ? "bg-white/20 backdrop-blur-sm font-semibold text-white transform translate-x-2 border border-white/30 shadow-lg"
-                             : isHovered && !isActive
-                               ? "text-white transform translate-x-1"
-                               : "text-white"
+                           ? "bg-white/20 backdrop-blur-sm font-semibold text-white transform translate-x-2 border border-white/30 shadow-lg"
+                           : isHovered && !isActive
+                             ? "text-white transform translate-x-1"
+                             : "text-white"
                          }
                          ${isClicked ? "scale-95" : ""}
                          ${isDisabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}
@@ -244,12 +244,12 @@ const SideBarDashboard = memo(() => {
                                 ? "text-red-300 scale-110 drop-shadow-[0_0_8px_rgba(252,165,165,0.8)]"
                                 : "text-red-400 drop-shadow-[0_0_4px_rgba(248,113,113,0.6)]"
                               : isActive
-                                ? "text-white"
-                                : isHovered
-                                  ? "text-white scale-110"
-                                  : item.disabled
-                                    ? "text-gray-400"
-                                    : "text-white"
+                              ? "text-white"
+                              : isHovered
+                                ? "text-white scale-110"
+                                : item.disabled
+                                  ? "text-gray-400"
+                                  : "text-white"
                           }`}
                         />
                       ) : null}
@@ -262,10 +262,10 @@ const SideBarDashboard = memo(() => {
                             ? "font-semibold text-red-300 drop-shadow-[0_0_6px_rgba(252,165,165,0.7)]"
                             : "font-semibold text-red-400 drop-shadow-[0_0_4px_rgba(248,113,113,0.5)]"
                           : isActive
-                            ? "font-semibold text-white"
-                            : item.disabled
-                              ? "font-medium text-gray-400"
-                              : "font-medium text-white"
+                          ? "font-semibold text-white"
+                          : item.disabled
+                            ? "font-medium text-gray-400"
+                            : "font-medium text-white"
                       }`}
                     >
                       {t(item.nameKey)}

@@ -39,11 +39,11 @@ async function LocaleLayout({ children, params: { locale } }) {
           <DevProvider>
             <AuthProvider>
               <WalletProvider>
-                <Transition_Provider>
-                  <Navbar />
-                  {children}
-                  <Back_To_Top />
-                </Transition_Provider>
+              <Transition_Provider>
+                <Navbar />
+                {children}
+                <Back_To_Top />
+              </Transition_Provider>
               </WalletProvider>
             </AuthProvider>
           </DevProvider>
