@@ -36,8 +36,8 @@ const nextConfig = {
 
     return config;
   },
-  experimental: {
-    appDir: true,
+  env: {
+    _next_intl_trailing_slash: 'false',
   },
 };
 

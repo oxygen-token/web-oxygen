@@ -133,6 +133,7 @@ export default function Blog_Page() {
                       views={post.views}
                       comments={post.comments}
                       likes={post.likes}
+                      slug={post.slug}
                     />
                   ))}
 
