@@ -25,13 +25,26 @@ interface DevProviderProps {
 }
 
 export const DevProvider = ({ children }: DevProviderProps) => {
-  const isDevMode = typeof window !== "undefined" && process.env.NEXT_PUBLIC_BYPASS_AUTH === "true";
+  const env = process.env.NEXT_PUBLIC_ENV;
+  const bypassAuth = process.env.NEXT_PUBLIC_BYPASS_AUTH;
+  const nodeEnv = process.env.NODE_ENV;
   
-  const mockUser = isDevMode ? {
-    username: "Example User",
-    email: "example@oxygen.com",
-    isFirstLogin: false,
-  } : null;
+  const isProduction = nodeEnv === "production" || env === "production";
+  
+  let isDevMode = false;
+  let mockUser = null;
+  
+  if (typeof window !== "undefined") {
+    isDevMode = !isProduction 
+      && env === "development" 
+      && bypassAuth === "true";
+    
+    mockUser = isDevMode ? {
+      username: "Example User",
+      email: "example@oxygen.com",
+      isFirstLogin: false,
+    } : null;
+  }
 
   const value = {
     isDevMode,

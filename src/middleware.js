@@ -10,7 +10,14 @@ export default async function middleware(request) {
   const pathname = request.nextUrl.pathname;
   
   if (pathname.includes("/dashboard")) {
-    const isDevMode = process.env.NEXT_PUBLIC_BYPASS_AUTH === "true";
+    const env = process.env.NEXT_PUBLIC_ENV;
+    const bypassAuth = process.env.NEXT_PUBLIC_BYPASS_AUTH;
+    const nodeEnv = process.env.NODE_ENV;
+    
+    const isProduction = nodeEnv === "production" || env === "production";
+    const isDevMode = !isProduction 
+      && env === "development" 
+      && bypassAuth === "true";
     
     if (!isDevMode) {
       const cookies = request.headers.get("cookie") || "";
