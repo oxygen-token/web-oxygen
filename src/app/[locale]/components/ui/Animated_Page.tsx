@@ -18,7 +18,7 @@ const Animated_Page = memo(({ children, className = "" }: Animated_Page_Props) =
   }, []);
 
   return (
-    <div className={`transition-all duration-700 ease-out ${
+    <div className={`transition-all duration-700 ease-out h-full ${
       isVisible 
         ? "opacity-100 transform translate-y-0 scale-100" 
         : "opacity-0 transform translate-y-8 scale-95"

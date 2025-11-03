@@ -9,6 +9,7 @@ export interface Blog_Post_Data {
   views: number;
   comments: number;
   likes: number;
+  slug: string;
 }
 
 export const blog_Posts: Blog_Post_Data[] = [
@@ -23,6 +24,7 @@ export const blog_Posts: Blog_Post_Data[] = [
     views: 0,
     comments: 0,
     likes: 1,
+    slug: "lorem-ipsum-dolor-sit-amet",
   },
   {
     id: "2",
@@ -35,6 +37,7 @@ export const blog_Posts: Blog_Post_Data[] = [
     views: 0,
     comments: 0,
     likes: 0,
+    slug: "consectetur-adipiscing-elit",
   },
   {
     id: "3",
@@ -47,6 +50,7 @@ export const blog_Posts: Blog_Post_Data[] = [
     views: 1250,
     comments: 8,
     likes: 45,
+    slug: "sed-do-eiusmod-tempor-incididunt",
   },
   {
     id: "4",
@@ -59,5 +63,6 @@ export const blog_Posts: Blog_Post_Data[] = [
     views: 2100,
     comments: 12,
     likes: 67,
+    slug: "ut-enim-ad-minim-veniam",
   },
 ];

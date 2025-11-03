@@ -15,19 +15,15 @@ const Projects_Row = memo(({ projects, footprint }: Projects_RowProps) => {
   
   return (
     <div className="projects-section mb-8 sm:mb-8 lg:mb-20 xl:mb-24">
-      <h2 className="text-base sm:text-lg font-bold text-white mb-0 sm:mb-6 lg:mb-8 xl:mb-10">
+      <h2 className="text-base sm:text-lg font-bold text-white">
         {t("sections.currentProjects")}
       </h2>
       
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-10 xl:gap-16 min-h-[250px]">
-        <div className="relative">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 lg:gap-10 xl:gap-16 min-h-[250px]">
+        <div className="relative max-w-md mx-auto w-full flex items-center justify-center">
           <Project_Card data={projects[0]} />
-          <div className="absolute right-0 top-1/2 transform -translate-y-1/2 w-px h-4/5 bg-gray-400/30"></div>
         </div>
-        <div className="relative">
-          {/* Empty space - project removed */}
-        </div>
-        <div className="h-full">
+        <div className="h-full max-w-md mx-auto w-full flex items-center justify-center">
           <Carbon_Footprint_Card data={footprint} />
         </div>
       </div>

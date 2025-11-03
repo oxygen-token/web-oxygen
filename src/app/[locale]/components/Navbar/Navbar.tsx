@@ -15,7 +15,7 @@ const links = [
   { nameKey: "home", href: "/" },
   { nameKey: "us", href: "/nosotros" },
   { nameKey: "project", href: "/proyectos" },
-  { nameKey: "community", href: "/blog" },
+  { nameKey: "community", href: "/seobot-blog" },
   { nameKey: "calculator", href: "/calculadora" },
   { nameKey: "whitepaper", href: "/whitepaper" },
 ];
@@ -25,7 +25,7 @@ function Navbar() {
   const { user, logout } = useAuth();
   const pathname = usePathname();
   const locale = pathname.split("/")[1];
-  const isBlogPage = pathname.includes("/blog");
+  const isBlogPage = pathname.includes("/seobot-blog");
   const isDashboardPage = pathname.includes("/dashboard");
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
@@ -70,15 +70,15 @@ function Navbar() {
     { nameKey: "home", href: "/", icon: PiHouse, disabled: false },
     { nameKey: "us", href: "/nosotros", icon: PiUser, disabled: false },
     { nameKey: "project", href: "/proyectos", icon: PiTree, disabled: false },
-    { nameKey: "community", href: "/blog", icon: PiUsers, disabled: false },
+    { nameKey: "community", href: "/seobot-blog", icon: PiUsers, disabled: false },
     { nameKey: "calculator", href: "/calculadora", icon: PiCalculator, disabled: false },
     { nameKey: "whitepaper", href: "/whitepaper", icon: PiFileText, disabled: false },
   ];
 
   return (
     <>
-      <nav key={`desktop-${locale}`} className={`hidden lg:flex fixed top-0 left-0 h-16 lg:h-[100px] lg:items-center lg w-full px-5 lg:px-20 flex-row items-center text-white backdrop-blur z-50 transition-colors duration-200 ${
-        isBlogPage ? 'navbar-transparent' : 
+      <nav key={`desktop-${locale}`} className={`hidden lg:flex fixed top-0 left-0 h-16 lg:h-[70px] lg:items-center lg w-full px-5 lg:px-8 flex-row items-center text-white backdrop-blur-md z-50 transition-colors duration-200 ${
+        isBlogPage ? 'bg-black/30' : 
         mobileNavOpen ? 'bg-teal-dark/95' : 'bg-teal-dark/20'
       }`}>
         <Link href="/" className="flex items-center">

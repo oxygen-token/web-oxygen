@@ -25,9 +25,13 @@ interface DevProviderProps {
 }
 
 export const DevProvider = ({ children }: DevProviderProps) => {
-  const isDevMode = false; // Volver a false ahora que el backend funciona
+  const isDevMode = typeof window !== "undefined" && process.env.NEXT_PUBLIC_BYPASS_AUTH === "true";
   
-  const mockUser = null; // No usar mockUser
+  const mockUser = isDevMode ? {
+    username: "Example User",
+    email: "example@oxygen.com",
+    isFirstLogin: false,
+  } : null;
 
   const value = {
     isDevMode,

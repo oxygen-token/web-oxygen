@@ -2,6 +2,7 @@
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 interface Blog_Post_Props {
   id: string;
@@ -14,6 +15,7 @@ interface Blog_Post_Props {
   views: number;
   comments: number;
   likes: number;
+  slug: string;
 }
 
 export default function Blog_Post({
@@ -27,6 +29,7 @@ export default function Blog_Post({
   views,
   comments,
   likes: initialLikes,
+  slug,
 }: Blog_Post_Props) {
   const t = useTranslations("Blog");
   const [likes, setLikes] = useState(initialLikes);
@@ -34,6 +37,7 @@ export default function Blog_Post({
   const [isAnimating, setIsAnimating] = useState(false);
 
   return (
+    <Link href={`/seobot-blog/${slug}`} className="block">
     <article className="group flex flex-col lg:flex-row gap-6 p-6 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20 hover:bg-white/15 transition-all duration-500 ease-out cursor-pointer lg:hover:scale-[1.02] lg:hover:-translate-y-1 lg:hover:shadow-2xl lg:hover:shadow-black/20 lg:hover:border-white/30">
       <div className="lg:w-1/3">
         <div className="relative h-48 lg:h-64 w-full rounded-lg overflow-hidden lg:transition-transform lg:duration-500 lg:ease-out lg:group-hover:scale-105">
@@ -68,7 +72,9 @@ export default function Blog_Post({
           <span>{comments} {t("comments")}</span>
           <div 
             className="flex items-center gap-1 cursor-pointer hover:scale-105 transition-transform duration-200"
-            onClick={() => {
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
               if (!isAnimating) {
                 setIsAnimating(true);
                 if (isLiked) {
@@ -94,5 +100,6 @@ export default function Blog_Post({
         </div>
       </div>
     </article>
+    </Link>
   );
 }

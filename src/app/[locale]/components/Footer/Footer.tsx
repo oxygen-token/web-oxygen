@@ -36,35 +36,36 @@ const socials = [
 ] as const;
 
 const links = [
-  {
-    key: "us-link",
-    href: "/nosotros",
-  },
-  {
-    key: "projects-link",
-    href: "/proyectos",
-  },
-  {
-    key: "contact-link",
-    href: "/contacto",
-  },
-  {
-    key: "joinus-link",
-    href: "/joinus",
-  },
+  { key: "us-link", href: "/nosotros" },
+  { key: "projects-link", href: "/proyectos" },
+  { key: "contact-link", href: "/contacto" },
+  { key: "joinus-link", href: "/joinus" },
+] as const;
+
+const resources = [
+  { label: "Community", href: "/seobot-blog" },
+  { label: "Calculator", href: "/calculadora" },
+  { label: "Whitepaper", href: "/whitepaper" },
+] as const;
+
+const legal = [
+  { label: "Privacy", href: "/privacy" },
+  { label: "Terms", href: "/terms" },
 ] as const;
 
 function Footer() {
   const t = useTranslations("Footer");
 
   return (
-    <section className="flex flex-col lg:flex-row py-12 px-10 lg:px-20 lg:pb-24 gap-12 lg:justify-between items-start bg-white">
-      <div className="flex flex-col">
-        <Image src={logo} className="w-[250px]" alt="logo Oxygen Footer" />
-        <div className="flex flex-row gap-4 justify-between">
+    <section className="bg-black text-white">
+      <div className="max-w-7xl mx-auto py-14 px-6 lg:px-12">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
+          <div className="flex flex-col gap-6">
+            <Image src={logo} className="w-[200px]" alt="logo Oxygen Footer" />
+            <div className="flex flex-row gap-3">
           {socials.map((social) => (
             <a
-              className="rounded-full h-10 w-10 shadow-md bg-white text-teal-medium grid place-items-center text-2xl/none hover:shadow-lg transition-shadow duration-200"
+                  className="rounded-full h-10 w-10 bg-white/10 text-white grid place-items-center text-2xl/none hover:bg-white/20 transition-colors"
               key={social.name}
               href={social.href}
               target="_blank"
@@ -77,13 +78,11 @@ function Footer() {
       </div>
 
       <div>
-        <h3 className="text-2xl font-bold tracking-tight mb-2">
-          {t("company")}
-        </h3>
-        <ul>
+            <h3 className="text-lg font-semibold tracking-tight mb-3">{t("company")}</h3>
+            <ul className="space-y-2 text-white/80">
           {links.map((link) => (
-            <li key={link.key} className="text-base/8">
-              <a className="hover:underline" href={link.href}>
+                <li key={link.key}>
+                  <a className="hover:text-white" href={link.href}>
                 {t(link.key)}
               </a>
             </li>
@@ -91,31 +90,46 @@ function Footer() {
         </ul>
       </div>
 
-      <div className="flex flex-col gap-4 self-stretch">
-        <h3 className="text-2xl font-bold tracking-tight">{t("news")}</h3>
-        <form className="flex flex-row items-start gap-2 mb-4">
+          <div>
+            <h3 className="text-lg font-semibold tracking-tight mb-3">Resources</h3>
+            <ul className="space-y-2 text-white/80">
+              {resources.map((r) => (
+                <li key={r.label}>
+                  <a className="hover:text-white" href={r.href}>{r.label}</a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="flex flex-col gap-4">
+            <h3 className="text-lg font-semibold tracking-tight">{t("news")}</h3>
+            <form className="flex items-center gap-3">
           <InputWithLabel
             variant="large"
             rounded="full"
             className="grow"
+                inputClassName="bg-white/10 backdrop-blur-md border-white/15 hover:bg-white/15 focus:bg-white/15 shadow-inner"
             label=""
             id="newsletterMail"
             placeholder="Mail"
           />
-          <Button variant="large" rounded="full" className="mt-2" type="submit">
+              <Button variant="large" rounded="full" type="submit">
             {t("news-button")}
           </Button>
         </form>
-
-        <div className="mt-auto self-end">
-          <LinkButton
-            variant="large"
-            rounded="full"
-            className="!px-1 w-8 flex flex-row justify-center"
-            href="#home"
-          >
-            <PiArrowUpBold />
-          </LinkButton>
+            <div>
+              <h4 className="text-lg font-semibold tracking-tight mb-3">Legal</h4>
+              <ul className="flex gap-6 text-white/80">
+                {legal.map((l) => (
+                  <li key={l.label}><a className="hover:text-white" href={l.href}>{l.label}</a></li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div className="mt-10 pt-6 border-t border-white/10 text-sm text-white/70 flex items-center justify-between">
+          <span>© {new Date().getFullYear()} Oxygen. All rights reserved.</span>
+          <span>Built for a greener future</span>
         </div>
       </div>
     </section>

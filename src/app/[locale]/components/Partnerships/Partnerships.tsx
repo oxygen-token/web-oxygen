@@ -15,9 +15,9 @@ function Partnerships() {
         {partnerships("title")}
       </h3>
       <div className="flex flex-col lg:flex-row gap-8 lg:gap-16 items-center lg:justify-center">
-        <LogoBDB height={40} className="text-[#202020]" />
-        <Image height={40} src={chronosPayLogo} alt="Chronos Pay" />
-        <Image height={40} src={finguruLogo} alt="Finguru" />
+        <LogoBDB height={40} className="text-white" />
+        <Image height={40} src={chronosPayLogo} alt="Chronos Pay" className="brightness-0 invert" />
+        <Image height={40} src={finguruLogo} alt="Finguru" className="brightness-0 invert" />
       </div>
     </section>
   );

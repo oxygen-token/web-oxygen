@@ -26,14 +26,14 @@ export const Transition_Provider = ({ children }: Transition_Provider_Props) => 
     setIsTransitioning(true);
 
     try {
-      await router.push(path, { scroll: false });
+      router.push(path, { scroll: false });
       setCurrentPath(path);
-    } catch (error) {
-      console.error('Transition error:', error);
-    } finally {
       setTimeout(() => {
         setIsTransitioning(false);
-      }, 200);
+      }, 100);
+    } catch (error) {
+      console.error('Transition error:', error);
+      setIsTransitioning(false);
     }
   }, [isTransitioning, currentPath, router]);
 

@@ -21,7 +21,11 @@
         "name": "next"
       }
     ],
-    "module": "esnext"
+    "module": "esnext",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
   "include": [
     "next-env.d.ts",
@@ -30,6 +34,7 @@
     "**/*.tsx"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "docs"
   ]
 }

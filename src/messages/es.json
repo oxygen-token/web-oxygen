@@ -246,6 +246,19 @@
     "cerrarSesion": "Cerrar Sesión",
     "comingSoon": "Pronto podrás acceder a esta opción"
   },
+  "Wallet": {
+    "connectWallet": "Conectar Billetera",
+    "connecting": "Conectando...",
+    "disconnecting": "Desconectando...",
+    "metamaskNotInstalled": "MetaMask no está instalado",
+    "installMetaMask": "Instalar MetaMask",
+    "switchToPolygon": "Cambiar a Polygon",
+    "disconnect": "Desconectar",
+    "disconnectWallet": "Desconectar Billetera",
+    "copyAddress": "Copiar Dirección",
+    "testnet": "Red de Prueba",
+    "connected": "Conectado"
+  },
   "Dashboard": {
     "metrics": {
       "carbonCredits": "bonos de carbono",
@@ -572,5 +585,22 @@
         "frequent": "Frecuente o extensos"
       }
     }
+  },
+  "Blog": {
+    "searchResults": "Resultados de búsqueda",
+    "loading": "Cargando posts...",
+    "errorLoading": "Error al cargar los posts. Inténtalo de nuevo más tarde.",
+    "noResults": "No se encontraron posts para tu búsqueda.",
+    "noPosts": "No hay posts disponibles.",
+    "searchComplete": "Búsqueda completada",
+    "postNotFound": "Post no encontrado",
+    "postNotFoundMessage": "El post que buscas no existe o ha sido eliminado.",
+    "backToBlog": "Volver al Blog",
+    "publishedOn": "Publicado el",
+    "views": "vistas",
+    "comments": "comentarios",
+    "likes": "me gusta",
+    "seobotBlogTitle": "SEObot Blog",
+    "seobotBlogSubtitle": "Descubre el último contenido generado por IA sobre conservación ambiental, sostenibilidad y nuestra misión de proteger los bosques nativos."
   }
 }
