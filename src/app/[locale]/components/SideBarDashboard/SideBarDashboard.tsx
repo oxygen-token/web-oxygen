@@ -1,18 +1,15 @@
 "use client";
-import { memo, useCallback, useState, useEffect } from "react";
+import { memo, useCallback, useState, useMemo, useEffect, useRef } from "react";
 import { useTranslations } from "next-intl";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 import { 
   PiHouse, 
-  PiGlobe,
-  PiArrowsClockwise, 
-  PiFire, 
   PiCurrencyDollar, 
   PiQuestion, 
   PiGear, 
   PiSignOut 
 } from "react-icons/pi";
-import { useSidebarSync } from "../../hooks/useSidebarSync";
 import { useTransition } from "../../context/Transition_Context";
 import { useAuth } from "../../context/Auth_Context";
 
@@ -20,24 +17,49 @@ interface MenuItem {
   nameKey: string;
   href: string | null;
   icon: any;
+  iconType?: 'react-icon' | 'svg';
   disabled: boolean;
   isAction: boolean;
 }
 
 const menuItems: MenuItem[] = [
-  { nameKey: "inicio", href: "/en/dashboard", icon: PiHouse, disabled: false, isAction: false },
-  { nameKey: "mainPage", href: "/en", icon: PiGlobe, disabled: false, isAction: false },
-  { nameKey: "intercambiar", href: "/en/dashboard/intercambiar", icon: PiArrowsClockwise, disabled: true, isAction: false },
-  { nameKey: "quemarToken", href: "/en/dashboard/quemar-token", icon: PiFire, disabled: true, isAction: false },
-  { nameKey: "compensar", href: "/en/dashboard/compensar", icon: PiCurrencyDollar, disabled: true, isAction: false },
-  { nameKey: "ayuda", href: "/en/dashboard/ayuda", icon: PiQuestion, disabled: true, isAction: false },
-  { nameKey: "configuracion", href: "/en/dashboard/configuracion", icon: PiGear, disabled: true, isAction: false },
-  { nameKey: "cerrarSesion", href: null, icon: PiSignOut, disabled: false, isAction: true },
+  { nameKey: "inicio", href: "/en/dashboard", icon: PiHouse, iconType: 'react-icon', disabled: false, isAction: false },
+  { nameKey: "intercambiar", href: "/en/dashboard/exchange", icon: "/assets/images/icons/Change_icon.svg", iconType: 'svg', disabled: false, isAction: false },
+  { nameKey: "quemarToken", href: "/en/dashboard/quemar-token", icon: "/assets/images/icons/Burn_icon.svg", iconType: 'svg', disabled: false, isAction: false },
+  { nameKey: "compensar", href: "/en/dashboard/compensar", icon: "/assets/images/icons/Compensate_icon.svg", iconType: 'svg', disabled: false, isAction: false },
+  { nameKey: "ayuda", href: "/en/dashboard/ayuda", icon: PiQuestion, iconType: 'react-icon', disabled: false, isAction: false },
+  { nameKey: "configuracion", href: "/en/dashboard/configuracion", icon: PiGear, iconType: 'react-icon', disabled: false, isAction: false },
+  { nameKey: "cerrarSesion", href: null, icon: PiSignOut, iconType: 'react-icon', disabled: false, isAction: true },
 ];
 
 const SideBarDashboard = memo(() => {
   const pathname = usePathname();
-  const [activeIndex, setActiveIndex] = useState(0);
+  const locale = pathname.split("/")[1];
+  
+  const dashboardPath = `/${locale}/dashboard`;
+  
+  const getInitialActiveIndex = () => {
+    for (let i = 0; i < menuItems.length; i++) {
+      const item = menuItems[i];
+      if (!item.href) continue;
+      
+      const itemHref = item.href.replace("/en/", `/${locale}/`);
+      
+      if (itemHref === dashboardPath) {
+        if (pathname === dashboardPath || pathname === `${dashboardPath}/`) {
+          return i;
+        }
+        continue;
+      }
+      
+      if (pathname === itemHref || pathname.startsWith(itemHref + "/")) {
+        return i;
+      }
+    }
+    return 0;
+  };
+  
+  const [activeIndex, setActiveIndex] = useState(() => getInitialActiveIndex());
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [clickedIndex, setClickedIndex] = useState<number | null>(null);
   const [showTooltip, setShowTooltip] = useState<number | null>(null);
@@ -46,72 +68,89 @@ const SideBarDashboard = memo(() => {
   const { isTransitioning, startTransition } = useTransition();
   const auth = useAuth();
   const { forceLogout } = auth;
-  
-  console.log("🔍 Auth context disponible:", auth);
-  console.log("🔍 forceLogout disponible:", typeof forceLogout);
 
+  const dynamicMenuItems = useMemo(() => menuItems.map(item => ({
+    ...item,
+    href: item.href ? item.href.replace("/en/", `/${locale}/`) : null
+  })), [locale]);
+  
   useEffect(() => {
-    const currentIndex = menuItems.findIndex(item => {
-      if (item.href === "/en/dashboard" && pathname === "/en/dashboard") {
-        return true;
+    if (isTransitioning) {
+      return;
+    }
+    
+    const dashboardPath = `/${locale}/dashboard`;
+    let exactMatchIndex = -1;
+    let childRouteIndex = -1;
+    let longestChildMatch = 0;
+    
+    for (let i = 0; i < dynamicMenuItems.length; i++) {
+      const item = dynamicMenuItems[i];
+      if (!item.href) continue;
+      
+      if (item.href === dashboardPath) {
+        if (pathname === dashboardPath || pathname === `${dashboardPath}/`) {
+          exactMatchIndex = i;
+          break;
+        }
+        continue;
       }
-      if (item.href === "/en" && (pathname === "/en" || pathname === "/en/")) {
-        return true;
+      
+      if (pathname === item.href) {
+        exactMatchIndex = i;
+        break;
       }
-      return pathname === item.href;
-    });
+    }
+    
+    if (exactMatchIndex === -1) {
+      for (let i = 0; i < dynamicMenuItems.length; i++) {
+        const item = dynamicMenuItems[i];
+        if (!item.href || item.href === dashboardPath) continue;
+        
+        if (pathname.startsWith(item.href + "/")) {
+          if (item.href.length > longestChildMatch) {
+            childRouteIndex = i;
+            longestChildMatch = item.href.length;
+          }
+        }
+      }
+    }
+    
+    const currentIndex = exactMatchIndex !== -1 ? exactMatchIndex : childRouteIndex;
     
     if (currentIndex !== -1 && currentIndex !== activeIndex) {
       setActiveIndex(currentIndex);
     }
-  }, [pathname, activeIndex]);
+  }, [pathname, locale, dynamicMenuItems, isTransitioning]);
+  
 
   const handleItemClick = useCallback(async (index: number, href: string | null, disabled: boolean, isAction: boolean) => {
     if (disabled) return;
     
-    console.log("Click - index:", index, "current:", activeIndex, "isAction:", isAction);
-    
-    // Si es una acción (como logout), no cambiar el activeIndex
     if (isAction) {
-      if (index === 7) { // índice del logout
-        console.log("🔄 Ejecutando forceLogout desde sidebar...");
-        console.log("📍 Ubicación actual:", window.location.pathname);
-        
+      if (index === 7) {
         try {
-          console.log("🚀 Llamando a forceLogout()...");
           forceLogout();
-          console.log("✅ forceLogout() ejecutado exitosamente");
-          
-          // Esperar un poco para que se procese la limpieza
           await new Promise(resolve => setTimeout(resolve, 100));
-          
-          // Redirigir inmediatamente como hace el navbar
-          console.log("🔄 Redirigiendo a página principal...");
           const locale = window.location.pathname.split("/")[1];
-          console.log("🌍 Locale detectado:", locale);
-          console.log("🎯 Redirigiendo a:", `/${locale}`);
           window.location.replace(`/${locale}`);
         } catch (error) {
-          console.error("❌ Error en forceLogout del sidebar:", error);
-          // Forzar redirección aunque falle
           const locale = window.location.pathname.split("/")[1];
-          console.log("🌍 Locale detectado (fallback):", locale);
-          console.log("🎯 Redirigiendo a (fallback):", `/${locale}`);
           window.location.replace(`/${locale}`);
         }
       }
       return;
     }
     
-    if (index === activeIndex || isTransitioning) return;
+    if (index === activeIndex || isTransitioning) {
+      return;
+    }
     
-    console.log("Setting activeIndex to:", index);
     setClickedIndex(index);
     
     try {
       if (href) {
         await startTransition(href);
-        setActiveIndex(index);
       }
     } catch (error) {
       console.error("Navigation error:", error);
@@ -123,10 +162,10 @@ const SideBarDashboard = memo(() => {
   }, [activeIndex, isTransitioning, startTransition, forceLogout]);
 
   const handleMouseEnter = useCallback((index: number) => {
-    if (!isTransitioning) {
+    if (!isTransitioning && index !== activeIndex) {
       setHoveredIndex(index);
     }
-  }, [isTransitioning]);
+  }, [isTransitioning, activeIndex]);
 
   const handleMouseLeave = useCallback(() => {
     setHoveredIndex(null);
@@ -134,19 +173,20 @@ const SideBarDashboard = memo(() => {
   }, []);
 
   return (
-    <div className="sidebar-navigation bg-gradient-to-b from-teal-dark via-teal-medium to-teal text-white h-full relative overflow-hidden z-20">
+    <div className="sidebar-navigation bg-gradient-to-b from-teal-dark via-teal-medium to-teal text-white h-full relative overflow-y-auto z-20">
       <div className="relative h-full py-6">
         <nav className="relative px-4">
           <ul className="space-y-1 relative">
-            {menuItems.map((item, index) => {
-              const Icon = item.icon;
+            {dynamicMenuItems.map((item, index) => {
+              const Icon = item.iconType === 'react-icon' ? item.icon : null;
+              const iconSrc = item.iconType === 'svg' ? item.icon : null;
               const isActive = index === activeIndex;
               const isHovered = index === hoveredIndex;
               const isClicked = index === clickedIndex;
               const isDisabled = item.disabled || isTransitioning;
               
               const handleMouseEnter = () => {
-                if (!isTransitioning) {
+                if (!isTransitioning && !isActive) {
                   setHoveredIndex(index);
                   if (item.disabled) {
                     setTimeout(() => setShowTooltip(index), 500);
@@ -154,43 +194,78 @@ const SideBarDashboard = memo(() => {
                 }
               };
               
-              return (
-                <li key={item.nameKey} className="relative z-10">
-                  <button
-                    onClick={() => handleItemClick(index, item.href, item.disabled, item.isAction)}
-                    onMouseEnter={handleMouseEnter}
-                    onMouseLeave={handleMouseLeave}
-                    className={`flex items-center gap-4 px-6 py-4 rounded-xl transition-all duration-300 ease-out relative w-full text-left h-14 group
-                      ${isActive
-                        ? "bg-white/20 backdrop-blur-sm font-semibold shadow-lg transform translate-x-2 border border-white/30"
-                        : "bg-transparent text-white hover:bg-white/10 hover:transform hover:translate-x-1"
-                      }
-                      ${isClicked ? "scale-95" : ""}
-                      ${isDisabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}
-                    `}
-                    disabled={isDisabled}
-                  >
-                    <div className="relative">
-                      <Icon
-                        className={`text-xl transition-all duration-300 flex-shrink-0 ${
-                          isActive
-                            ? "text-white"
-                            : isHovered
-                              ? "text-white scale-110"
-                              : item.disabled
-                                ? "text-gray-400"
-                                : "text-white"
-                        }`}
-                      />
+                 return (
+                   <li 
+                     key={item.nameKey} 
+                     className="relative z-10"
+                   >
+                     <button
+                       onClick={() => handleItemClick(index, item.href, item.disabled, item.isAction)}
+                       onMouseEnter={handleMouseEnter}
+                       onMouseLeave={handleMouseLeave}
+                       className={`flex items-center gap-4 px-6 py-4 rounded-xl transition-all duration-200 ease-out relative w-full text-left h-14 group z-10
+                         ${item.nameKey === "cerrarSesion"
+                           ? isHovered
+                             ? "bg-red-500/30 backdrop-blur-sm transform translate-x-1 border border-red-400/50 shadow-lg shadow-red-500/20"
+                             : "border border-red-600/30"
+                           : isActive
+                             ? "bg-white/20 backdrop-blur-sm font-semibold text-white transform translate-x-2 border border-white/30 shadow-lg"
+                             : isHovered && !isActive
+                               ? "text-white transform translate-x-1"
+                               : "text-white"
+                         }
+                         ${isClicked ? "scale-95" : ""}
+                         ${isDisabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}
+                       `}
+                       disabled={isDisabled}
+                     >
+                    <div className="relative w-5 h-5 flex-shrink-0">
+                      {item.iconType === 'svg' && iconSrc ? (
+                        <Image
+                          src={iconSrc}
+                          alt={item.nameKey}
+                          width={20}
+                          height={20}
+                          className={`w-5 h-5 transition-all duration-300 brightness-0 invert ${
+                            isActive
+                              ? "opacity-100"
+                              : isHovered
+                                ? "opacity-100 scale-110"
+                                : item.disabled
+                                  ? "opacity-50 brightness-0 invert"
+                                  : "opacity-100"
+                          }`}
+                        />
+                      ) : Icon ? (
+                        <Icon
+                          className={`text-xl transition-all duration-300 ${
+                            item.nameKey === "cerrarSesion"
+                              ? isHovered
+                                ? "text-red-300 scale-110 drop-shadow-[0_0_8px_rgba(252,165,165,0.8)]"
+                                : "text-red-400 drop-shadow-[0_0_4px_rgba(248,113,113,0.6)]"
+                              : isActive
+                                ? "text-white"
+                                : isHovered
+                                  ? "text-white scale-110"
+                                  : item.disabled
+                                    ? "text-gray-400"
+                                    : "text-white"
+                          }`}
+                        />
+                      ) : null}
                     </div>
                     
                     <span
                       className={`text-sm transition-all duration-300 leading-none ${
-                        isActive
-                          ? "font-semibold text-white"
-                          : item.disabled
-                            ? "font-medium text-gray-400"
-                            : "font-medium text-white"
+                        item.nameKey === "cerrarSesion"
+                          ? isHovered
+                            ? "font-semibold text-red-300 drop-shadow-[0_0_6px_rgba(252,165,165,0.7)]"
+                            : "font-semibold text-red-400 drop-shadow-[0_0_4px_rgba(248,113,113,0.5)]"
+                          : isActive
+                            ? "font-semibold text-white"
+                            : item.disabled
+                              ? "font-medium text-gray-400"
+                              : "font-medium text-white"
                       }`}
                     >
                       {t(item.nameKey)}
@@ -200,9 +275,6 @@ const SideBarDashboard = memo(() => {
                       <div className="absolute right-4 w-2 h-2 bg-teal-500 rounded-full animate-pulse" />
                     )}
                     
-                    <div className={`absolute inset-0 rounded-xl transition-all duration-300 ${
-                      isHovered && !isActive ? "bg-white/5" : ""
-                    }`} />
                   </button>
                   
                   {showTooltip === index && item.disabled && (

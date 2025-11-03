@@ -1,0 +1,16 @@
+<svg width="6" height="6" viewBox="0 0 6 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M2.88281 1.12695V4.2448" stroke="#006A6A" stroke-width="0.241935" stroke-linecap="round"/>
+<path d="M1.00781 2.01465L1.79927 2.8061V4.05324" stroke="#006A6A" stroke-width="0.241935" stroke-linecap="round"/>
+<path d="M4.62891 2.01465L3.83745 2.8061V4.05324" stroke="#006A6A" stroke-width="0.241935" stroke-linecap="round"/>
+<path d="M4.89062 5.25227V4.50879" stroke="#67D168" stroke-width="0.241935" stroke-linecap="round"/>
+<path d="M4.05469 5.44423V4.67676" stroke="#67D168" stroke-width="0.241935" stroke-linecap="round"/>
+<path d="M3.25781 5.46853V4.74902" stroke="#67D168" stroke-width="0.241935" stroke-linecap="round"/>
+<path d="M2.40234 5.46853V4.74902" stroke="#67D168" stroke-width="0.241935" stroke-linecap="round"/>
+<path d="M1.60938 5.44423V4.67676" stroke="#67D168" stroke-width="0.241935" stroke-linecap="round"/>
+<path d="M0.8125 5.25271V4.5332" stroke="#67D168" stroke-width="0.241935" stroke-linecap="round"/>
+<circle cx="0.599585" cy="1.60642" r="0.478618" stroke="#67D168" stroke-width="0.241935"/>
+<circle cx="2.8574" cy="0.599585" r="0.478618" stroke="#67D168" stroke-width="0.241935"/>
+<circle cx="5.06052" cy="1.60642" r="0.478618" stroke="#67D168" stroke-width="0.241935"/>
+<path d="M2.88281 3.62305C3.63118 3.62306 4.30492 3.69514 4.78809 3.80957C5.03058 3.86701 5.21852 3.93335 5.34277 4.00293C5.47686 4.07802 5.49603 4.13231 5.49609 4.14941C5.49609 4.16641 5.47703 4.2207 5.34277 4.2959C5.21852 4.36547 5.03056 4.43182 4.78809 4.48926C4.30492 4.60369 3.63118 4.67576 2.88281 4.67578C2.1345 4.67578 1.46074 4.60366 0.977539 4.48926C0.735159 4.43185 0.547137 4.36543 0.422852 4.2959C0.288499 4.22067 0.269531 4.16642 0.269531 4.14941C0.269598 4.13231 0.28874 4.07803 0.422852 4.00293C0.547137 3.93341 0.735209 3.86696 0.977539 3.80957C1.46074 3.69517 2.13452 3.62305 2.88281 3.62305Z" stroke="#006A6A" stroke-width="0.241935"/>
+<path d="M0.210938 4.17285V4.91634C0.32286 5.1162 0.997593 5.51592 2.80115 5.51592C4.6047 5.51592 5.36737 5.14018 5.53525 4.94032V4.17285" stroke="#006A6A" stroke-width="0.241935" stroke-linecap="round"/>
+</svg>

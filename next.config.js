@@ -6,6 +6,22 @@ const withNextIntl = createNextIntlPlugin('./i18n/request.ts', {
 
 /** @type {import('next').NextConfig}    */
 const nextConfig = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'mars-images.imgix.net',
+        port: '',
+        pathname: '/seobot/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'assets.seobotai.com',
+        port: '',
+        pathname: '/**',
+      },
+    ],
+  },
   webpack: (config) => {
     config.module.rules.push({
       test: /\.(mov|mp4|webm)$/,
@@ -19,6 +35,9 @@ const nextConfig = {
     });
 
     return config;
+  },
+  experimental: {
+    appDir: true,
   },
 };
 

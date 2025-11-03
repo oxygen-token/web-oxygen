@@ -351,13 +351,27 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       isDevMode
     });
     
+    if (isDevMode && mockUser) {
+      console.log("🎭 Modo dev activo, usando mockUser:", mockUser);
+      setUser({
+        username: mockUser.username,
+        email: mockUser.email,
+        isFirstLogin: mockUser.isFirstLogin,
+        welcomeModalShown: true,
+        onboardingStep: "completed",
+        affiliateCodeUsedAt: null,
+      });
+      setLoading(false);
+      return;
+    }
+    
     if (!isLoggingOut && !hasLoggedOut) {
       console.log("✅ Ejecutando checkAuth...");
       checkAuth();
     } else {
       console.log("⏸️ Saltando checkAuth:", { isLoggingOut, hasLoggedOut });
     }
-  }, [isLoggingOut, hasLoggedOut]);
+  }, [isLoggingOut, hasLoggedOut, isDevMode, mockUser]);
 
   // Efecto adicional para limpiar el estado cuando se hace logout
   useEffect(() => {

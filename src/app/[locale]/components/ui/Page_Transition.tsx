@@ -14,7 +14,7 @@ const Page_Transition = memo(({
 }: Page_Transition_Props) => {
   return (
     <div className={`relative ${className}`}>
-      <div className={`transition-all duration-300 ease-out ${
+      <div className={`transition-all duration-300 ease-out h-full ${
         isTransitioning 
           ? "opacity-50 transform translate-x-2" 
           : "opacity-100 transform translate-x-0"

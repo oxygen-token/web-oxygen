@@ -4,7 +4,6 @@ import { useTransition } from "../../context/Transition_Context";
 
 import NavBarDashboard from "../NavBarDashboard/NavBarDashboard";
 import SideBarDashboard from "../SideBarDashboard/SideBarDashboard";
-import Footer from "../Footer/Footer";
 import Page_Transition from "../ui/Page_Transition";
 
 interface DashboardLayoutProps {
@@ -15,25 +14,26 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   const { isTransitioning } = useTransition();
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col h-screen overflow-hidden">
       <div className="fixed inset-0 bg-gradient-to-br from-teal-dark via-teal-medium to-teal -z-10"></div>
-      <NavBarDashboard />
-      <div className="flex flex-1 pt-16">
-        <div className="hidden lg:block w-64 flex-shrink-0 relative z-20">
-          <SideBarDashboard />
-        </div>
-        <main className="flex-1 min-h-screen relative overflow-hidden z-10">
-          <div className="h-full p-0 lg:p-8 xl:p-12 relative z-10">
-            <Page_Transition 
-              isTransitioning={isTransitioning}
-              className="w-full mx-auto h-full"
-            >
-              {children}
-            </Page_Transition>
+      <div className="flex flex-col h-full flex-1 min-h-0">
+        <NavBarDashboard />
+        <div className="flex flex-1 min-h-0 overflow-hidden">
+          <div className="hidden lg:block w-64 flex-shrink-0 relative z-20">
+            <SideBarDashboard />
           </div>
-        </main>
+          <main className="flex-1 relative overflow-y-auto z-10 min-h-0">
+            <div className="h-full p-4 relative z-10">
+              <Page_Transition 
+                isTransitioning={isTransitioning}
+                className="w-full mx-auto h-full"
+              >
+                {children}
+              </Page_Transition>
+            </div>
+          </main>
+        </div>
       </div>
-      <Footer />
       
       <style jsx global>{`
         @keyframes fadeIn {

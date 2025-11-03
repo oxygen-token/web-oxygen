@@ -4,7 +4,10 @@ import RootLayout from "./layout-ga";
 import { Transition_Provider } from "./context/Transition_Context";
 import { AuthProvider } from "./context/Auth_Context";
 import { DevProvider } from "./context/Dev_Context";
+import { WalletProvider } from "./context/Wallet_Context";
 import Navbar from "./components/Navbar/Navbar";
+import dynamic from "next/dynamic";
+const Back_To_Top = dynamic(() => import("./components/Back_To_Top"), { ssr: false });
 import Vercel_Analytics from "./components/Vercel_Analytics/Vercel_Analytics";
 
 const { NextIntlClientProvider } = require("next-intl");
@@ -35,10 +38,13 @@ async function LocaleLayout({ children, params: { locale } }) {
         <NextIntlClientProvider locale={locale} messages={messages}>
           <DevProvider>
             <AuthProvider>
-              <Transition_Provider>
-                <Navbar />
-                {children}
-              </Transition_Provider>
+              <WalletProvider>
+                <Transition_Provider>
+                  <Navbar />
+                  {children}
+                  <Back_To_Top />
+                </Transition_Provider>
+              </WalletProvider>
             </AuthProvider>
           </DevProvider>
         </NextIntlClientProvider>

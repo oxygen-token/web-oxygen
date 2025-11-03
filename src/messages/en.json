@@ -240,11 +240,24 @@
     "mainPage": "Main Page",
     "intercambiar": "Exchange",
     "quemarToken": "Burn Token",
-    "compensar": "Offset",
+    "compensar": "Compensa",
     "ayuda": "Help",
     "configuracion": "Settings",
     "cerrarSesion": "Log Out",
     "comingSoon": "Coming soon"
+  },
+  "Wallet": {
+    "connectWallet": "Connect Wallet",
+    "connecting": "Connecting...",
+    "disconnecting": "Disconnecting...",
+    "metamaskNotInstalled": "MetaMask is not installed",
+    "installMetaMask": "Install MetaMask",
+    "switchToPolygon": "Switch to Polygon",
+    "disconnect": "Disconnect",
+    "disconnectWallet": "Disconnect Wallet",
+    "copyAddress": "Copy Address",
+    "testnet": "Testnet",
+    "connected": "Connected"
   },
   "Dashboard": {
     "metrics": {
@@ -572,5 +585,23 @@
         "frequent": "Frequent or extensive"
       }
     }
+  },
+  "Blog": {
+    "allPosts": "All Posts",
+    "searchResults": "Search Results",
+    "loading": "Loading posts...",
+    "errorLoading": "Error loading posts. Please try again later.",
+    "noResults": "No posts found for your search.",
+    "noPosts": "No posts available.",
+    "searchComplete": "Search complete",
+    "postNotFound": "Post not found",
+    "postNotFoundMessage": "The post you're looking for doesn't exist or has been removed.",
+    "backToBlog": "Back to Blog",
+    "publishedOn": "Published on",
+    "views": "views",
+    "comments": "comments",
+    "likes": "likes",
+    "seobotBlogTitle": "SEObot Blog",
+    "seobotBlogSubtitle": "Discover the latest AI-generated content about environmental conservation, sustainability, and our mission to protect native forests."
   }
 }
