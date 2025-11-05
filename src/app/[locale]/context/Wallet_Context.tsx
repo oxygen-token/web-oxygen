@@ -1,5 +1,5 @@
 "use client";
-import { createContext, useContext, useState, useEffect, ReactNode, useCallback } from "react";
+import { createContext, useContext, useState, useEffect, useRef, ReactNode, useCallback } from "react";
 import type { WalletProvider as WalletProviderType } from "../types/wallet";
 import { WalletState, WalletAccount, ChainId } from "../types/wallet";
 import {
@@ -47,6 +47,9 @@ export const WalletProvider = ({ children }: WalletProviderProps) => {
     isDisconnecting: false,
   });
 
+  const handleAccountsChangedRef = useRef<(accounts: string[]) => Promise<void>>();
+  const handleChainChangedRef = useRef<() => Promise<void>>();
+
   const updateAccount = useCallback(async (address: string): Promise<WalletAccount> => {
     try {
       const [balance, chainId] = await Promise.all([
@@ -79,11 +82,16 @@ export const WalletProvider = ({ children }: WalletProviderProps) => {
     } else {
       try {
         const account = await updateAccount(accounts[0]);
-        setWallet((prev) => ({
-          ...prev,
-          account,
-          error: null,
-        }));
+        setWallet((prev) => {
+          if (prev.account?.address === account.address) {
+            return prev;
+          }
+          return {
+            ...prev,
+            account,
+            error: null,
+          };
+        });
       } catch (error) {
         setWallet((prev) => ({
           ...prev,
@@ -93,23 +101,36 @@ export const WalletProvider = ({ children }: WalletProviderProps) => {
     }
   }, [updateAccount]);
 
+  handleAccountsChangedRef.current = handleAccountsChanged;
+
   const handleChainChanged = useCallback(async () => {
-    if (wallet.account) {
-      try {
-        const updatedAccount = await updateAccount(wallet.account.address);
-        setWallet((prev) => ({
-          ...prev,
-          account: updatedAccount,
-          error: null,
-        }));
-      } catch (error) {
-        setWallet((prev) => ({
-          ...prev,
+    setWallet((prev) => {
+      if (!prev.account) return prev;
+      
+      const currentAddress = prev.account.address;
+      updateAccount(currentAddress).then((updatedAccount) => {
+        setWallet((current) => {
+          if (current.account?.address === currentAddress) {
+            return {
+              ...current,
+              account: updatedAccount,
+              error: null,
+            };
+          }
+          return current;
+        });
+      }).catch((error) => {
+        setWallet((current) => ({
+          ...current,
           error: (error as Error).message,
         }));
-      }
-    }
-  }, [wallet.account, updateAccount]);
+      });
+      
+      return prev;
+    });
+  }, [updateAccount]);
+
+  handleChainChangedRef.current = handleChainChanged;
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -117,20 +138,29 @@ export const WalletProvider = ({ children }: WalletProviderProps) => {
     const provider = (window as EthereumProvider).ethereum;
     if (!provider) return;
 
+    let mounted = true;
+
     const checkConnection = async () => {
       try {
         const accounts = await getAccounts();
-        if (accounts.length > 0) {
+        if (accounts.length > 0 && mounted) {
           const account = await updateAccount(accounts[0]);
           const chainId = await getChainId();
           
-          setWallet((prev) => ({
-            ...prev,
-            isConnected: true,
-            account,
-            provider: 'metamask',
-            chainId,
-          }));
+          if (mounted) {
+            setWallet((prev) => {
+              if (prev.isConnected && prev.account?.address === account.address) {
+                return prev;
+              }
+              return {
+                ...prev,
+                isConnected: true,
+                account,
+                provider: 'metamask',
+                chainId,
+              };
+            });
+          }
         }
       } catch (error) {
         console.error('Error checking wallet connection:', error);
@@ -141,21 +171,26 @@ export const WalletProvider = ({ children }: WalletProviderProps) => {
 
     const accountsChangedWrapper = (...args: unknown[]) => {
       const accounts = args[0] as string[];
-      handleAccountsChanged(accounts).catch(console.error);
+      if (mounted && handleAccountsChangedRef.current) {
+        handleAccountsChangedRef.current(accounts).catch(console.error);
+      }
     };
 
     const chainChangedWrapper = () => {
-      handleChainChanged().catch(console.error);
+      if (mounted && handleChainChangedRef.current) {
+        handleChainChangedRef.current().catch(console.error);
+      }
     };
 
     provider.on('accountsChanged', accountsChangedWrapper);
     provider.on('chainChanged', chainChangedWrapper);
 
     return () => {
+      mounted = false;
       provider.removeListener('accountsChanged', accountsChangedWrapper);
       provider.removeListener('chainChanged', chainChangedWrapper);
     };
-  }, [handleAccountsChanged, handleChainChanged, updateAccount]);
+  }, []);
 
   const connect = useCallback(async (provider: WalletProviderType = 'metamask') => {
     if (provider !== 'metamask') {

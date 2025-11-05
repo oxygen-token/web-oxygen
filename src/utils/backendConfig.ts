@@ -15,16 +15,6 @@ const getBaseBackendUrl = () => {
 
 const BACKEND_URL = getBaseBackendUrl();
 
-if (typeof window !== 'undefined') {
-  console.log('🔧 Backend Config URL:', {
-    envVar: process.env.NEXT_PUBLIC_BACKEND_URL || 'NOT SET',
-    resolvedUrl: BACKEND_URL,
-    nodeEnv: process.env.NODE_ENV,
-    isDev: IS_DEV,
-    warning: !process.env.NEXT_PUBLIC_BACKEND_URL ? '⚠️ Using fallback URL - Check Vercel environment variables!' : '✅ Using env var'
-  });
-}
-
 export const BACKEND_CONFIG = {
   BASE_URL: BACKEND_URL,
   ENDPOINTS: {

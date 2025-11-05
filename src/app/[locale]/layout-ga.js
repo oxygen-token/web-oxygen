@@ -13,7 +13,5 @@ export default function RootLayout() {
     TagManager.initialize(tagManagerArgs);
   }, []);
 
-
-  return (console.log("Running")
-  )
+  return null;
 } 

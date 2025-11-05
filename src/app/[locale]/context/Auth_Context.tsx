@@ -1,5 +1,5 @@
 "use client";
-import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { createContext, useContext, useState, useEffect, useRef, ReactNode } from "react";
 import { get, post } from "../../../utils/request";
 import { useDev } from "./Dev_Context";
 
@@ -17,7 +17,7 @@ interface AuthContextType {
   loading: boolean;
   isLoggingOut: boolean;
   hasLoggedOut: boolean;
-  login: (email: string, password: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<{ requires2FA: boolean; email: string } | { success: boolean }>;
   logout: () => Promise<void>;
   checkAuth: () => Promise<void>;
   setUser: (user: User | null) => void;
@@ -46,23 +46,20 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [hasLoggedOut, setHasLoggedOut] = useState(false);
   const { isDevMode, mockUser } = useDev();
+  const loadingRef = useRef(true);
 
   const checkAuth = async () => {
     try {
-      console.log("🔍 Verificando autenticación...");
-      console.log("🍪 Cookies disponibles:", document.cookie);
+      const timeoutPromise = new Promise((_, reject) => 
+        setTimeout(() => reject(new Error("Request timeout")), 10000)
+      );
       
-      const jwtCookie = document.cookie.split('; ').find(row => row.startsWith('jwt='));
-      if (jwtCookie) {
-        console.log("🍪 JWT cookie encontrado:", jwtCookie);
-      } else {
-        console.log("❌ No se encontró JWT cookie");
-      }
+      const res = await Promise.race([
+        get("/session"),
+        timeoutPromise
+      ]) as Response;
       
-      const res = await get("/session");
       const data = await res.json();
-      
-      console.log("📡 Respuesta del endpoint /session:", data);
       
       if (data.loggedIn) {
         const username = data.fullName || data.username;
@@ -71,15 +68,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         const welcomeModalShown = data.welcomeModalShown || false;
         const onboardingStep = data.onboardingStep || "pending";
         const affiliateCodeUsedAt = data.affiliateCodeUsedAt || null;
-        
-        console.log("✅ Usuario autenticado:", {
-          username,
-          email,
-          isFirstLogin,
-          welcomeModalShown,
-          onboardingStep,
-          affiliateCodeUsedAt
-        });
         
         setUser({ 
           username: username, 
@@ -90,7 +78,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           affiliateCodeUsedAt: affiliateCodeUsedAt
         });
       } else {
-        console.log("❌ Usuario no autenticado");
         setUser(null);
       }
     } catch (error) {
@@ -98,15 +85,13 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       setUser(null);
     } finally {
       setLoading(false);
+      loadingRef.current = false;
     }
   };
 
   const login = async (email: string, password: string) => {
     setHasLoggedOut(false);
     setIsLoggingOut(false);
-    
-    console.log("🔐 Iniciando login para:", email);
-    console.log("🍪 Cookies ANTES del login:", document.cookie);
     
     try {
       const loginData = {
@@ -117,25 +102,20 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       const response = await post("/login", loginData);
       const responseData = await response.json();
       
-      console.log("📡 Respuesta del login:", responseData);
-      console.log("🍪 Cookies DESPUÉS del login:", document.cookie);
-      
       if (responseData.success || response.status === 201) {
+        if (responseData.status === "2fa_required" || responseData.requires2FA || responseData.twoFactorRequired || responseData.message?.includes("2FA")) {
+          return {
+            requires2FA: true,
+            email: email,
+          };
+        }
+
         const username = responseData.user?.fullName || responseData.fullName || email.split('@')[0];
         const userEmail = responseData.user?.email || responseData.email || email;
         const isFirstLogin = responseData.isFirstLogin || false;
         const welcomeModalShown = responseData.user?.welcomeModalShown || false;
         const onboardingStep = responseData.user?.onboardingStep || "pending";
         const affiliateCodeUsedAt = responseData.user?.affiliateCodeUsedAt || null;
-        
-        console.log("✅ Login exitoso, estableciendo usuario:", {
-          username,
-          email: userEmail,
-          isFirstLogin,
-          welcomeModalShown,
-          onboardingStep,
-          affiliateCodeUsedAt
-        });
         
         setUser({ 
           username: username, 
@@ -146,6 +126,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           affiliateCodeUsedAt: affiliateCodeUsedAt
         });
         setLoading(false);
+        return { success: true };
       } else {
         throw new Error("Login failed");
       }
@@ -264,7 +245,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       
       // Limpiar TODAS las cookies restantes (nuclear approach)
       const allCookies = document.cookie.split(";");
-      console.log("🍪 Cookies restantes antes de limpiar:", allCookies);
       
       allCookies.forEach(cookie => {
         const eqPos = cookie.indexOf("=");
@@ -287,28 +267,22 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         }
       });
       
-      console.log("✅ Cookies limpiadas (NUCLEAR)");
-      console.log("🍪 Cookies después de limpiar:", document.cookie);
     } catch (error) {
       console.error("❌ Error limpiando cookies:", error);
     }
     
     // Limpiar storage NUCLEAR - ESPECÍFICO PARA localhost:3000
     try {
-      console.log("💾 Limpiando storage para:", window.location.origin);
-      
       // Limpiar storage específico para localhost:3000
       if (window.location.origin === 'http://localhost:3000') {
         // Limpiar localStorage
         const localStorageKeys = Object.keys(localStorage);
-        console.log("💾 LocalStorage keys antes:", localStorageKeys);
         localStorageKeys.forEach(key => {
           localStorage.removeItem(key);
         });
         
         // Limpiar sessionStorage
         const sessionStorageKeys = Object.keys(sessionStorage);
-        console.log("💾 SessionStorage keys antes:", sessionStorageKeys);
         sessionStorageKeys.forEach(key => {
           sessionStorage.removeItem(key);
         });
@@ -321,10 +295,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         localStorage.clear();
         sessionStorage.clear();
       }
-      
-      console.log("✅ Storage limpiado (NUCLEAR)");
-      console.log("💾 LocalStorage después:", Object.keys(localStorage));
-      console.log("💾 SessionStorage después:", Object.keys(sessionStorage));
     } catch (error) {
       console.error("❌ Error limpiando storage:", error);
     }
@@ -334,25 +304,16 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       setUser(null);
       setLoading(false);
       setIsLoggingOut(false);
-      console.log("✅ Estado de logout completado (NUCLEAR)");
       
       // Forzar recarga de la página si es necesario
       if (window.location.pathname.includes('/dashboard')) {
-        console.log("🔄 Forzando recarga de página...");
         window.location.href = '/';
       }
     }, 200);
   };
 
   useEffect(() => {
-    console.log("🔄 useEffect checkAuth ejecutándose:", {
-      isLoggingOut,
-      hasLoggedOut,
-      isDevMode
-    });
-    
     if (isDevMode && mockUser) {
-      console.log("🎭 Modo dev activo, usando mockUser:", mockUser);
       setUser({
         username: mockUser.username,
         email: mockUser.email,
@@ -366,8 +327,19 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
     
     if (!isLoggingOut && !hasLoggedOut) {
-      console.log("✅ Ejecutando checkAuth...");
+      loadingRef.current = true;
       checkAuth();
+      
+      const fallbackTimeout = setTimeout(() => {
+        if (loadingRef.current) {
+          setLoading(false);
+          loadingRef.current = false;
+        }
+      }, 15000);
+      
+      return () => {
+        clearTimeout(fallbackTimeout);
+      };
     } else {
       console.log("⏸️ Saltando checkAuth:", { isLoggingOut, hasLoggedOut });
     }

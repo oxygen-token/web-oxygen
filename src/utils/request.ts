@@ -15,16 +15,6 @@ const getBackendUrl = () => {
 
 const BASE_URL = getBackendUrl();
 
-if (typeof window !== 'undefined') {
-  console.log('🔧 Backend URL Configuration:', {
-    envVar: process.env.NEXT_PUBLIC_BACKEND_URL || 'NOT SET',
-    resolvedUrl: BASE_URL,
-    nodeEnv: process.env.NODE_ENV,
-    isDev: IS_DEV,
-    warning: !process.env.NEXT_PUBLIC_BACKEND_URL ? '⚠️ Using fallback URL - Check Vercel environment variables!' : '✅ Using env var'
-  });
-}
-
 const getCookieValue = (name: string) => {
   const value = `; ${document.cookie}`;
   const parts = value.split(`; ${name}=`);
@@ -43,7 +33,6 @@ const setCookie = (name: string, value: string, options: any = {}) => {
   if (sameSite) cookieString += `; samesite=${sameSite}`;
   
   document.cookie = cookieString;
-  console.log(`🍪 Cookie set: ${name}=${value}`);
 };
 
 export async function apiRequest(
@@ -53,14 +42,6 @@ export async function apiRequest(
   headers?: Record<string, string>
 ) {
   const fullUrl = `${BASE_URL}${url}`;
-  console.log(`Making ${method} request to:`, fullUrl);
-  console.log("Request headers:", {
-    "Content-Type": "application/json",
-    ...headers,
-  });
-  if (body) {
-    console.log("Request body:", body);
-  }
   
   const res = await fetch(fullUrl, {
     method,
@@ -72,12 +53,8 @@ export async function apiRequest(
     credentials: "include", 
   });
 
-  console.log(`Response status: ${res.status} for ${method} ${url}`);
-  console.log("Response headers:", Object.fromEntries(res.headers.entries()));
-
   const setCookieHeader = res.headers.get('set-cookie');
   if (setCookieHeader) {
-    console.log("🍪 Set-Cookie header received:", setCookieHeader);
     const cookies = setCookieHeader.split(',').map(cookie => cookie.trim());
     cookies.forEach(cookie => {
       const [nameValue] = cookie.split(';');
@@ -98,14 +75,6 @@ export async function get(
   headers?: Record<string, string>
 ) {
   const fullUrl = `${BASE_URL}${url}`;
-  console.log(`Making GET request to:`, fullUrl);
-  console.log("Request headers:", {
-    "Content-Type": "application/json",
-    ...headers,
-  });
-  
-  console.log("🍪 Cookies antes de GET:", document.cookie);
-  console.log("🍪 JWT cookie value:", getCookieValue('jwt'));
   
   const res = await fetch(fullUrl, {
     method: "GET",
@@ -115,13 +84,9 @@ export async function get(
     },
     credentials: "include",
   });
-
-  console.log(`Response status: ${res.status} for GET ${url}`);
-  console.log("Response headers:", Object.fromEntries(res.headers.entries()));
   
   const setCookieHeader = res.headers.get('set-cookie');
   if (setCookieHeader) {
-    console.log("🍪 Set-Cookie header received:", setCookieHeader);
     const cookies = setCookieHeader.split(',').map(cookie => cookie.trim());
     cookies.forEach(cookie => {
       const [nameValue] = cookie.split(';');
@@ -131,9 +96,6 @@ export async function get(
       }
     });
   }
-  
-  console.log("🍪 Cookies después de GET:", document.cookie);
-  console.log("🍪 JWT cookie value después:", getCookieValue('jwt'));
 
   if (res.ok) return res;
   throw res;
@@ -145,17 +107,6 @@ export async function post(
   headers?: Record<string, string>
 ) {
   const fullUrl = `${BASE_URL}${url}`;
-  console.log(`Making POST request to:`, fullUrl);
-  console.log("Request headers:", {
-    "Content-Type": "application/json",
-    ...headers,
-  });
-  if (body) {
-    console.log("Request body:", body);
-  }
-  
-  console.log("🍪 Cookies antes de POST:", document.cookie);
-  console.log("🍪 JWT cookie value:", getCookieValue('jwt'));
   
   const res = await fetch(fullUrl, {
     method: "POST",
@@ -166,13 +117,9 @@ export async function post(
     body: JSON.stringify(body),
     credentials: "include",
   });
-
-  console.log(`Response status: ${res.status} for POST ${url}`);
-  console.log("Response headers:", Object.fromEntries(res.headers.entries()));
   
   const setCookieHeader = res.headers.get('set-cookie');
   if (setCookieHeader) {
-    console.log("🍪 Set-Cookie header received:", setCookieHeader);
     const cookies = setCookieHeader.split(',').map(cookie => cookie.trim());
     cookies.forEach(cookie => {
       const [nameValue] = cookie.split(';');
@@ -182,9 +129,6 @@ export async function post(
       }
     });
   }
-  
-  console.log("🍪 Cookies después de POST:", document.cookie);
-  console.log("🍪 JWT cookie value después:", getCookieValue('jwt'));
 
   if (res.ok) return res;
   throw res;

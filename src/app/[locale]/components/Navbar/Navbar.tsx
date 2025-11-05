@@ -29,11 +29,6 @@ function Navbar() {
   const isDashboardPage = pathname.includes("/dashboard");
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
-  // Debug translations
-  console.log('🌐 Current locale:', locale);
-  console.log('📝 Whitepaper translation:', t("whitepaper"));
-  console.log('📝 Dashboard translation:', t("dashboard"));
-
   // Force re-render when locale changes
   useEffect(() => {
     setMobileNavOpen(false);

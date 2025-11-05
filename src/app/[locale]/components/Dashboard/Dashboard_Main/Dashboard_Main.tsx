@@ -47,41 +47,23 @@ const Dashboard_Main = memo(({
   const [shouldShowTour, setShouldShowTour] = useState(false);
 
   useEffect(() => {
-    // Verificar si se debe mostrar el modal y tour basado en las variables del backend
     if (user) {
-      console.log("🔍 Verificando estado del onboarding para usuario:", user);
-      
-      // Verificar si el usuario usó un código de afiliado
       const hasUsedAffiliateCode = user.affiliateCodeUsedAt !== null;
       const shouldShowAffiliateModal = !user.welcomeModalShown && hasUsedAffiliateCode;
       const shouldShowWelcomeModalForNewUser = !user.welcomeModalShown && !hasUsedAffiliateCode;
       const shouldShowOnboardingTour = user.onboardingStep === "pending" || user.onboardingStep === "skipped";
       
-      console.log("📊 Estado del onboarding:", {
-        welcomeModalShown: user.welcomeModalShown,
-        onboardingStep: user.onboardingStep,
-        affiliateCodeUsedAt: user.affiliateCodeUsedAt,
-        hasUsedAffiliateCode,
-        shouldShowAffiliateModal,
-        shouldShowWelcomeModalForNewUser,
-        shouldShowOnboardingTour
-      });
-      
       setShouldShowAffiliateModal(shouldShowAffiliateModal);
       setShouldShowWelcomeModal(shouldShowWelcomeModalForNewUser);
       setShouldShowTour(shouldShowOnboardingTour);
       
-      // Si debe mostrar el modal de afiliado, activarlo
       if (shouldShowAffiliateModal) {
-        console.log("🆕 Usuario usó código de afiliado y debe ver modal de recompensa, mostrando...");
         setShowAffiliateRewardBanner(true);
         setShowWelcomeBanner(false);
       } else if (shouldShowWelcomeModalForNewUser) {
-        console.log("👋 Usuario nuevo sin código de afiliado, mostrando modal de bienvenida...");
         setShowAffiliateRewardBanner(false);
         setShowWelcomeBanner(true);
       } else {
-        console.log("👤 Usuario ya vio modal de bienvenida, ocultando...");
         setShowAffiliateRewardBanner(false);
         setShowWelcomeBanner(false);
       }
@@ -136,6 +118,7 @@ const Dashboard_Main = memo(({
       console.error("Error al marcar modal de bienvenida como mostrado:", error);
     }
   };
+
 
 
 
