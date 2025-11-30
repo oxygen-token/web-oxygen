@@ -345,7 +345,6 @@ export default function CalculadoraPage() {
   const [calculatorType, setCalculatorType] = useState<'individual' | 'company' | null>(null);
   const [currentEmissions, setCurrentEmissions] = useState(0);
   const [showResults, setShowResults] = useState(false);
-  const [progressLog, setProgressLog] = useState<ProgressEntry[]>([]);
   
   // Estados para el modal
   const [modalState, setModalState] = useState<'form' | 'thanks' | 'hidden'>('hidden');

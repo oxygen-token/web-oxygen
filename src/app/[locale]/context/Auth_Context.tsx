@@ -12,12 +12,16 @@ interface User {
   affiliateCodeUsedAt?: string | null;
 }
 
+type LoginResponse = 
+  | { requires2FA: true; email: string }
+  | { success: boolean };
+
 interface AuthContextType {
   user: User | null;
   loading: boolean;
   isLoggingOut: boolean;
   hasLoggedOut: boolean;
-  login: (email: string, password: string) => Promise<{ requires2FA: boolean; email: string } | { success: boolean }>;
+  login: (email: string, password: string) => Promise<LoginResponse>;
   logout: () => Promise<void>;
   checkAuth: () => Promise<void>;
   setUser: (user: User | null) => void;
@@ -101,7 +105,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       
       if (responseData.status === "2fa_required" || responseData.requires2FA || responseData.twoFactorRequired) {
         return {
-          requires2FA: true,
+          requires2FA: true as const,
           email: email,
         };
       }

@@ -34,7 +34,7 @@ const LoginForm = () => {
       
       console.log("Login response:", loginResponse);
       
-      if (loginResponse?.requires2FA || loginResponse?.twoFactorRequired) {
+      if (('requires2FA' in loginResponse && loginResponse.requires2FA) || ('twoFactorRequired' in loginResponse && loginResponse.twoFactorRequired)) {
         console.log("2FA required, showing modal...");
         setUserEmail(data.email);
         setShowTwoFactorModal(true);
@@ -124,16 +124,6 @@ const LoginForm = () => {
         onClose={handleTwoFactorClose}
         onSuccess={handleTwoFactorSuccess}
         userEmail={userEmail}
-        onError={(error) => {
-          setError("root", {
-            type: "400",
-            message: error,
-          });
-          setShowTwoFactorModal(false);
-        }}
-        onSuccessState={(isVerifying, isSuccess) => {
-          console.log("2FA modal state:", { isVerifying, isSuccess });
-        }}
       />
     <div className="flex flex-col items-center w-full">
       <Image 
