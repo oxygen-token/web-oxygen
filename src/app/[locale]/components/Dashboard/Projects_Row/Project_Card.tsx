@@ -20,7 +20,7 @@ const Project_Card = memo(({ data }: Project_CardProps) => {
 
   return (
     <div 
-      className="project-card dashboard-card rounded-xl p-4 sm:p-5 flex items-center space-x-5 sm:space-x-6 cursor-pointer"
+      className="project-card dashboard-card rounded-xl pt-4 pb-4 pr-4 sm:pt-5 sm:pb-5 sm:pr-5 pl-0 h-44 flex items-center space-x-5 sm:space-x-6 cursor-pointer"
       onClick={handleCardClick}
     >
       <div className="flex-shrink-0">

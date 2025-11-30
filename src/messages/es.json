@@ -381,6 +381,12 @@
     "previous": "Anterior",
     "finish": "Finalizar",
     "currentFootprint": "Tu huella estimada:",
+    "devButtons": {
+      "title": "Vista para desarrolladores",
+      "progress": "Ver modal intermedio",
+      "results": "Ver vista final",
+      "close": "Volver a la calculadora"
+    },
     "sections": {
       "transport": "Transporte",
       "flights": "Vuelos y Alimentación", 
@@ -412,21 +418,31 @@
     },
     "progressModal": {
       "title": "¡Excelente progreso!",
-      "description": "Para continuar, por favor completa la siguiente información:",
+      "description": "Para continuar, completa estos datos así guardamos tu resultado y lo enviamos a tu correo.",
       "nameLabel": "Nombre *",
       "emailLabel": "Email *",
       "namePlaceholder": "Tu nombre completo",
       "emailPlaceholder": "tu@email.com",
       "continueButton": "Continuar",
-      "privacyNote": "Tu información es segura y solo se usa para enviarte el resultado del cálculo.",
-      "skipButton": "Saltar"
+      "privacyNote": "Solo usamos esta información para guardar tu avance y enviarte el resultado final por email.",
+      "skipButton": "Saltar",
+      "emailBenefit": "Te enviaremos el cálculo y cualquier actualización a este correo.",
+      "thanksTitle": "¡Gracias por completar tus datos!",
+      "thanksDescription": "Tu progreso ha sido guardado. Continúa con la calculadora."
     },
     "results": {
       "title": "Tu Huella de Carbono",
       "footprint": "Tu huella estimada:",
       "credits": "Créditos de carbono necesarios:",
       "compensate": "Compensar mi huella",
-      "seeProjects": "Ver proyectos de compensación"
+      "seeProjects": "Ver proyectos de compensación",
+      "unit": "toneladas CO₂e/año",
+      "creditsValue": "{value} créditos de carbono",
+      "shareInstruction": "¡Sacale captura y compartí en las redes!",
+      "followReminder": "Recordá seguirnos",
+      "sendTitle": "Enviar resultados",
+      "sendButton": "Enviar resultados",
+      "sendingButton": "Enviando resultados..."
     },
     "verificationModal": {
       "title": "Código de Verificación",

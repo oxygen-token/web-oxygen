@@ -1,30 +1,41 @@
 "use client";
 import { useTranslations } from "next-intl";
 import { useWallet } from "../../context/Wallet_Context";
-import { PiWallet, PiWarningCircle } from "react-icons/pi";
+import { useAuth } from "../../context/Auth_Context";
+import { PiWallet, PiWarningCircle, PiPencilSimple } from "react-icons/pi";
 import { useState, useEffect, useRef } from "react";
-import SIWE_Link_Modal from "./SIWE_Link_Modal";
+import { get, post } from "@/utils/request";
+import { createSIWEMessage, signMessage, formatSIWEMessage } from "../../utils/siwe";
 
 const Wallet_Connect_Banner = () => {
   const t = useTranslations("Wallet");
-  const { wallet, connect, switchNetwork } = useWallet();
+  const { wallet, connect, switchNetwork, disconnect, setIgnoreAutoConnect } = useWallet();
+  const { user } = useAuth();
   const [isConnecting, setIsConnecting] = useState(false);
-  const [isWalletLinked, setIsWalletLinked] = useState(false);
-  const [showSIWEModal, setShowSIWEModal] = useState(false);
-  const [isCheckingLink, setIsCheckingLink] = useState(false);
-  const hasCheckedRef = useRef(false);
-  const isCheckingRef = useRef(false);
-  const lastCheckedAddressRef = useRef<string | null>(null);
-  const showSIWEModalRef = useRef(false);
-  const isWalletLinkedRef = useRef(false);
+  const [linkStatus, setLinkStatus] = useState<"unknown" | "checking" | "linked" | "unlinked">("unknown");
+  const [isSigning, setIsSigning] = useState(false);
+  const previousUserRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    const currentUserId = user?.email || null;
+    
+    if (previousUserRef.current !== null && previousUserRef.current !== currentUserId) {
+      setIgnoreAutoConnect(true);
+      if (wallet.isConnected) {
+        disconnect();
+      }
+    }
+    
+    previousUserRef.current = currentUserId;
+  }, [user?.email, wallet.isConnected, disconnect, setIgnoreAutoConnect]);
 
   useEffect(() => {
     const checkAndSwitchNetwork = async () => {
       if (wallet.isConnected && wallet.chainId && wallet.chainId !== 137 && wallet.chainId !== 80001) {
         try {
           await switchNetwork(false);
-        } catch (error) {
-          console.error("Error switching network:", error);
+        } catch {
+          // ignore
         }
       }
     };
@@ -36,184 +47,104 @@ const Wallet_Connect_Banner = () => {
 
   useEffect(() => {
     if (!wallet.isConnected || !wallet.account) {
-      setIsWalletLinked(false);
-      isWalletLinkedRef.current = false;
-      setShowSIWEModal(false);
-      showSIWEModalRef.current = false;
-      hasCheckedRef.current = false;
-      lastCheckedAddressRef.current = null;
-      isCheckingRef.current = false;
+      setLinkStatus("unknown");
       return;
     }
 
     const currentAddress = wallet.account.address.toLowerCase();
-    
-    if (isCheckingRef.current) {
-      return;
-    }
+    let cancelled = false;
 
-    if (isWalletLinkedRef.current && lastCheckedAddressRef.current === currentAddress && hasCheckedRef.current) {
-      setShowSIWEModal(false);
-      showSIWEModalRef.current = false;
-      return;
-    }
-
-    if (lastCheckedAddressRef.current === currentAddress && hasCheckedRef.current && !isWalletLinkedRef.current && !showSIWEModalRef.current) {
-      showSIWEModalRef.current = true;
-      setShowSIWEModal(true);
-      return;
-    }
-
-    if (lastCheckedAddressRef.current !== currentAddress) {
-      hasCheckedRef.current = false;
-      setIsWalletLinked(false);
-      isWalletLinkedRef.current = false;
-      setShowSIWEModal(false);
-      showSIWEModalRef.current = false;
-    }
-
-    if (hasCheckedRef.current && lastCheckedAddressRef.current === currentAddress) {
-      return;
-    }
-
-    const checkWalletLink = async () => {
-      isCheckingRef.current = true;
-      setIsCheckingLink(true);
-      
+    const run = async () => {
+      setLinkStatus("checking");
       try {
-        const response = await fetch(
-          `/api/wallet/check?address=${encodeURIComponent(currentAddress)}`,
-          {
-            method: "GET",
-            credentials: "include",
-          }
-        );
-
-        if (response.ok) {
-          const data = await response.json();
-          const linked = data.isLinked || false;
-          setIsWalletLinked(linked);
-          isWalletLinkedRef.current = linked;
-          hasCheckedRef.current = true;
-          lastCheckedAddressRef.current = currentAddress;
-
-          if (linked) {
-            setShowSIWEModal(false);
-            showSIWEModalRef.current = false;
-          } else if (!showSIWEModalRef.current) {
-            showSIWEModalRef.current = true;
-            setShowSIWEModal(true);
-          }
-        } else if (response.status === 401) {
-          console.warn("Unauthorized - User may not be logged in");
-          setIsWalletLinked(false);
-          isWalletLinkedRef.current = false;
-          hasCheckedRef.current = true;
-          lastCheckedAddressRef.current = currentAddress;
-          if (!showSIWEModalRef.current) {
-            showSIWEModalRef.current = true;
-            setShowSIWEModal(true);
-          }
+        const data: any = await get(`/api/wallet/check?address=${encodeURIComponent(currentAddress)}`);
+        if (cancelled) return;
+        const linked = data?.isLinked === true && data?.walletAddress !== null;
+        
+        if (linked) {
+          setLinkStatus("linked");
+          setIgnoreAutoConnect(false);
         } else {
-          console.error("Error checking wallet link:", response.status);
-          setIsWalletLinked(false);
-          isWalletLinkedRef.current = false;
-          hasCheckedRef.current = true;
-          lastCheckedAddressRef.current = currentAddress;
-          if (!showSIWEModalRef.current) {
-            showSIWEModalRef.current = true;
-            setShowSIWEModal(true);
+          setLinkStatus("unlinked");
+          setIgnoreAutoConnect(true);
+          if (!cancelled) {
+            await disconnect();
           }
         }
-      } catch (error) {
-        console.error("Error checking wallet link:", error);
-        setIsWalletLinked(false);
-        isWalletLinkedRef.current = false;
-        hasCheckedRef.current = true;
-        lastCheckedAddressRef.current = currentAddress;
-        if (!showSIWEModalRef.current) {
-          setTimeout(() => {
-            setShowSIWEModal(true);
-            showSIWEModalRef.current = true;
-          }, 100);
+      } catch {
+        if (cancelled) return;
+        setLinkStatus("unlinked");
+        setIgnoreAutoConnect(true);
+        if (!cancelled) {
+          await disconnect();
         }
-      } finally {
-        setIsCheckingLink(false);
-        isCheckingRef.current = false;
       }
     };
 
-    if (!hasCheckedRef.current || lastCheckedAddressRef.current !== currentAddress) {
-      checkWalletLink();
-    }
-  }, [wallet.isConnected, wallet.account?.address]);
+    run();
+    return () => {
+      cancelled = true;
+    };
+  }, [wallet.isConnected, wallet.account?.address, disconnect, setIgnoreAutoConnect]);
 
   const handleConnect = async () => {
     setIsConnecting(true);
+    setIgnoreAutoConnect(false);
     try {
-      await connect('metamask');
+      await connect("metamask");
     } catch (error) {
+      const errorMessage = (error as Error).message;
+      if (errorMessage.includes("User rejected") || errorMessage.includes("rejected")) {
+        return;
+      }
       console.error("Error connecting wallet:", error);
     } finally {
       setIsConnecting(false);
     }
   };
 
-  const handleSIWESuccess = async (walletAddress: string) => {
-    const currentAddress = wallet.account?.address?.toLowerCase();
-    
-    setIsWalletLinked(true);
-    isWalletLinkedRef.current = true;
-    setShowSIWEModal(false);
-    showSIWEModalRef.current = false;
-    hasCheckedRef.current = true;
-    lastCheckedAddressRef.current = currentAddress || null;
-    
+  const handleSignIn = async () => {
+    if (!wallet.isConnected || !wallet.account || isSigning) return;
+
+    setIsSigning(true);
     try {
-      if (currentAddress) {
-        const response = await fetch(
-          `/api/wallet/check?address=${encodeURIComponent(currentAddress)}`,
-          {
-            method: "GET",
-            credentials: "include",
-          }
-        );
-        
-        if (response.ok) {
-          const data = await response.json();
-          const linked = data.isLinked || false;
-          if (linked) {
-            setIsWalletLinked(true);
-            isWalletLinkedRef.current = true;
-            setShowSIWEModal(false);
-            showSIWEModalRef.current = false;
-            hasCheckedRef.current = true;
-            lastCheckedAddressRef.current = currentAddress;
-          }
-        }
-      }
+      const nonceData: any = await get("/wallet/nonce");
+      if (!nonceData.nonce) throw new Error("Failed to get nonce");
+
+      const siweMessage = await createSIWEMessage(wallet.account.address, nonceData.nonce);
+      const messageToSign = formatSIWEMessage(siweMessage);
+      const signature = await signMessage(messageToSign, wallet.account.address);
+
+      const messageObject = {
+        domain: siweMessage.domain,
+        address: siweMessage.address,
+        statement: siweMessage.statement,
+        uri: siweMessage.uri,
+        version: siweMessage.version,
+        chainId: siweMessage.chainId,
+        nonce: siweMessage.nonce,
+        issuedAt: siweMessage.issuedAt,
+      };
+
+      await post("/wallet/link", {
+        message: messageObject,
+        signature,
+      });
+
+      setLinkStatus("linked");
     } catch (error) {
-      console.error("Error verifying wallet link after success:", error);
+      console.error("SIWE signing error:", error);
+    } finally {
+      setIsSigning(false);
     }
   };
 
-  const handleCloseModal = () => {
-    setShowSIWEModal(false);
-    showSIWEModalRef.current = false;
-  };
-
-  if (wallet.isConnected && wallet.account && isWalletLinked) {
-    return null;
-  }
-
-  if (wallet.error && wallet.error.includes('not installed')) {
+  if (wallet.error && wallet.error.includes("not installed")) {
     return (
       <div className="flex items-center gap-3 px-4 py-2 bg-amber-500/20 border border-amber-500/50 rounded-lg backdrop-blur-sm">
         <PiWarningCircle className="text-amber-400 text-lg flex-shrink-0" />
         <div className="flex-1 min-w-0">
-          <p className="text-xs text-amber-200 font-medium">
-            {t("metamaskNotInstalled")}
-          </p>
+          <p className="text-xs text-amber-200 font-medium">{t("metamaskNotInstalled")}</p>
         </div>
         <a
           href="https://metamask.io/download/"
@@ -227,36 +158,68 @@ const Wallet_Connect_Banner = () => {
     );
   }
 
-  return (
-    <>
-      <SIWE_Link_Modal
-        show={showSIWEModal}
-        onClose={handleCloseModal}
-        onSuccess={handleSIWESuccess}
-      />
-      {!wallet.isConnected && (
+  if (!wallet.isConnected) {
+    return (
+      <button
+        onClick={handleConnect}
+        disabled={isConnecting}
+        className="flex items-center gap-3 px-4 py-2 bg-transparent border border-white rounded-lg backdrop-blur-sm hover:bg-white/10 transition-all disabled:opacity-50 disabled:cursor-not-allowed group"
+      >
+        <PiWallet className="text-white text-lg flex-shrink-0 group-hover:text-white transition-colors" />
+        <div className="flex-1 min-w-0 text-left">
+          <p className="text-xs text-white font-medium">
+            {isConnecting ? t("connecting") : t("connectWallet")}
+          </p>
+        </div>
+        {isConnecting && (
+          <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+        )}
+      </button>
+    );
+  }
+
+  if (wallet.isConnected && wallet.account) {
+    if (linkStatus === "checking") {
+      return (
         <button
-          onClick={handleConnect}
-          disabled={isConnecting || wallet.isConnecting || isCheckingLink}
-          className="flex items-center gap-3 px-4 py-2 bg-transparent border border-white rounded-lg backdrop-blur-sm hover:bg-white/10 transition-all disabled:opacity-50 disabled:cursor-not-allowed group"
+          disabled
+          className="flex items-center gap-3 px-4 py-2 bg-transparent border border-white/50 rounded-lg backdrop-blur-sm opacity-50 cursor-not-allowed"
         >
-          <PiWallet className="text-white text-lg flex-shrink-0 group-hover:text-white transition-colors" />
+          <PiWallet className="text-white text-lg flex-shrink-0" />
+          <div className="flex-1 min-w-0 text-left">
+            <p className="text-xs text-white font-medium">Checking...</p>
+          </div>
+          <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+        </button>
+      );
+    }
+
+    if (linkStatus === "unlinked") {
+      return (
+        <button
+          onClick={handleSignIn}
+          disabled={isSigning}
+          className="flex items-center gap-3 px-4 py-2 bg-transparent border border-white/50 rounded-lg backdrop-blur-sm hover:bg-white/10 transition-all disabled:opacity-50 disabled:cursor-not-allowed group"
+        >
+          <PiPencilSimple className="text-white text-lg flex-shrink-0" />
           <div className="flex-1 min-w-0 text-left">
             <p className="text-xs text-white font-medium">
-              {isConnecting || wallet.isConnecting
-                ? t("connecting")
-                : isCheckingLink
-                ? "Checking..."
-                : t("connectWallet")}
+              {isSigning ? "Signing..." : "Sign in with Ethereum"}
             </p>
           </div>
-          {(isConnecting || wallet.isConnecting || isCheckingLink) && (
+          {isSigning && (
             <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
           )}
         </button>
-      )}
-    </>
-  );
+      );
+    }
+
+    if (linkStatus === "linked") {
+      return null;
+    }
+  }
+
+  return null;
 };
 
 export default Wallet_Connect_Banner;

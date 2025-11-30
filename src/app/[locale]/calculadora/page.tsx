@@ -5,8 +5,10 @@ import { useTranslations } from "next-intl";
 import Navbar from "../components/Navbar/Navbar";
 import Footer from "../components/Footer/Footer";
 import { QUESTIONS, calculateTotalEmissions, type EmissionOption } from "../../../utils/emissionsConstants";
+import { apiRequest } from "../../../utils/request";
 import { FaInstagram } from "react-icons/fa";
 import { FaXTwitter, FaFacebookF } from "react-icons/fa6";
+import { useDev } from "../context/Dev_Context";
 
 // Agregar estilos CSS para animaciones optimizadas y centralizadas
 const styles = `
@@ -208,6 +210,8 @@ function ProgressModal({
   if (!show) return null;
   const emailOk = isValidEmail(userInfo.email);
   const nameOk = userInfo.name.trim().length > 0;
+  const isFormReady = nameOk && emailOk;
+  const canSubmit = isFormReady;
   // Clases para animación
   let modalClass = '';
   if (modalState === 'form') {
@@ -266,7 +270,7 @@ function ProgressModal({
                   type="text"
                   value={userInfo.name}
                   onChange={handleNameChange}
-                  className="w-full px-4 py-3 border border-teal-medium/30 rounded-xl focus:ring-2 focus:ring-teal-accent focus:border-teal-accent transition-all duration-100"
+                  className="w-full px-4 py-3 border border-teal-medium/30 rounded-xl focus:ring-2 focus:ring-teal-accent focus:border-teal-accent transition-all duration-100 bg-white placeholder:text-teal-medium/80 text-teal-dark"
                   placeholder={t("progressModal.namePlaceholder")}
                   autoComplete="name"
                   required
@@ -280,12 +284,15 @@ function ProgressModal({
                   type="email"
                   value={userInfo.email}
                   onChange={handleEmailChange}
-                  className="w-full px-4 py-3 border border-teal-medium/30 rounded-xl focus:ring-2 focus:ring-teal-accent focus:border-teal-accent transition-all duration-100"
+                  className="w-full px-4 py-3 border border-teal-medium/30 rounded-xl focus:ring-2 focus:ring-teal-accent focus:border-teal-accent transition-all duration-100 bg-white text-teal-dark placeholder:text-teal-medium/80"
                   placeholder={t("progressModal.emailPlaceholder")}
                   autoComplete="email"
                   required
                   pattern="[^\s@]+@[^\s@]+\.[^\s@]+"
                 />
+                <p className="mt-2 text-xs text-teal-medium">
+                  {t("progressModal.emailBenefit")}
+                </p>
               </div>
             </div>
             {/* Botones centrados */}
@@ -293,9 +300,9 @@ function ProgressModal({
               {/* Botón principal - Continuar */}
               <button
                 onClick={handleModalSubmit}
-                disabled={!(nameOk && emailOk)}
+                disabled={!canSubmit}
                 className={`w-full max-w-xs py-3 px-8 rounded-xl font-semibold transition-all duration-100 transform ${
-                  nameOk && emailOk
+                  isFormReady
                     ? 'bg-teal-accent text-white hover:bg-teal-accent/90 hover:scale-105 shadow-lg'
                     : 'bg-gray-300 text-gray-500 cursor-not-allowed opacity-50'
                 }`}
@@ -330,6 +337,7 @@ function ProgressModal({
 
 export default function CalculadoraPage() {
   const t = useTranslations("Calculator");
+  const { isDevMode } = useDev();
   const [showCalculator, setShowCalculator] = useState(true); // Ir directo al menú
   const [showQuestions, setShowQuestions] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -337,12 +345,14 @@ export default function CalculadoraPage() {
   const [calculatorType, setCalculatorType] = useState<'individual' | 'company' | null>(null);
   const [currentEmissions, setCurrentEmissions] = useState(0);
   const [showResults, setShowResults] = useState(false);
+  const [progressLog, setProgressLog] = useState<ProgressEntry[]>([]);
   
   // Estados para el modal
   const [modalState, setModalState] = useState<'form' | 'thanks' | 'hidden'>('hidden');
   const [userInfo, setUserInfo] = useState({ name: '', email: '' });
   const [modalCompleted, setModalCompleted] = useState(false);
-  
+  const [devPreview, setDevPreview] = useState<"progress" | "results" | null>(null);
+
   // Estados para optimización de imágenes
   const [imagesLoaded, setImagesLoaded] = useState<Set<string>>(new Set());
   const [isLoadingImages, setIsLoadingImages] = useState(true);
@@ -356,6 +366,8 @@ export default function CalculadoraPage() {
   const [showInstaModal, setShowInstaModal] = useState(false);
   const [instaImage, setInstaImage] = useState<string | null>(null);
   const resultRef = useRef<HTMLDivElement>(null);
+  const totalQuestions = QUESTIONS.length;
+  const hasSubmittedResults = useRef(false);
 
   // Fecha actual para mostrar en el resultado
   const today = new Date();
@@ -558,31 +570,85 @@ export default function CalculadoraPage() {
     }, 300);
   };
 
-  // 3. handleModalSubmit ahora muestra el gracias, espera 2s, luego animación de salida y desmonta
+  const resetToLanding = () => {
+    setShowCalculator(true);
+    setShowQuestions(false);
+    setShowResults(false);
+    setModalState('hidden');
+    setModalCompleted(false);
+    setModalAnimation('in');
+    setDevPreview(null);
+    setCurrentQuestion(0);
+  };
+
+  const openDevProgressPreview = () => {
+    if (!isDevMode) return;
+    const previewQuestion = Math.min(6, QUESTIONS.length - 1);
+    setDevPreview('progress');
+    setShowCalculator(false);
+    setShowResults(false);
+    setShowQuestions(true);
+    setCurrentQuestion(previewQuestion);
+    setModalCompleted(false);
+    setModalState('form');
+    setModalAnimation('in');
+  };
+
+  const openDevResultsPreview = () => {
+    if (!isDevMode) return;
+    setDevPreview('results');
+    setShowCalculator(false);
+    setShowQuestions(false);
+    setShowResults(true);
+  };
+
+  const proceedAfterLeadSaved = () => {
+    setModalCompleted(true);
+    setModalState('thanks');
+    setTimeout(() => {
+      setModalAnimation('out');
+      setTimeout(() => {
+        setModalState('hidden');
+        setTimeout(() => {
+          if (currentQuestion < QUESTIONS.length - 1) {
+            setCurrentQuestion(prev => prev + 1);
+          } else {
+            setShowResults(true);
+          }
+        }, 100);
+      }, 400);
+    }, 2000);
+  };
+
+  // 3. handleModalSubmit ahora solo valida y continúa sin llamar al backend
   const handleModalSubmit = () => {
-    if (userInfo.name.trim() && isValidEmail(userInfo.email)) {
-      setModalCompleted(true);
+    if (!userInfo.name.trim() || !isValidEmail(userInfo.email)) {
+      return;
+    }
+    if (devPreview === 'progress') {
       setModalState('thanks');
       setTimeout(() => {
         setModalAnimation('out');
         setTimeout(() => {
           setModalState('hidden');
-          // Continuar con la siguiente pregunta después de cerrar el modal
-          setTimeout(() => {
-            if (currentQuestion < QUESTIONS.length - 1) {
-              setCurrentQuestion(prev => prev + 1);
-            } else {
-              setShowResults(true);
-            }
-          }, 100);
-        }, 400); // Duración de fade out
-      }, 2000); // Modal de gracias visible 2s
+          resetToLanding();
+        }, 400);
+      }, 2000);
+      return;
     }
+    proceedAfterLeadSaved();
   };
 
-  // 4. handleCloseModal también usa animación de salida y marca como completado
   const handleCloseModal = () => {
-    setModalCompleted(true); // Marcar como completado para que no aparezca más
+    if (devPreview === 'progress') {
+      setModalAnimation('out');
+      setTimeout(() => {
+        setModalState('hidden');
+        resetToLanding();
+      }, 400);
+      return;
+    }
+    setModalCompleted(true);
     setModalAnimation('out');
     setTimeout(() => setModalState('hidden'), 400);
   };
@@ -602,6 +668,37 @@ export default function CalculadoraPage() {
   };
 
   const progress = (currentQuestion / (QUESTIONS.length - 1)) * 100;
+
+  useEffect(() => {
+    if (!showResults) return;
+    if (devPreview === 'results') return;
+    if (hasSubmittedResults.current) return;
+    const emailValue = userInfo.email.trim();
+    const nameValue = userInfo.name.trim();
+    if (!emailValue || !nameValue) return;
+    const calculatorData = {
+      answers,
+      partialResult: currentEmissions,
+      step: totalQuestions,
+      totalQuestions,
+    };
+    const payload = {
+      email: emailValue,
+      name: nameValue,
+      finalResult: currentEmissions,
+      calculatorData,
+    };
+    const syncResults = async () => {
+      try {
+        await apiRequest("/pre-users-calc", "PUT", payload);
+      } catch (error) {
+        console.error("Failed to submit calculator results", error);
+      } finally {
+        hasSubmittedResults.current = true;
+      }
+    };
+    syncResults();
+  }, [showResults, currentEmissions, answers, userInfo.email, userInfo.name, totalQuestions, devPreview]);
 
   // Función para obtener imagen de fondo según la pregunta (usando las nuevas imágenes op11-op99)
   const getBackgroundImage = (questionIndex: number) => {

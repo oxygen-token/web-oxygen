@@ -78,19 +78,16 @@ const NavBarDashboard = () => {
     console.log("🔄 Iniciando logout desde navbar...");
     
     try {
-      // Usar forceLogout para asegurar que se limpie todo
+      if (typeof window !== 'undefined') {
+        sessionStorage.setItem("hasEnteredBefore", "true");
+        sessionStorage.setItem("forceLogout", "true");
+      }
       forceLogout();
-      
-      // Esperar un poco para que se procese la limpieza
       await new Promise(resolve => setTimeout(resolve, 100));
-      
-      // Redirigir inmediatamente
-      console.log("🔄 Redirigiendo a página principal...");
-      window.location.replace(`/${locale}`);
+      window.location.href = `/${locale}#home`;
     } catch (error) {
       console.error("❌ Error en logout:", error);
-      // Forzar redirección aunque falle
-      window.location.replace(`/${locale}`);
+      window.location.href = `/${locale}#home`;
     }
   };
 

@@ -128,15 +128,20 @@ const SideBarDashboard = memo(() => {
     if (disabled) return;
     
     if (isAction) {
-      if (index === 7) {
+      const item = dynamicMenuItems[index];
+      if (item && item.nameKey === "cerrarSesion") {
         try {
+          if (typeof window !== 'undefined') {
+            sessionStorage.setItem("hasEnteredBefore", "true");
+            sessionStorage.setItem("forceLogout", "true");
+          }
           forceLogout();
           await new Promise(resolve => setTimeout(resolve, 100));
           const locale = window.location.pathname.split("/")[1];
-          window.location.replace(`/${locale}`);
+          window.location.href = `/${locale}#home`;
         } catch (error) {
           const locale = window.location.pathname.split("/")[1];
-          window.location.replace(`/${locale}`);
+          window.location.href = `/${locale}#home`;
         }
       }
       return;
@@ -159,7 +164,7 @@ const SideBarDashboard = memo(() => {
         setClickedIndex(null);
       }, 300);
     }
-  }, [activeIndex, isTransitioning, startTransition, forceLogout]);
+  }, [activeIndex, isTransitioning, startTransition, forceLogout, dynamicMenuItems]);
 
   const handleMouseEnter = useCallback((index: number) => {
     if (!isTransitioning && index !== activeIndex) {
@@ -206,8 +211,8 @@ const SideBarDashboard = memo(() => {
                        className={`flex items-center gap-4 px-6 py-4 rounded-xl transition-all duration-200 ease-out relative w-full text-left h-14 group z-10
                          ${item.nameKey === "cerrarSesion"
                            ? isHovered
-                             ? "bg-red-500/30 backdrop-blur-sm transform translate-x-1 border border-red-400/50 shadow-lg shadow-red-500/20"
-                             : "border border-red-600/30"
+                             ? "text-white transform translate-x-1"
+                             : "text-white"
                            : isActive
                            ? "bg-white/20 backdrop-blur-sm font-semibold text-white transform translate-x-2 border border-white/30 shadow-lg"
                            : isHovered && !isActive
@@ -241,8 +246,8 @@ const SideBarDashboard = memo(() => {
                           className={`text-xl transition-all duration-300 ${
                             item.nameKey === "cerrarSesion"
                               ? isHovered
-                                ? "text-red-300 scale-110 drop-shadow-[0_0_8px_rgba(252,165,165,0.8)]"
-                                : "text-red-400 drop-shadow-[0_0_4px_rgba(248,113,113,0.6)]"
+                                ? "text-white scale-110"
+                                : "text-white"
                               : isActive
                               ? "text-white"
                               : isHovered
@@ -259,8 +264,8 @@ const SideBarDashboard = memo(() => {
                       className={`text-sm transition-all duration-300 leading-none ${
                         item.nameKey === "cerrarSesion"
                           ? isHovered
-                            ? "font-semibold text-red-300 drop-shadow-[0_0_6px_rgba(252,165,165,0.7)]"
-                            : "font-semibold text-red-400 drop-shadow-[0_0_4px_rgba(248,113,113,0.5)]"
+                            ? "font-medium text-white"
+                            : "font-medium text-white"
                           : isActive
                           ? "font-semibold text-white"
                           : item.disabled

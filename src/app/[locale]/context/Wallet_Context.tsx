@@ -20,6 +20,7 @@ interface WalletContextType {
   disconnect: () => Promise<void>;
   switchNetwork: (useTestnet?: boolean) => Promise<void>;
   refreshAccount: () => Promise<void>;
+  setIgnoreAutoConnect: (ignore: boolean) => void;
 }
 
 const WalletContext = createContext<WalletContextType | undefined>(undefined);
@@ -46,6 +47,7 @@ export const WalletProvider = ({ children }: WalletProviderProps) => {
     isConnecting: false,
     isDisconnecting: false,
   });
+  const [ignoreAutoConnect, setIgnoreAutoConnect] = useState(false);
 
   const handleAccountsChangedRef = useRef<(accounts: string[]) => Promise<void>>();
   const handleChainChangedRef = useRef<() => Promise<void>>();
@@ -141,13 +143,15 @@ export const WalletProvider = ({ children }: WalletProviderProps) => {
     let mounted = true;
 
     const checkConnection = async () => {
+      if (ignoreAutoConnect) return;
+      
       try {
         const accounts = await getAccounts();
-        if (accounts.length > 0 && mounted) {
+        if (accounts.length > 0 && mounted && !ignoreAutoConnect) {
           const account = await updateAccount(accounts[0]);
           const chainId = await getChainId();
           
-          if (mounted) {
+          if (mounted && !ignoreAutoConnect) {
             setWallet((prev) => {
               if (prev.isConnected && prev.account?.address === account.address) {
                 return prev;
@@ -190,7 +194,7 @@ export const WalletProvider = ({ children }: WalletProviderProps) => {
       provider.removeListener('accountsChanged', accountsChangedWrapper);
       provider.removeListener('chainChanged', chainChangedWrapper);
     };
-  }, []);
+  }, [ignoreAutoConnect]);
 
   const connect = useCallback(async (provider: WalletProviderType = 'metamask') => {
     if (provider !== 'metamask') {
@@ -205,6 +209,7 @@ export const WalletProvider = ({ children }: WalletProviderProps) => {
       throw new Error('MetaMask is not installed');
     }
 
+    setIgnoreAutoConnect(false);
     setWallet((prev) => ({
       ...prev,
       isConnecting: true,
@@ -227,16 +232,22 @@ export const WalletProvider = ({ children }: WalletProviderProps) => {
       });
     } catch (error) {
       const errorMessage = (error as Error).message;
+      const isUserRejection = errorMessage.includes("User rejected") || errorMessage.includes("rejected");
+      
       setWallet((prev) => ({
         ...prev,
-        error: errorMessage,
+        error: isUserRejection ? null : errorMessage,
         isConnecting: false,
       }));
-      throw error;
+      
+      if (!isUserRejection) {
+        throw error;
+      }
     }
   }, [updateAccount]);
 
   const disconnect = useCallback(async () => {
+    setIgnoreAutoConnect(true);
     setWallet((prev) => ({
       ...prev,
       isDisconnecting: true,
@@ -259,6 +270,10 @@ export const WalletProvider = ({ children }: WalletProviderProps) => {
         isDisconnecting: false,
       }));
     }
+  }, []);
+
+  const setIgnoreAutoConnectFlag = useCallback((ignore: boolean) => {
+    setIgnoreAutoConnect(ignore);
   }, []);
 
   const switchNetwork = useCallback(async (useTestnet: boolean = false) => {
@@ -309,6 +324,7 @@ export const WalletProvider = ({ children }: WalletProviderProps) => {
         disconnect,
         switchNetwork,
         refreshAccount,
+        setIgnoreAutoConnect: setIgnoreAutoConnectFlag,
       }}
     >
       {children}

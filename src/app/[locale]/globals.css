@@ -34,7 +34,7 @@ html, body {
 input {
   background-color: #00caa61a !important;
   border: none !important;
-  color: rgba(255, 255, 255, 0.9) !important;
+  color: rgba(14, 37, 52, 0.95) !important;
 }
 
 input::placeholder {

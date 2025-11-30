@@ -461,9 +461,19 @@ export default function Two_Factor_Auth_Modal({
                     setResendSuccess(false);
                   }
                 } catch (error) {
-                  const response = error as Response;
-                  const errorData = await response.json().catch(() => ({ error: "Failed to resend code" }));
-                  const errorMessage = errorData.error || "Failed to resend code";
+                  let errorMessage = "Failed to resend code";
+                  
+                  if (error instanceof Response) {
+                    try {
+                      const errorData = await error.json();
+                      errorMessage = errorData.error || "Failed to resend code";
+                    } catch {
+                      errorMessage = "Failed to resend code";
+                    }
+                  } else if (error instanceof Error) {
+                    errorMessage = error.message || "Failed to resend code";
+                  }
+                  
                   console.error("❌ Error resending 2FA code:", errorMessage);
                   setError(errorMessage);
                   setResendSuccess(false);

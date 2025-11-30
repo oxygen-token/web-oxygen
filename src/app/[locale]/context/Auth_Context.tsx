@@ -54,12 +54,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         setTimeout(() => reject(new Error("Request timeout")), 10000)
       );
       
-      const res = await Promise.race([
+      const data: any = await Promise.race([
         get("/session"),
         timeoutPromise
-      ]) as Response;
-      
-      const data = await res.json();
+      ]);
       
       if (data.loggedIn) {
         const username = data.fullName || data.username;
@@ -99,17 +97,16 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         password: password,
       };
       
-      const response = await post("/login", loginData);
-      const responseData = await response.json();
+      const responseData = await post("/login", loginData);
       
-      if (responseData.success || response.status === 201) {
-        if (responseData.status === "2fa_required" || responseData.requires2FA || responseData.twoFactorRequired || responseData.message?.includes("2FA")) {
-          return {
-            requires2FA: true,
-            email: email,
-          };
-        }
+      if (responseData.status === "2fa_required" || responseData.requires2FA || responseData.twoFactorRequired) {
+        return {
+          requires2FA: true,
+          email: email,
+        };
+      }
 
+      if (responseData.success) {
         const username = responseData.user?.fullName || responseData.fullName || email.split('@')[0];
         const userEmail = responseData.user?.email || responseData.email || email;
         const isFirstLogin = responseData.isFirstLogin || false;
@@ -196,6 +193,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   // Función de logout forzado que no depende del backend
   const forceLogout = () => {
     console.log("🔄 Force logout iniciado...");
+    
+    if (typeof window !== 'undefined') {
+      sessionStorage.setItem("forceLogout", "true");
+    }
     
     // NUCLEAR APPROACH - Limpiar TODO inmediatamente
     setUser(null);
@@ -324,6 +325,16 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       });
       setLoading(false);
       return;
+    }
+    
+    if (typeof window !== 'undefined') {
+      const forceLogoutFlag = sessionStorage.getItem("forceLogout");
+      if (forceLogoutFlag === "true") {
+        setUser(null);
+        setLoading(false);
+        sessionStorage.removeItem("forceLogout");
+        return;
+      }
     }
     
     if (!isLoggingOut && !hasLoggedOut) {

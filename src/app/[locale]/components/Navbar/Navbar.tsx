@@ -22,7 +22,7 @@ const links = [
 
 function Navbar() {
   const t = useTranslations("Navbar");
-  const { user, logout } = useAuth();
+  const { user, logout, forceLogout } = useAuth();
   const pathname = usePathname();
   const locale = pathname.split("/")[1];
   const isBlogPage = pathname.includes("/seobot-blog");
@@ -36,10 +36,16 @@ function Navbar() {
 
   const handleLogout = async () => {
     try {
-      await logout();
-      window.location.href = `/${locale}`;
+      if (typeof window !== 'undefined') {
+        sessionStorage.setItem("hasEnteredBefore", "true");
+        sessionStorage.setItem("forceLogout", "true");
+      }
+      forceLogout();
+      await new Promise(resolve => setTimeout(resolve, 100));
+      window.location.href = `/${locale}#home`;
     } catch (error) {
       console.error("❌ Error al cerrar sesión:", error);
+      window.location.href = `/${locale}#home`;
     }
   };
 

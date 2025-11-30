@@ -65,7 +65,7 @@ export async function apiRequest(
     });
   }
 
-  if (res.ok) return res;
+  if (res.ok) return await res.json();
   throw res;
 }
 
@@ -97,7 +97,7 @@ export async function get(
     });
   }
 
-  if (res.ok) return res;
+  if (res.ok) return await res.json();
   throw res;
 }
 
@@ -130,6 +130,6 @@ export async function post(
     });
   }
 
-  if (res.ok) return res;
+  if (res.ok) return await res.json();
   throw res;
 }

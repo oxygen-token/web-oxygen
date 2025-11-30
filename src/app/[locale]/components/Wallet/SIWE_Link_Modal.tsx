@@ -66,9 +66,7 @@ export default function SIWE_Link_Modal({ show, onClose, onSuccess }: SIWE_Link_
       setState("requesting-nonce");
       setError(null);
 
-      const nonceResponse = await get("/wallet/nonce");
-      
-      const nonceData = await nonceResponse.json();
+      const nonceData: any = await get("/wallet/nonce");
 
       if (!nonceData.nonce) {
         console.error("❌ No nonce in response:", nonceData);
@@ -98,29 +96,27 @@ export default function SIWE_Link_Modal({ show, onClose, onSuccess }: SIWE_Link_
         issuedAt: siweMessage.issuedAt,
       };
       
-      const verifyResponse = await post("/wallet/link", {
+      const verifyData: any = await post("/wallet/link", {
         message: messageObject,
         signature,
       });
 
-      if (!verifyResponse.ok) {
-        const errorData = await verifyResponse.json().catch(() => ({}));
-        console.error("❌ Backend error:", errorData);
-        throw new Error(errorData.error || `Failed to verify signature: ${verifyResponse.status}`);
+      if (!verifyData || typeof verifyData !== 'object') {
+        console.error("❌ Backend error: Invalid response");
+        throw new Error("Failed to verify signature");
       }
-
-      const verifyData = await verifyResponse.json();
 
       const walletAddress = verifyData.walletAddress || verifyData.wallet_address || wallet.account?.address || "";
       
       setState("success");
       successRef.current = true;
+
+      onSuccess(walletAddress);
       
       setTimeout(() => {
-        onSuccess(walletAddress);
         onClose();
         successRef.current = false;
-      }, 1500);
+      }, 2000);
     } catch (err) {
       console.error("❌ Error in SIWE flow:", err);
       const errorMessage = err instanceof Error ? err.message : "An error occurred";
@@ -263,7 +259,10 @@ export default function SIWE_Link_Modal({ show, onClose, onSuccess }: SIWE_Link_
             >
               ×
             </button>
-            <div style={{ marginBottom: "1.5rem", fontSize: "3rem", color: "rgba(0, 202, 166, 1)", display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <h2 style={{ fontSize: "1.5rem", fontWeight: 700, marginBottom: "1.5rem", color: "white", textAlign: "center" }}>
+              Wallet Linked Successfully
+            </h2>
+            <div style={{ marginBottom: "1.5rem", display: "flex", justifyContent: "center", alignItems: "center" }}>
               <svg
                 width="32"
                 height="32"
@@ -288,10 +287,7 @@ export default function SIWE_Link_Modal({ show, onClose, onSuccess }: SIWE_Link_
                 />
               </svg>
             </div>
-            <h2 style={{ fontSize: "1.5rem", fontWeight: 700, marginBottom: "1rem", color: "white" }}>
-              Wallet Linked Successfully
-            </h2>
-            <p style={{ color: "rgba(255, 255, 255, 0.9)", marginBottom: "2rem" }}>
+            <p style={{ color: "rgba(255, 255, 255, 0.9)", marginBottom: "2rem", textAlign: "center" }}>
               Your wallet has been successfully linked to your account.
             </p>
           </div>

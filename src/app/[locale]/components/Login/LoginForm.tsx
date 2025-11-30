@@ -39,9 +39,9 @@ const LoginForm = () => {
         setUserEmail(data.email);
         setShowTwoFactorModal(true);
       } else {
-        console.log("Login successful, redirecting to dashboard...");
-        console.log("Redirect URL:", `/${locale}/dashboard`);
-        router.push(`/${locale}/dashboard`);
+      console.log("Login successful, redirecting to dashboard...");
+      console.log("Redirect URL:", `/${locale}/dashboard`);
+      router.push(`/${locale}/dashboard`);
       }
     } catch (err) {
       console.error("Login error in form:", err);
@@ -63,15 +63,14 @@ const LoginForm = () => {
   const handleTwoFactorSuccess = async (code: string): Promise<void> => {
     console.log("📤 2FA code to verify:", code);
     try {
-      const response = await post("/2fa/verify", {
+      const responseData = await post("/2fa/verify", {
         email: userEmail,
         code: code,
       });
 
-      const responseData = await response.json();
       console.log("📥 2FA verification response:", responseData);
 
-      if (response.ok && responseData.success) {
+      if (responseData.success) {
         console.log("✅ 2FA verified successfully:", responseData);
         console.log("✅ Session established, updating auth state...");
         
@@ -98,18 +97,16 @@ const LoginForm = () => {
         const errorMessage = responseData.error || "Invalid 2FA code";
         console.error("❌ 2FA verification failed:", errorMessage);
         setError("root", {
-          type: response.status === 401 ? "401" : "400",
+          type: "400",
           message: errorMessage,
         });
         throw new Error(errorMessage);
       }
     } catch (error) {
-      const response = error as Response;
-      const responseData = await response.json().catch(() => ({ error: "Failed to verify 2FA code" }));
-      const errorMessage = responseData.error || "Invalid 2FA code";
-      console.error("❌ 2FA verification failed:", errorMessage);
+      console.error("❌ 2FA verification failed:", error);
+      const errorMessage = error instanceof Error ? error.message : "Invalid 2FA code";
       setError("root", {
-        type: response.status === 401 ? "401" : "400",
+        type: "400",
         message: errorMessage,
       });
       throw new Error(errorMessage);
@@ -138,8 +135,8 @@ const LoginForm = () => {
           console.log("2FA modal state:", { isVerifying, isSuccess });
         }}
       />
-      <div className="flex flex-col items-center w-full">
-        <Image 
+    <div className="flex flex-col items-center w-full">
+      <Image 
         src="/assets/images/logo.png" 
         alt="logo" 
         width={200}
