@@ -9,21 +9,35 @@ const WHATSAPP_MESSAGE = "Hola, me gustaría obtener más información sobre Oxy
 
 export default function WhatsApp_Button() {
   const t = useTranslations("WhatsApp");
-  const [hasEnteredBefore, setHasEnteredBefore] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    const hasEntered = sessionStorage.getItem("hasEnteredBefore") !== null;
-    setHasEnteredBefore(hasEntered);
-    
-    if (hasEntered) {
+    const checkAndShow = () => {
+      const hasEntered = sessionStorage.getItem("hasEnteredBefore") !== null;
+      if (hasEntered) {
+        setIsVisible(true);
+      }
+    };
+
+    checkAndShow();
+
+    const interval = setInterval(checkAndShow, 200);
+
+    const handleCustomEvent = () => {
       setTimeout(() => {
         setIsVisible(true);
       }, 1000);
-    }
+    };
+
+    window.addEventListener("prelanding-hidden", handleCustomEvent);
+
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener("prelanding-hidden", handleCustomEvent);
+    };
   }, []);
 
-  if (!hasEnteredBefore || !isVisible) return null;
+  if (!isVisible) return null;
 
   const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
 
@@ -44,4 +58,5 @@ export default function WhatsApp_Button() {
     </a>
   );
 }
+
 

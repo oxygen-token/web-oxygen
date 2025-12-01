@@ -29,6 +29,7 @@ export function PreLanding() {
 
     setTimeout(() => {
       setHidden(true);
+      window.dispatchEvent(new CustomEvent("prelanding-hidden"));
     }, ANIM_TIMEOUT);
   };
 
