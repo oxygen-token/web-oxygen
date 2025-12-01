@@ -15,7 +15,7 @@ const links = [
   { nameKey: "home", href: "/" },
   { nameKey: "us", href: "/nosotros" },
   { nameKey: "project", href: "/proyectos" },
-  { nameKey: "community", href: "/seobot-blog" },
+  { nameKey: "community", href: "/community" },
   { nameKey: "calculator", href: "/calculadora" },
   { nameKey: "whitepaper", href: "/whitepaper" },
 ];
@@ -25,7 +25,7 @@ function Navbar() {
   const { user, logout, forceLogout } = useAuth();
   const pathname = usePathname();
   const locale = pathname.split("/")[1];
-  const isBlogPage = pathname.includes("/seobot-blog");
+  const isBlogPage = pathname.includes("/community");
   const isDashboardPage = pathname.includes("/dashboard");
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
@@ -71,7 +71,7 @@ function Navbar() {
     { nameKey: "home", href: "/", icon: PiHouse, disabled: false },
     { nameKey: "us", href: "/nosotros", icon: PiUser, disabled: false },
     { nameKey: "project", href: "/proyectos", icon: PiTree, disabled: false },
-    { nameKey: "community", href: "/seobot-blog", icon: PiUsers, disabled: false },
+    { nameKey: "community", href: "/community", icon: PiUsers, disabled: false },
     { nameKey: "calculator", href: "/calculadora", icon: PiCalculator, disabled: false },
     { nameKey: "whitepaper", href: "/whitepaper", icon: PiFileText, disabled: false },
   ];

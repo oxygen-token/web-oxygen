@@ -49,9 +49,6 @@ export default async function SEObot_Blog_Page() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
               <div className="lg:col-span-1">
                 <div className="sticky top-32">
-                  <h1 className="text-2xl font-bold text-white mb-4">
-                    {t("seobotBlogTitle") || "SEObot Blog"}
-                  </h1>
                   <p className="text-lg text-white/80 mb-4 lg:mb-8 leading-relaxed">
                     {t("seobotBlogSubtitle") || "Discover the latest AI-generated content about environmental conservation, sustainability, and our mission to protect native forests."}
                   </p>

@@ -618,5 +618,9 @@
     "likes": "me gusta",
     "seobotBlogTitle": "SEObot Blog",
     "seobotBlogSubtitle": "Descubre el último contenido generado por IA sobre conservación ambiental, sostenibilidad y nuestra misión de proteger los bosques nativos."
+  },
+  "WhatsApp": {
+    "buttonText": "Contáctanos",
+    "buttonLabel": "Chatea con nosotros en WhatsApp"
   }
 }

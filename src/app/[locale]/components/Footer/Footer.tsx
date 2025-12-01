@@ -43,7 +43,7 @@ const links = [
 ] as const;
 
 const resources = [
-  { label: "Community", href: "/seobot-blog" },
+  { label: "Community", href: "/community" },
   { label: "Calculator", href: "/calculadora" },
   { label: "Whitepaper", href: "/whitepaper" },
 ] as const;

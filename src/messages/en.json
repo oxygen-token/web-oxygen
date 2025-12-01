@@ -619,5 +619,9 @@
     "likes": "likes",
     "seobotBlogTitle": "SEObot Blog",
     "seobotBlogSubtitle": "Discover the latest AI-generated content about environmental conservation, sustainability, and our mission to protect native forests."
+  },
+  "WhatsApp": {
+    "buttonText": "Contact us",
+    "buttonLabel": "Chat with us on WhatsApp"
   }
 }

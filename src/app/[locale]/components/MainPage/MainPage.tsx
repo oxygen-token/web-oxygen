@@ -1,6 +1,7 @@
 // Components
 import Footer from "../Footer/Footer";
 import Partnerships from "../Partnerships/Partnerships";
+import WhatsApp_Button from "../WhatsApp/WhatsApp_Button";
 
 // Styles
 import "./mainpage.css";
@@ -32,6 +33,7 @@ const MainPage = () => {
       <Quote />
       
       <Footer />
+      <WhatsApp_Button />
     </>
   );
 };

@@ -37,7 +37,7 @@ export default function Blog_Post({
   const [isAnimating, setIsAnimating] = useState(false);
 
   return (
-    <Link href={`/seobot-blog/${slug}`} className="block">
+    <Link href={`/community/${slug}`} className="block">
     <article className="group flex flex-col lg:flex-row gap-6 p-6 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20 hover:bg-white/15 transition-all duration-500 ease-out cursor-pointer lg:hover:scale-[1.02] lg:hover:-translate-y-1 lg:hover:shadow-2xl lg:hover:shadow-black/20 lg:hover:border-white/30">
       <div className="lg:w-1/3">
         <div className="relative h-48 lg:h-64 w-full rounded-lg overflow-hidden lg:transition-transform lg:duration-500 lg:ease-out lg:group-hover:scale-105">

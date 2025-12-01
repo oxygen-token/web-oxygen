@@ -83,13 +83,13 @@ export default async function SEObotBlogPostPage({ params }: SEObotBlogPostPageP
         
         <article className="relative bg-white/10 backdrop-blur-sm rounded-lg pt-16 p-8 border border-white/20">
           <Link
-            href="/seobot-blog"
+            href="/community"
             className="absolute top-4 right-4 inline-flex items-center gap-2 text-white/70 hover:text-white transition-colors duration-200"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
-            {t("backToBlog") || "Back to SEObot Blog"}
+            {t("backToBlog") || "Back to Community"}
           </Link>
           <header className="mb-8">
             <h1 className="text-4xl font-bold text-white mb-4 leading-tight">{post.headline}</h1>
@@ -157,7 +157,7 @@ export default async function SEObotBlogPostPage({ params }: SEObotBlogPostPageP
               {more.map((m: any) => (
                 <Link
                   key={m.id}
-                  href={`/seobot-blog/${m.slug}`}
+                  href={`/community/${m.slug}`}
                   className="group rounded-xl overflow-hidden border border-white/10 bg-white/5 backdrop-blur-sm hover:bg-white/10 transition-colors"
                 >
                   <div className="h-40 w-full overflow-hidden">
