@@ -24,11 +24,11 @@ interface MenuItem {
 
 const menuItems: MenuItem[] = [
   { nameKey: "inicio", href: "/en/dashboard", icon: PiHouse, iconType: 'react-icon', disabled: false, isAction: false },
-  { nameKey: "intercambiar", href: "/en/dashboard/exchange", icon: "/assets/images/icons/Change_icon.svg", iconType: 'svg', disabled: false, isAction: false },
-  { nameKey: "quemarToken", href: "/en/dashboard/quemar-token", icon: "/assets/images/icons/Burn_icon.svg", iconType: 'svg', disabled: false, isAction: false },
-  { nameKey: "compensar", href: "/en/dashboard/compensar", icon: "/assets/images/icons/Compensate_icon.svg", iconType: 'svg', disabled: false, isAction: false },
-  { nameKey: "ayuda", href: "/en/dashboard/ayuda", icon: PiQuestion, iconType: 'react-icon', disabled: false, isAction: false },
-  { nameKey: "configuracion", href: "/en/dashboard/configuracion", icon: PiGear, iconType: 'react-icon', disabled: false, isAction: false },
+  { nameKey: "intercambiar", href: "/en/dashboard/exchange", icon: "/assets/images/icons/Change_icon.svg", iconType: 'svg', disabled: true, isAction: false },
+  { nameKey: "quemarToken", href: "/en/dashboard/quemar-token", icon: "/assets/images/icons/Burn_icon.svg", iconType: 'svg', disabled: true, isAction: false },
+  { nameKey: "compensar", href: "/en/dashboard/compensar", icon: "/assets/images/icons/Compensate_icon.svg", iconType: 'svg', disabled: true, isAction: false },
+  { nameKey: "ayuda", href: "/en/dashboard/ayuda", icon: PiQuestion, iconType: 'react-icon', disabled: true, isAction: false },
+  { nameKey: "configuracion", href: "/en/dashboard/configuracion", icon: PiGear, iconType: 'react-icon', disabled: true, isAction: false },
   { nameKey: "cerrarSesion", href: null, icon: PiSignOut, iconType: 'react-icon', disabled: false, isAction: true },
 ];
 
@@ -67,7 +67,7 @@ const SideBarDashboard = memo(() => {
 
   const { isTransitioning, startTransition } = useTransition();
   const auth = useAuth();
-  const { forceLogout } = auth;
+  const { logout, forceLogout } = auth;
 
   const dynamicMenuItems = useMemo(() => menuItems.map(item => ({
     ...item,
@@ -131,15 +131,14 @@ const SideBarDashboard = memo(() => {
       const item = dynamicMenuItems[index];
       if (item && item.nameKey === "cerrarSesion") {
         try {
-          if (typeof window !== 'undefined') {
-            sessionStorage.setItem("hasEnteredBefore", "true");
-            sessionStorage.setItem("forceLogout", "true");
-          }
-          forceLogout();
-          await new Promise(resolve => setTimeout(resolve, 100));
+          // Llamar al backend para invalidar la sesión y limpiar cookies
+          await logout();
           const locale = window.location.pathname.split("/")[1];
           window.location.href = `/${locale}#home`;
         } catch (error) {
+          console.error("Logout error:", error);
+          // Si falla el logout del backend, forzar limpieza local
+          forceLogout();
           const locale = window.location.pathname.split("/")[1];
           window.location.href = `/${locale}#home`;
         }
@@ -164,7 +163,7 @@ const SideBarDashboard = memo(() => {
         setClickedIndex(null);
       }, 300);
     }
-  }, [activeIndex, isTransitioning, startTransition, forceLogout, dynamicMenuItems]);
+  }, [activeIndex, isTransitioning, startTransition, logout, forceLogout, dynamicMenuItems]);
 
   const handleMouseEnter = useCallback((index: number) => {
     if (!isTransitioning && index !== activeIndex) {

@@ -2,21 +2,24 @@
 
 import { useTranslations } from "next-intl";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-
 
 import Navbar from "../components/Navbar/Navbar";
 import Footer from "../components/Footer/Footer";
 import Light_Rays from "../components/ui/Light_Rays";
 import Rotating_Text from "../components/ui/Rotating_Text";
 import { get } from "../../../utils/request";
+import { useAuth } from "../context/Auth_Context";
 
 const VerifySuccess = () => {
   const t = useTranslations("VerifySuccess");
   const searchParams = useSearchParams();
+  const router = useRouter();
+  const { setUser } = useAuth();
   const [verificationStatus, setVerificationStatus] = useState<"loading" | "success" | "error">("loading");
   const [errorMessage, setErrorMessage] = useState("");
+  const [redirectCountdown, setRedirectCountdown] = useState(3);
 
   useEffect(() => {
     const verifyEmail = async () => {
@@ -24,7 +27,7 @@ const VerifySuccess = () => {
       console.log("Token from URL:", token);
       console.log("Full URL:", window.location.href);
       console.log("Search params:", searchParams.toString());
-      
+
       if (!token) {
         console.log("No token found in URL");
         setVerificationStatus("error");
@@ -34,29 +37,69 @@ const VerifySuccess = () => {
 
       console.log("Starting email verification...");
       try {
+        // get() returns parsed JSON on success, throws Response on error
         const response = await get(`/verify?token=${token}`);
 
-        console.log("Response status:", response.status);
-        console.log("Response ok:", response.ok);
+        console.log("Verification response:", response);
 
-        if (response.ok) {
+        // response is already parsed JSON
+        if (response.success) {
           console.log("Verification successful");
           setVerificationStatus("success");
+
+          // Si el backend devuelve user data, seteamos el usuario (auto-login)
+          if (response.user) {
+            setUser({
+              username: response.user.fullName || response.user.email?.split('@')[0] || '',
+              email: response.user.email,
+              isFirstLogin: response.user.isFirstLogin ?? true,
+              welcomeModalShown: response.user.welcomeModalShown ?? false,
+              onboardingStep: response.user.onboardingStep || "pending",
+              affiliateCodeUsedAt: response.user.affiliateCodeUsedAt || null,
+            });
+          }
         } else {
-          const errorData = await response.json();
-          console.log("Verification failed:", errorData);
+          console.log("Verification failed:", response);
           setVerificationStatus("error");
-          setErrorMessage(errorData.message || "Verification failed");
+          setErrorMessage(response.message || "Verification failed");
         }
-      } catch (error) {
+      } catch (error: any) {
         console.error("Email verification error:", error);
+        // Handle thrown Response from get() on HTTP errors
+        if (error instanceof Response) {
+          try {
+            const errorData = await error.json();
+            setErrorMessage(errorData.message || "Verification failed");
+          } catch {
+            setErrorMessage("Verification failed");
+          }
+        } else {
+          setErrorMessage("Network error occurred");
+        }
         setVerificationStatus("error");
-        setErrorMessage("Network error occurred");
       }
     };
 
     verifyEmail();
-  }, [searchParams]);
+  }, [searchParams, setUser]);
+
+  // Auto-redirect countdown cuando la verificación es exitosa
+  useEffect(() => {
+    if (verificationStatus === "success") {
+      const timer = setInterval(() => {
+        setRedirectCountdown((prev) => {
+          if (prev <= 1) {
+            clearInterval(timer);
+            router.push("/dashboard");
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+
+      return () => clearInterval(timer);
+    }
+  }, [verificationStatus, router]);
 
   return (
     <>
@@ -118,21 +161,25 @@ const VerifySuccess = () => {
                 <h1 className="text-3xl font-bold text-white mb-4 tracking-tight">
                   {t("title")}
                 </h1>
-                
+
                 <p className="text-lg text-white/90 mb-6">
                   {t("subtitle")}
                 </p>
-                
-                <p className="text-base text-white/80 mb-8 leading-relaxed">
+
+                <p className="text-base text-white/80 mb-6 leading-relaxed">
                   {t("description")}
                 </p>
 
-                <Link
-                  href="/login"
+                <p className="text-sm text-white/60 mb-4">
+                  {t("redirecting") || "Redirigiendo al dashboard en"} {redirectCountdown}...
+                </p>
+
+                <button
+                  onClick={() => router.push("/dashboard")}
                   className="w-full max-w-xs py-3 px-6 text-base font-medium bg-teal-accent text-white rounded-lg hover:bg-teal-accent/80 transition-colors text-center"
                 >
-                  {t("loginButton")}
-                </Link>
+                  {t("goToDashboard") || "Ir al Dashboard"}
+                </button>
               </>
             )}
 

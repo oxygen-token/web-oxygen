@@ -106,9 +106,6 @@ function Navbar() {
               >
                 {t("dashboard")}
               </Link>
-              <span className="border border-current px-3 py-1 rounded-full">
-                {t("helloUser", { username: capitalizeFirstLetter(user.username) })}
-              </span>
               <button
                 onClick={handleLogout}
                 className="border border-red-500 px-3 py-1 rounded-full text-red-500 hover:bg-red-500 hover:text-white transition-colors duration-200"

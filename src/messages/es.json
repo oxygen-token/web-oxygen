@@ -83,9 +83,9 @@
     "login": "Iniciar sesión",
     "waitlist": "Únete a la lista de espera",
     "helloUser": "Hola, {username}",
-    "logout": "Cerrar sesión",
+    "logout": "Log out",
     "whitepaper": "Documento técnico",
-    "dashboard": "Panel de control"
+    "dashboard": "Dashboard"
   },
   "Footer": {
     "company": "Empresa",
@@ -261,8 +261,8 @@
   },
   "Dashboard": {
     "metrics": {
-      "carbonCredits": "bonos de carbono",
-      "carbonCreditsDesc": "Créditos disponibles",
+      "carbonCredits": "$OM",
+      "carbonCreditsDesc": "Tokens disponibles",
       "co2Absorbed": "CO₂ absorbido",
       "co2AbsorbedDesc": "Toneladas compensadas",
       "areaSaved": "m² salvados",

@@ -10,28 +10,32 @@ interface WelcomeModalData {
 
 export const useWelcomeModal = () => {
   const [isUpdating, setIsUpdating] = useState(false);
-  const { user } = useAuth();
+  const { user, setUser } = useAuth();
 
   const updateWelcomeModal = async (): Promise<boolean> => {
     setIsUpdating(true);
     try {
       console.log("📡 Enviando POST /update-welcome-modal...");
-      const payload: WelcomeModalData = { 
-        welcomeModalShown: true 
+      const payload: WelcomeModalData = {
+        welcomeModalShown: true
       };
-      
+
       if (user?.email) {
         payload.email = user.email;
       }
-      
+
       const response = await post("/update-welcome-modal", payload);
-      
-      if (response.ok) {
-        const data = await response.json();
-        console.log("✅ Modal de bienvenida marcado como mostrado:", data);
+
+      // post() ya devuelve el JSON parseado si es exitoso
+      if (response.success || response.ok) {
+        console.log("✅ Modal de bienvenida marcado como mostrado:", response);
+        // Actualizar el user en el contexto
+        if (user) {
+          setUser({ ...user, welcomeModalShown: true });
+        }
         return true;
       } else {
-        console.error("❌ Error al marcar modal de bienvenida como mostrado:", response.status);
+        console.error("❌ Error al marcar modal de bienvenida como mostrado");
         return false;
       }
     } catch (error) {

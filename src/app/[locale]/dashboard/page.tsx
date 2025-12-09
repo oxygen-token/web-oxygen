@@ -4,8 +4,9 @@ import DashboardLayout from "../components/DashboardLayout/DashboardLayout";
 import Dashboard_Main from "../components/Dashboard/Dashboard_Main/Dashboard_Main";
 import Animated_Page from "../components/ui/Animated_Page";
 import AuthLoading from "../components/ui/Auth_Loading";
+import { useAuth } from "../context/Auth_Context";
 
-// Datos de ejemplo
+// Datos de ejemplo (legacy, será reemplazado por datos reales)
 const mockData = {
   metrics: [
     {
@@ -86,24 +87,25 @@ const mockData = {
 
 export default function DashboardPage() {
   const t = useTranslations("Dashboard");
+  const { user } = useAuth();
 
-  const mockData = {
+  const dashboardData = {
     metrics: [
       {
         title: t("metrics.carbonCredits"),
-        value: "X",
+        value: String(user?.bonusOMsReceived ?? 0),
         icon: "/assets/images/imgTrees.jpg",
         description: t("metrics.carbonCreditsDesc")
       },
       {
         title: t("metrics.co2Absorbed"),
-        value: "X",
+        value: String(user?.carbonCredits ?? 0),
         icon: "/assets/images/forest.jpg",
         description: t("metrics.co2AbsorbedDesc")
       },
       {
         title: t("metrics.areaSaved"),
-        value: "5",
+        value: "0",
         icon: "/assets/images/imgTrees.jpg",
         description: t("metrics.areaSavedDesc")
       }
@@ -169,7 +171,7 @@ export default function DashboardPage() {
     <AuthLoading requireAuth={true}>
       <DashboardLayout>
         <Animated_Page>
-          <Dashboard_Main {...mockData} />
+          <Dashboard_Main {...dashboardData} />
         </Animated_Page>
       </DashboardLayout>
     </AuthLoading>

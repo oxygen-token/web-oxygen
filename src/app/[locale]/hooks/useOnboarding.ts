@@ -10,28 +10,32 @@ interface OnboardingData {
 
 export const useOnboarding = () => {
   const [isUpdating, setIsUpdating] = useState(false);
-  const { user } = useAuth();
+  const { user, setUser } = useAuth();
 
   const updateWelcomeModal = async (): Promise<boolean> => {
     setIsUpdating(true);
     try {
       console.log("📡 Enviando POST /update-welcome-modal...");
-      const payload: { welcomeModalShown: boolean; email?: string } = { 
-        welcomeModalShown: true 
+      const payload: { welcomeModalShown: boolean; email?: string } = {
+        welcomeModalShown: true
       };
-      
+
       if (user?.email) {
         payload.email = user.email;
       }
-      
+
       const response = await post("/update-welcome-modal", payload);
-      
-      if (response.ok) {
-        const data = await response.json();
-        console.log("✅ Modal marcado como mostrado:", data);
+
+      // post() ya devuelve el JSON parseado si es exitoso
+      if (response.success || response.ok) {
+        console.log("✅ Modal marcado como mostrado:", response);
+        // Actualizar el user en el contexto
+        if (user) {
+          setUser({ ...user, welcomeModalShown: true });
+        }
         return true;
       } else {
-        console.error("❌ Error al marcar modal como mostrado:", response.status);
+        console.error("❌ Error al marcar modal como mostrado");
         return false;
       }
     } catch (error) {
@@ -46,36 +50,40 @@ export const useOnboarding = () => {
     setIsUpdating(true);
     try {
       console.log(`📡 Enviando POST /update-onboarding-step...`);
-      
-      const payload: { 
-        onboardingStep: string; 
-        skipped?: boolean; 
+
+      const payload: {
+        onboardingStep: string;
+        skipped?: boolean;
         step?: number;
         email?: string;
-      } = { 
-        onboardingStep: step 
+      } = {
+        onboardingStep: step
       };
-      
+
       if (skipped !== undefined) {
         payload.skipped = skipped;
       }
-      
+
       if (stepNumber !== undefined) {
         payload.step = stepNumber;
       }
-      
+
       if (user?.email) {
         payload.email = user.email;
       }
-      
+
       const response = await post("/update-onboarding-step", payload);
-      
-      if (response.ok) {
-        const data = await response.json();
-        console.log("✅ Onboarding step actualizado:", data);
+
+      // post() ya devuelve el JSON parseado si es exitoso
+      if (response.success || response.ok) {
+        console.log("✅ Onboarding step actualizado:", response);
+        // Actualizar el user en el contexto
+        if (user) {
+          setUser({ ...user, onboardingStep: step });
+        }
         return true;
       } else {
-        console.error("❌ Error al actualizar onboarding step:", response.status);
+        console.error("❌ Error al actualizar onboarding step");
         return false;
       }
     } catch (error) {

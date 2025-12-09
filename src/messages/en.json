@@ -261,8 +261,8 @@
   },
   "Dashboard": {
     "metrics": {
-      "carbonCredits": "carbon credits",
-      "carbonCreditsDesc": "Available credits",
+      "carbonCredits": "$OM",
+      "carbonCreditsDesc": "Available tokens",
       "co2Absorbed": "CO₂ absorbed",
       "co2AbsorbedDesc": "Compensated tons",
       "areaSaved": "m² saved",

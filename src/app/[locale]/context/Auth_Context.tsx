@@ -10,6 +10,9 @@ interface User {
   welcomeModalShown?: boolean;
   onboardingStep?: string;
   affiliateCodeUsedAt?: string | null;
+  carbonCredits?: number;
+  omBalance?: number;
+  bonusOMsReceived?: number;
 }
 
 type LoginResponse = 
@@ -64,20 +67,16 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       ]);
       
       if (data.loggedIn) {
-        const username = data.fullName || data.username;
-        const email = data.email || "";
-        const isFirstLogin = data.isFirstLogin || false;
-        const welcomeModalShown = data.welcomeModalShown || false;
-        const onboardingStep = data.onboardingStep || "pending";
-        const affiliateCodeUsedAt = data.affiliateCodeUsedAt || null;
-        
-        setUser({ 
-          username: username, 
-          email: email,
-          isFirstLogin: isFirstLogin,
-          welcomeModalShown: welcomeModalShown,
-          onboardingStep: onboardingStep,
-          affiliateCodeUsedAt: affiliateCodeUsedAt
+        setUser({
+          username: data.fullName || data.username,
+          email: data.email || "",
+          isFirstLogin: data.isFirstLogin || false,
+          welcomeModalShown: data.welcomeModalShown || false,
+          onboardingStep: data.onboardingStep || "pending",
+          affiliateCodeUsedAt: data.affiliateCodeUsedAt || null,
+          carbonCredits: data.carbonCredits ?? 0,
+          omBalance: data.omBalance ?? 0,
+          bonusOMsReceived: data.bonusOMsReceived ?? 0,
         });
       } else {
         setUser(null);
@@ -330,7 +329,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       setLoading(false);
       return;
     }
-    
+
     if (typeof window !== 'undefined') {
       const forceLogoutFlag = sessionStorage.getItem("forceLogout");
       if (forceLogoutFlag === "true") {
@@ -339,19 +338,38 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         sessionStorage.removeItem("forceLogout");
         return;
       }
+
+      // Skip checkAuth on public pages where user is not expected to be logged in
+      // Note: verify-success puede setear el user después de verificación exitosa
+      const publicPaths = ['/post-register', '/login', '/register'];
+      const currentPath = window.location.pathname;
+      const isPublicPage = publicPaths.some(path => currentPath.includes(path));
+
+      // Para verify-success, solo skip checkAuth pero no resetear user
+      // porque el user se setea después de verificación exitosa
+      if (currentPath.includes('/verify-success')) {
+        setLoading(false);
+        return;
+      }
+
+      if (isPublicPage) {
+        setUser(null);
+        setLoading(false);
+        return;
+      }
     }
-    
+
     if (!isLoggingOut && !hasLoggedOut) {
       loadingRef.current = true;
       checkAuth();
-      
+
       const fallbackTimeout = setTimeout(() => {
         if (loadingRef.current) {
           setLoading(false);
           loadingRef.current = false;
         }
       }, 15000);
-      
+
       return () => {
         clearTimeout(fallbackTimeout);
       };

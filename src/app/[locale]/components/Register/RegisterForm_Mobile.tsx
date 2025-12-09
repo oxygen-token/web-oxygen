@@ -71,8 +71,9 @@ const RegisterForm_Mobile = () => {
   const onSubmit = async (data: FormData) => {
     console.log("Mobile form submitted with data:", data);
     console.log("Email:", data.email);
-    
+
     try {
+      // post() returns parsed JSON on success, throws Response on error
       const response = await post("/register", {
         fullName: data.fullName,
         email: data.email,
@@ -82,9 +83,10 @@ const RegisterForm_Mobile = () => {
         ...(data.affiliateCode && { affiliateCode: data.affiliateCode }),
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        if (errorData.message === "Email already exists") {
+      // If we reach here, the request was successful (post() throws on error)
+      // response is already parsed JSON
+      if (!response.success) {
+        if (response.message === "Email already exists") {
           setError("email", { message: t("email-exists") });
         } else {
           setError("root", { message: t("server-error") });
@@ -93,10 +95,8 @@ const RegisterForm_Mobile = () => {
       }
 
       try {
-        // Obtener el tipo de código del backend response
-        const backendResponse = await response.json();
-        const affiliateCodeType = backendResponse.affiliateCodeType || 'code_standard';
-        
+        const affiliateCodeType = response.affiliateCodeType || 'code_standard';
+
         await fetch('/api/google-sheets', {
           method: 'POST',
           headers: {
@@ -116,8 +116,20 @@ const RegisterForm_Mobile = () => {
       }
 
       window.location.href = "/post-register";
-    } catch (error) {
+    } catch (error: any) {
       console.error("Registration error:", error);
+      // Handle thrown Response from post() on HTTP errors
+      if (error instanceof Response) {
+        try {
+          const errorData = await error.json();
+          if (errorData.message === "Email already exists") {
+            setError("email", { message: t("email-exists") });
+            return;
+          }
+        } catch {
+          // JSON parsing failed, fall through to generic error
+        }
+      }
       setError("root", { message: t("server-error") });
     }
   };
@@ -129,24 +141,25 @@ const RegisterForm_Mobile = () => {
     setIsVerifying(true);
     setVerificationMessage("");
     try {
+      // post() returns parsed JSON on success, throws Response on error
       const response = await post("/verify-affiliate-code", {
         code: affiliateCode,
       });
 
-      const data = await response.json();
-
-      if (data.success) {
+      if (response.success) {
         setVerificationStatus("success");
-        setVerificationMessage("");
+        // Mostrar los bonusOMs si están disponibles
+        const bonusOMs = response.data?.bonusOMs;
+        setVerificationMessage(bonusOMs ? `+${bonusOMs} OM` : "");
         setLastVerifiedCode(affiliateCode);
         localStorage.setItem('affiliateCode', affiliateCode);
         localStorage.setItem('affiliateVerified', 'true');
       } else {
         setVerificationStatus("failed");
-        setVerificationMessage(data.message || "Invalid code");
+        setVerificationMessage(response.message || "Invalid code");
         setLastVerifiedCode(affiliateCode);
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error verifying affiliate code:", error);
       setVerificationStatus("failed");
       setVerificationMessage("Error verifying code");
@@ -420,16 +433,19 @@ const RegisterForm_Mobile = () => {
       />
 
       <div className={`text-white text-sm rounded-lg p-3 flex flex-col justify-center items-center transition-all duration-300 ease-in-out min-h-[48px] ${
-        verificationStatus === "success" 
-          ? "bg-teal-accent/20 border border-teal-accent/30 opacity-100 scale-100" 
+        verificationStatus === "success"
+          ? "bg-teal-accent/20 border border-teal-accent/30 opacity-100 scale-100"
           : verificationStatus === "failed"
           ? "bg-red-500/20 border border-red-500/30 opacity-100 scale-100"
           : "opacity-0 scale-95"
       }`}>
         {verificationStatus === "success" ? (
-          <div className="font-semibold text-center">{t("om-guaranteed")}</div>
+          <>
+            <div className="font-semibold text-center">{verificationMessage || t("om-guaranteed")}</div>
+            <div className="text-xs opacity-90">{t("with-sign-up")}</div>
+          </>
         ) : verificationStatus === "failed" ? (
-          <div className="font-semibold text-white text-center">{t("invalid-code")}</div>
+          <div className="font-semibold text-white text-center">{verificationMessage || t("invalid-code")}</div>
         ) : null}
       </div>
 
