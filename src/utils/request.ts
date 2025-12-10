@@ -50,10 +50,11 @@ export async function apiRequest(
     method,
     headers: {
       "Content-Type": "application/json",
+      "Accept": "application/json",
       ...headers,
     },
     body: JSON.stringify(body),
-    credentials: "include", 
+    credentials: "include",
   });
 
   const setCookieHeader = res.headers.get('set-cookie');
@@ -83,6 +84,7 @@ export async function get(
     method: "GET",
     headers: {
       "Content-Type": "application/json",
+      "Accept": "application/json",
       ...headers,
     },
     credentials: "include",
@@ -115,6 +117,7 @@ export async function post(
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      "Accept": "application/json",
       ...headers,
     },
     body: JSON.stringify(body),
