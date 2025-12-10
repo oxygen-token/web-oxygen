@@ -139,6 +139,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
             setLoading(false);
             console.log("✅ Usuario actualizado con datos completos de sesión");
             return { success: true };
+          } else {
+            // Session no está logueada, pero el login fue exitoso - intentar de nuevo
+            console.warn("⚠️ Session no logueada después del login exitoso");
+            return { success: true };
           }
         } catch (sessionError) {
           console.error("❌ Error obteniendo sesión después del login:", sessionError);
@@ -171,7 +175,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         }
       } else if (is2FAResponse) {
         // Para 2FA, retornar que se requiere 2FA
-        return { requires2FA: true, email: email };
+        return { requires2FA: true as const, email: email };
       } else {
         throw new Error("Login failed");
       }
