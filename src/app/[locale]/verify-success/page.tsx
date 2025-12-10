@@ -112,10 +112,10 @@ const VerifySuccess = () => {
         return;
       }
 
-      console.log("Starting email verification (legacy flow)...");
+      console.log("Starting email verification with POST...");
       try {
-        // get() returns parsed JSON on success, throws Response on error
-        const response = await get(`/verify?token=${token}`);
+        // POST to /verify-email to avoid CORS issues with redirects
+        const response = await post("/verify-email", { token });
 
         console.log("Verification response:", response);
 
