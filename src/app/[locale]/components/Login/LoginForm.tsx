@@ -39,9 +39,32 @@ const LoginForm = () => {
         setUserEmail(data.email);
         setShowTwoFactorModal(true);
       } else {
-      console.log("Login successful, redirecting to dashboard...");
-      console.log("Redirect URL:", `/${locale}/dashboard`);
-      router.push(`/${locale}/dashboard`);
+        console.log("✅ Login successful, redirecting to dashboard...");
+        console.log("📍 Current pathname:", pathname);
+        console.log("🎯 Target URL:", `/${locale}/dashboard`);
+
+        // Esperar a que las cookies y el estado se establezcan antes de redirigir
+        await new Promise(resolve => setTimeout(resolve, 200));
+
+        console.log("🚀 Attempting redirect now...");
+        const targetUrl = `/${locale}/dashboard`;
+
+        // Intentar con router.push primero
+        try {
+          router.push(targetUrl);
+          console.log("✅ Redirect called to:", targetUrl);
+
+          // Verificar si la redirección funcionó después de un tiempo
+          setTimeout(() => {
+            if (window.location.pathname !== targetUrl) {
+              console.warn("⚠️ Router.push no funcionó, usando window.location.href como fallback");
+              window.location.href = targetUrl;
+            }
+          }, 500);
+        } catch (error) {
+          console.error("❌ Error con router.push, usando window.location.href:", error);
+          window.location.href = targetUrl;
+        }
       }
     } catch (err) {
       console.error("Login error in form:", err);

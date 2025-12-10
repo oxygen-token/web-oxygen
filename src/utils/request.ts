@@ -23,15 +23,18 @@ const getCookieValue = (name: string) => {
 };
 
 const setCookie = (name: string, value: string, options: any = {}) => {
-  const { expires, path = '/', domain, secure = true, sameSite = 'Lax' } = options;
-  
+  const { expires, path = '/', domain, secure = false, sameSite = 'Lax' } = options;
+
   let cookieString = `${name}=${value}`;
   if (expires) cookieString += `; expires=${expires}`;
   if (path) cookieString += `; path=${path}`;
   if (domain) cookieString += `; domain=${domain}`;
-  if (secure) cookieString += '; secure';
+  // Solo usar secure en producción (HTTPS)
+  if (secure && typeof window !== 'undefined' && window.location.protocol === 'https:') {
+    cookieString += '; secure';
+  }
   if (sameSite) cookieString += `; samesite=${sameSite}`;
-  
+
   document.cookie = cookieString;
 };
 

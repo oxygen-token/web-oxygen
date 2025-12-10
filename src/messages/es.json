@@ -334,7 +334,12 @@
     "description1": "Te damos la bienvenida a nuestra plataforma de compensación de carbono. Aquí podrás contribuir directamente a la protección de bosques y la reducción de emisiones de CO₂.",
     "description2": "Explora nuestros proyectos forestales verificados, calcula tu huella de carbono y participa en la generación de créditos de carbono certificados.",
     "description3": "Cada acción que realices aquí tiene un impacto real en la conservación del medio ambiente.",
-    "cta": "Ir al Dashboard"
+    "cta": "Ir al Dashboard",
+    "specialTitle": "¡Felicitaciones y bienvenido a Oxygen!",
+    "specialDescription1": "Acabas de desbloquear tus tokens OM por ser uno de los miembros más activos de nuestra comunidad.",
+    "specialDescription2": "Tus tokens ahora están asegurados en tu cuenta. Son parte de nuestra pre-venta y se activarán cuando lancemos pronto — estate atento a los próximos anuncios.",
+    "specialDescription3": "Gracias por ser parte de este viaje para proteger bosques, empoderar comunidades y transformar la acción climática en algo accesible para todos. Recién estamos empezando. 💚",
+    "specialCta": "Ir al Dashboard"
   },
   "AffiliateRewardModal": {
     "title": "¡Código de afiliado activado!",

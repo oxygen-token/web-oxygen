@@ -47,16 +47,44 @@ const VerifySuccess = () => {
           console.log("Verification successful");
           setVerificationStatus("success");
 
-          // Si el backend devuelve user data, seteamos el usuario (auto-login)
-          if (response.user) {
-            setUser({
-              username: response.user.fullName || response.user.email?.split('@')[0] || '',
-              email: response.user.email,
-              isFirstLogin: response.user.isFirstLogin ?? true,
-              welcomeModalShown: response.user.welcomeModalShown ?? false,
-              onboardingStep: response.user.onboardingStep || "pending",
-              affiliateCodeUsedAt: response.user.affiliateCodeUsedAt || null,
-            });
+          // Obtener datos completos del usuario desde /session (incluye OMs, carbonCredits, etc.)
+          try {
+            console.log("📡 Obteniendo datos completos de sesión...");
+            const sessionData = await get("/session");
+            console.log("📥 Datos de sesión obtenidos:", sessionData);
+
+            if (sessionData.loggedIn) {
+              setUser({
+                username: sessionData.fullName || sessionData.username || sessionData.email?.split('@')[0] || '',
+                email: sessionData.email,
+                isFirstLogin: sessionData.isFirstLogin ?? true,
+                welcomeModalShown: sessionData.welcomeModalShown ?? false,
+                onboardingStep: sessionData.onboardingStep || "pending",
+                affiliateCode: sessionData.affiliateCode || null,
+                affiliateCodeUsedAt: sessionData.affiliateCodeUsedAt || null,
+                carbonCredits: sessionData.carbonCredits ?? 0,
+                omBalance: sessionData.omBalance ?? 0,
+                bonusOMsReceived: sessionData.bonusOMsReceived ?? 0,
+              });
+              console.log("✅ Usuario seteado con datos completos de sesión");
+            }
+          } catch (sessionError) {
+            console.error("❌ Error obteniendo sesión, usando datos de verificación:", sessionError);
+            // Fallback: usar datos de la respuesta de verificación
+            if (response.user) {
+              setUser({
+                username: response.user.fullName || response.user.email?.split('@')[0] || '',
+                email: response.user.email,
+                isFirstLogin: response.user.isFirstLogin ?? true,
+                welcomeModalShown: response.user.welcomeModalShown ?? false,
+                onboardingStep: response.user.onboardingStep || "pending",
+                affiliateCode: response.user.affiliateCode || null,
+                affiliateCodeUsedAt: response.user.affiliateCodeUsedAt || null,
+                carbonCredits: response.user.carbonCredits ?? 0,
+                omBalance: response.user.omBalance ?? 0,
+                bonusOMsReceived: response.user.bonusOMsReceived ?? 0,
+              });
+            }
           }
         } else {
           console.log("Verification failed:", response);

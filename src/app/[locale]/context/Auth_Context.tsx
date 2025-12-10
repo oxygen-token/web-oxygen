@@ -9,6 +9,7 @@ interface User {
   isFirstLogin?: boolean;
   welcomeModalShown?: boolean;
   onboardingStep?: string;
+  affiliateCode?: string | null;
   affiliateCodeUsedAt?: string | null;
   carbonCredits?: number;
   omBalance?: number;
@@ -73,6 +74,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           isFirstLogin: data.isFirstLogin || false,
           welcomeModalShown: data.welcomeModalShown || false,
           onboardingStep: data.onboardingStep || "pending",
+          affiliateCode: data.affiliateCode || null,
           affiliateCodeUsedAt: data.affiliateCodeUsedAt || null,
           carbonCredits: data.carbonCredits ?? 0,
           omBalance: data.omBalance ?? 0,
@@ -93,40 +95,83 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const login = async (email: string, password: string) => {
     setHasLoggedOut(false);
     setIsLoggingOut(false);
-    
+
     try {
       const loginData = {
         email: email,
         password: password,
       };
-      
-      const responseData = await post("/login", loginData);
-      
-      if (responseData.status === "2fa_required" || responseData.requires2FA || responseData.twoFactorRequired) {
-        return {
-          requires2FA: true as const,
-          email: email,
-        };
-      }
 
-      if (responseData.success) {
-        const username = responseData.user?.fullName || responseData.fullName || email.split('@')[0];
-        const userEmail = responseData.user?.email || responseData.email || email;
-        const isFirstLogin = responseData.isFirstLogin || false;
-        const welcomeModalShown = responseData.user?.welcomeModalShown || false;
-        const onboardingStep = responseData.user?.onboardingStep || "pending";
-        const affiliateCodeUsedAt = responseData.user?.affiliateCodeUsedAt || null;
-        
-        setUser({ 
-          username: username, 
-          email: userEmail,
-          isFirstLogin: isFirstLogin,
-          welcomeModalShown: welcomeModalShown,
-          onboardingStep: onboardingStep,
-          affiliateCodeUsedAt: affiliateCodeUsedAt
-        });
-        setLoading(false);
-        return { success: true };
+      console.log("📡 Enviando request de login...");
+      const responseData = await post("/login", loginData);
+      console.log("📥 Respuesta del login recibida:", responseData);
+
+      // 2FA desactivado temporalmente - tratar como login exitoso
+      const is2FAResponse = responseData.status === "2fa_required" || responseData.requires2FA || responseData.twoFactorRequired;
+      const isLoginSuccess = responseData.success || responseData.status === "logged" || responseData.status === "success";
+
+      if (isLoginSuccess) {
+        console.log("✅ Login exitoso, obteniendo datos completos del usuario...");
+        console.log("🔍 isLoginSuccess:", isLoginSuccess);
+        console.log("🔍 responseData.success:", responseData.success);
+        console.log("🔍 responseData.status:", responseData.status);
+
+        // Hacer checkAuth para obtener TODOS los datos del usuario desde /session
+        // En lugar de intentar parsear la respuesta del login que puede estar incompleta
+        try {
+          console.log("📡 Haciendo request a /session...");
+          const sessionData = await get("/session");
+          console.log("📥 Datos completos de sesión obtenidos:", sessionData);
+
+          if (sessionData.loggedIn) {
+            setUser({
+              username: sessionData.fullName || sessionData.username,
+              email: sessionData.email || email,
+              isFirstLogin: sessionData.isFirstLogin || false,
+              welcomeModalShown: sessionData.welcomeModalShown || false,
+              onboardingStep: sessionData.onboardingStep || "pending",
+              affiliateCode: sessionData.affiliateCode || null,
+              affiliateCodeUsedAt: sessionData.affiliateCodeUsedAt || null,
+              carbonCredits: sessionData.carbonCredits ?? 0,
+              omBalance: sessionData.omBalance ?? 0,
+              bonusOMsReceived: sessionData.bonusOMsReceived ?? 0,
+            });
+            setLoading(false);
+            console.log("✅ Usuario actualizado con datos completos de sesión");
+            return { success: true };
+          }
+        } catch (sessionError) {
+          console.error("❌ Error obteniendo sesión después del login:", sessionError);
+          // Fallback: usar datos de la respuesta del login aunque estén incompletos
+          const username = responseData.user?.fullName || responseData.user?.name || responseData.fullName || email.split('@')[0];
+          const userEmail = responseData.user?.email || responseData.email || email;
+          const isFirstLogin = responseData.user?.isFirstLogin || responseData.isFirstLogin || false;
+          const welcomeModalShown = responseData.user?.welcomeModalShown || false;
+          const onboardingStep = responseData.user?.onboardingStep || "pending";
+          const affiliateCode = responseData.user?.affiliateCode || null;
+          const affiliateCodeUsedAt = responseData.user?.affiliateCodeUsedAt || null;
+          const carbonCredits = responseData.user?.carbonCredits ?? 0;
+          const omBalance = responseData.user?.omBalance ?? 0;
+          const bonusOMsReceived = responseData.user?.bonusOMsReceived ?? 0;
+
+          setUser({
+            username: username,
+            email: userEmail,
+            isFirstLogin: isFirstLogin,
+            welcomeModalShown: welcomeModalShown,
+            onboardingStep: onboardingStep,
+            affiliateCode: affiliateCode,
+            affiliateCodeUsedAt: affiliateCodeUsedAt,
+            carbonCredits: carbonCredits,
+            omBalance: omBalance,
+            bonusOMsReceived: bonusOMsReceived
+          });
+          setLoading(false);
+          return { success: true };
+        }
+      } else if (is2FAResponse) {
+        // Para 2FA, retornar que se requiere 2FA
+        return { requires2FA: true, email: email };
       } else {
         throw new Error("Login failed");
       }
@@ -359,6 +404,19 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       }
     }
 
+    // Si el usuario ya está seteado (por ejemplo, después de login), no hacer checkAuth
+    if (user && !loading) {
+      console.log("✅ Usuario ya existe en contexto, saltando checkAuth");
+      return;
+    }
+
+    // Si acabamos de hacer login y el usuario se acaba de setear
+    if (user && loading) {
+      console.log("✅ Usuario seteado después de login, actualizando estado de loading");
+      setLoading(false);
+      return;
+    }
+
     if (!isLoggingOut && !hasLoggedOut) {
       loadingRef.current = true;
       checkAuth();
@@ -376,7 +434,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     } else {
       console.log("⏸️ Saltando checkAuth:", { isLoggingOut, hasLoggedOut });
     }
-  }, [isLoggingOut, hasLoggedOut, isDevMode, mockUser]);
+  }, [isLoggingOut, hasLoggedOut, isDevMode, mockUser, user]);
 
   // Efecto adicional para limpiar el estado cuando se hace logout
   useEffect(() => {

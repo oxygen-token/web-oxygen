@@ -1,7 +1,11 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 import { useTranslations } from "next-intl";
+import { useAuth } from "../../context/Auth_Context";
 import "./Welcome_Modal.css";
+
+// Códigos especiales que muestran el texto de OM tokens
+const SPECIAL_AFFILIATE_CODES = ['149hub', '773qrn', '699hyy', '536zzo', '950sth'];
 
 interface Welcome_Modal_Props {
   show: boolean;
@@ -13,6 +17,11 @@ export default function Welcome_Modal({ show, onClose, onButtonClick }: Welcome_
   const [isVisible, setIsVisible] = useState(false);
   const modalRef = useRef<HTMLDivElement | null>(null);
   const t = useTranslations("WelcomeModal");
+  const { user } = useAuth();
+
+  // Verificar si el usuario usó un código especial
+  const isSpecialCode = user?.affiliateCode &&
+    SPECIAL_AFFILIATE_CODES.includes(user.affiliateCode.toLowerCase());
 
   useEffect(() => {
     if (show) {
@@ -70,6 +79,13 @@ export default function Welcome_Modal({ show, onClose, onButtonClick }: Welcome_
         margin: -1.5rem 0;
       `;
       
+      // Determinar qué textos mostrar según si es código especial o no
+      const title = isSpecialCode ? t("specialTitle") : t("title");
+      const desc1 = isSpecialCode ? t("specialDescription1") : t("description1");
+      const desc2 = isSpecialCode ? t("specialDescription2") : t("description2");
+      const desc3 = isSpecialCode ? t("specialDescription3") : t("description3");
+      const ctaText = isSpecialCode ? t("specialCta") : t("cta");
+
       // Contenido del modal
       modalContent.innerHTML = `
         <div style="text-align: center; color: white;">
@@ -77,20 +93,23 @@ export default function Welcome_Modal({ show, onClose, onButtonClick }: Welcome_
           <div style="margin-bottom: 2rem; text-align: center;">
             <img src="/assets/images/logo_slogan.png" alt="Oxygen" style="height: 5rem; width: auto; margin-bottom: 0; display: inline-block;" />
           </div>
-          
+
+          <!-- Título (solo para códigos especiales) -->
+          ${isSpecialCode ? `<h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1.5rem; color: white;">${title}</h2>` : ''}
+
           <!-- Descripción -->
           <div style="text-align: left; margin-bottom: 2rem; line-height: 1.6;">
             <p style="margin-bottom: 1rem; color: rgba(255, 255, 255, 0.9);">
-              ${t("description1")}
+              ${desc1}
             </p>
             <p style="margin-bottom: 1rem; color: rgba(255, 255, 255, 0.9);">
-              ${t("description2")}
+              ${desc2}
             </p>
             <p style="color: rgba(255, 255, 255, 0.9);">
-              ${t("description3")}
+              ${desc3}
             </p>
           </div>
-          
+
           <!-- Botón -->
           <button id="welcome-modal-button" style="
             background: linear-gradient(135deg, rgba(3, 77, 77, 0.9) 0%, rgba(0, 106, 106, 0.85) 100%);
@@ -106,7 +125,7 @@ export default function Welcome_Modal({ show, onClose, onButtonClick }: Welcome_
             width: 100%;
             max-width: 16rem;
           ">
-            ${t("cta")}
+            ${ctaText}
           </button>
         </div>
       `;
@@ -173,7 +192,7 @@ export default function Welcome_Modal({ show, onClose, onButtonClick }: Welcome_
         }
       }
     }
-  }, [show, onClose, onButtonClick, t]);
+  }, [show, onClose, onButtonClick, t, isSpecialCode]);
 
   return null;
 }

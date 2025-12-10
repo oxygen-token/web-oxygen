@@ -49,15 +49,33 @@ const Dashboard_Main = memo(({
   useEffect(() => {
     if (user) {
       const hasUsedAffiliateCode = user.affiliateCodeUsedAt !== null;
-      const shouldShowAffiliateModal = !user.welcomeModalShown && hasUsedAffiliateCode;
+      const shouldShowAffiliateModalCalc = !user.welcomeModalShown && hasUsedAffiliateCode;
       const shouldShowWelcomeModalForNewUser = !user.welcomeModalShown && !hasUsedAffiliateCode;
       const shouldShowOnboardingTour = user.onboardingStep === "pending" || user.onboardingStep === "skipped";
-      
-      setShouldShowAffiliateModal(shouldShowAffiliateModal);
+
+      console.log("🔍 Dashboard useEffect ejecutado:", {
+        welcomeModalShown: user.welcomeModalShown,
+        hasUsedAffiliateCode,
+        shouldShowAffiliateModalCalc,
+        shouldShowWelcomeModalForNewUser,
+        modalAccepted
+      });
+
+      // Si el usuario ya aceptó el modal manualmente, no volver a mostrarlo
+      if (modalAccepted) {
+        console.log("✅ Modal ya aceptado manualmente, no mostrar de nuevo");
+        setShouldShowAffiliateModal(false);
+        setShouldShowWelcomeModal(false);
+        setShowAffiliateRewardBanner(false);
+        setShowWelcomeBanner(false);
+        return;
+      }
+
+      setShouldShowAffiliateModal(shouldShowAffiliateModalCalc);
       setShouldShowWelcomeModal(shouldShowWelcomeModalForNewUser);
       setShouldShowTour(shouldShowOnboardingTour);
-      
-      if (shouldShowAffiliateModal) {
+
+      if (shouldShowAffiliateModalCalc) {
         setShowAffiliateRewardBanner(true);
         setShowWelcomeBanner(false);
       } else if (shouldShowWelcomeModalForNewUser) {
@@ -68,7 +86,7 @@ const Dashboard_Main = memo(({
         setShowWelcomeBanner(false);
       }
     }
-  }, [user]);
+  }, [user?.welcomeModalShown, user?.affiliateCodeUsedAt, user?.onboardingStep, modalAccepted]);
 
 
 
@@ -79,14 +97,20 @@ const Dashboard_Main = memo(({
   };
 
   const handleCloseWelcomeBanner = async () => {
+    console.log("❌ Modal de bienvenida cerrado sin hacer clic en el botón");
+
+    // Cerrar el modal inmediatamente
     setShowWelcomeBanner(false);
+    setShouldShowWelcomeModal(false);
     setModalAccepted(true);
-    
+
     try {
       // Marcar modal de bienvenida como mostrado aunque se cierre sin botón
+      console.log("📡 Actualizando welcomeModalShown en el backend (cerrado sin botón)...");
       await updateWelcomeModalShown();
+      console.log("✅ welcomeModalShown actualizado exitosamente");
     } catch (error) {
-      console.error("Error al marcar modal de bienvenida como mostrado:", error);
+      console.error("❌ Error al marcar modal de bienvenida como mostrado:", error);
     }
   };
 
@@ -108,14 +132,20 @@ const Dashboard_Main = memo(({
   };
 
   const handleWelcomeButtonClick = async () => {
+    console.log("🎯 Botón de bienvenida clickeado");
+
+    // Cerrar el modal inmediatamente para evitar múltiples clicks
     setShowWelcomeBanner(false);
+    setShouldShowWelcomeModal(false);
     setModalAccepted(true);
-    
+
     try {
       // Marcar modal de bienvenida como mostrado
+      console.log("📡 Actualizando welcomeModalShown en el backend...");
       await updateWelcomeModalShown();
+      console.log("✅ welcomeModalShown actualizado exitosamente");
     } catch (error) {
-      console.error("Error al marcar modal de bienvenida como mostrado:", error);
+      console.error("❌ Error al marcar modal de bienvenida como mostrado:", error);
     }
   };
 
