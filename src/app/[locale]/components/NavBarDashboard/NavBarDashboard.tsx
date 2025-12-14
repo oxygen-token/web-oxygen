@@ -33,11 +33,11 @@ const NavBarDashboard = () => {
 
   const menuItems = useMemo(() => [
     { nameKey: "inicio", href: `/${locale}/dashboard`, icon: PiHouse, iconType: 'react-icon', disabled: false },
-    { nameKey: "intercambiar", href: `/${locale}/dashboard/exchange`, icon: PiArrowsClockwise, iconType: 'react-icon', disabled: false },
-    { nameKey: "quemarToken", href: `/${locale}/dashboard/quemar-token`, icon: PiFire, iconType: 'react-icon', disabled: false },
-    { nameKey: "compensar", href: `/${locale}/dashboard/compensar`, icon: "/assets/images/icons/Compensate_icon.svg", iconType: 'svg', disabled: false },
-    { nameKey: "ayuda", href: `/${locale}/dashboard/ayuda`, icon: PiQuestion, iconType: 'react-icon', disabled: false },
-    { nameKey: "configuracion", href: `/${locale}/dashboard/configuracion`, icon: PiGear, iconType: 'react-icon', disabled: false },
+    { nameKey: "intercambiar", href: `/${locale}/dashboard/exchange`, icon: PiArrowsClockwise, iconType: 'react-icon', disabled: true },
+    { nameKey: "quemarToken", href: `/${locale}/dashboard/quemar-token`, icon: PiFire, iconType: 'react-icon', disabled: true },
+    { nameKey: "compensar", href: `/${locale}/dashboard/compensar`, icon: "/assets/images/icons/Compensate_icon.svg", iconType: 'svg', disabled: true },
+    { nameKey: "ayuda", href: `/${locale}/dashboard/ayuda`, icon: PiQuestion, iconType: 'react-icon', disabled: true },
+    { nameKey: "configuracion", href: `/${locale}/dashboard/configuracion`, icon: PiGear, iconType: 'react-icon', disabled: true },
   ], [locale]);
 
   useEffect(() => {

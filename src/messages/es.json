@@ -213,6 +213,8 @@
     "code-inactive": "Código de afiliado inactivo",
     "code-already-used": "Código de afiliado ya utilizado",
     "code-verification-error": "Error al verificar el código",
+    "affiliate-code-already-used": "Código de afiliado ya utilizado",
+    "please-verify-affiliate-code": "Por favor verifica el código de afiliado antes de registrarte",
     "om-guaranteed": "+5 OM garantizado",
     "with-sign-up": "con este registro",
     "terms-and-conditions": "Acepto los Términos y Condiciones"

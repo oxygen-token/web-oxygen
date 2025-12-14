@@ -144,7 +144,7 @@ const Wallet_Connect_Banner = () => {
       <div className="flex items-center gap-3 px-4 py-2 bg-amber-500/20 border border-amber-500/50 rounded-lg backdrop-blur-sm">
         <PiWarningCircle className="text-amber-400 text-lg flex-shrink-0" />
         <div className="flex-1 min-w-0">
-          <p className="text-xs text-amber-200 font-medium">{t("metamaskNotInstalled")}</p>
+          <p className="text-xs text-white font-medium">{t("metamaskNotInstalled")}</p>
         </div>
         <a
           href="https://metamask.io/download/"

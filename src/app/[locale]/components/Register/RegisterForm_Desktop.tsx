@@ -68,6 +68,21 @@ const RegisterForm_Desktop = () => {
     console.log("Desktop form submitted with data:", data);
     console.log("Email:", data.email);
 
+    // Verificar que el código de afiliado sea válido si está presente
+    if (data.affiliateCode && verificationStatus !== "success") {
+      if (verificationStatus === "failed") {
+        setError("affiliateCode", {
+          message: verificationMessage || t("affiliate-code-already-used")
+        });
+        return;
+      }
+      // Si el código no ha sido verificado, requerir verificación
+      setError("affiliateCode", {
+        message: t("please-verify-affiliate-code")
+      });
+      return;
+    }
+
     try {
       // post() returns parsed JSON on success, throws Response on error
       const response = await post("/register", {
@@ -304,7 +319,11 @@ const RegisterForm_Desktop = () => {
 
           <button
             type="submit"
-            disabled={!watch("terms") || isSubmitting}
+            disabled={
+              !watch("terms") ||
+              isSubmitting ||
+              (watch("affiliateCode") && verificationStatus !== "success")
+            }
             className={`w-full py-3 px-6 text-base font-medium mt-4 bg-teal-accent text-white rounded-lg hover:bg-teal-accent/80 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 ${
               isSubmitting ? 'scale-105' : 'scale-100'
             }`}

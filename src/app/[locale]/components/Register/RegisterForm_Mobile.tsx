@@ -72,6 +72,21 @@ const RegisterForm_Mobile = () => {
     console.log("Mobile form submitted with data:", data);
     console.log("Email:", data.email);
 
+    // Verificar que el código de afiliado sea válido si está presente
+    if (data.affiliateCode && verificationStatus !== "success") {
+      if (verificationStatus === "failed") {
+        setError("affiliateCode", {
+          message: verificationMessage || t("affiliate-code-already-used")
+        });
+        return;
+      }
+      // Si el código no ha sido verificado, requerir verificación
+      setError("affiliateCode", {
+        message: t("please-verify-affiliate-code")
+      });
+      return;
+    }
+
     try {
       // post() returns parsed JSON on success, throws Response on error
       const response = await post("/register", {
@@ -471,12 +486,16 @@ const RegisterForm_Mobile = () => {
           <Star_Border
             as="button"
             type="submit"
-            disabled={!watch("terms") || isSubmitting}
+            disabled={
+              !watch("terms") ||
+              isSubmitting ||
+              (watch("affiliateCode") && verificationStatus !== "success")
+            }
             color="cyan"
             speed="4s"
             thickness={3}
             className="w-auto min-w-[120px] py-1.5 px-4 text-xs font-medium"
-            style={{ 
+            style={{
               transform: isSubmitting ? 'scale(0.95)' : 'scale(1)',
               transition: 'transform 0.3s ease'
             }}
