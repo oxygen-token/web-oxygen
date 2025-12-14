@@ -9,7 +9,6 @@ import Navbar from "../components/Navbar/Navbar";
 import Footer from "../components/Footer/Footer";
 import Light_Rays from "../components/ui/Light_Rays";
 import Rotating_Text from "../components/ui/Rotating_Text";
-import { get, post } from "../../../utils/request";
 import { useAuth } from "../context/Auth_Context";
 
 const VerifySuccess = () => {
@@ -26,178 +25,126 @@ const VerifySuccess = () => {
       const token = searchParams.get("token");
       const sessionToken = searchParams.get("session_token");
 
-      console.log("Token from URL:", token);
-      console.log("Session token from URL:", sessionToken);
-      console.log("Full URL:", window.location.href);
-      console.log("Search params:", searchParams.toString());
+      console.log("📧 Starting email verification...");
+      console.log("Token:", token);
+      console.log("Session token:", sessionToken);
 
-      // Caso 1: Tenemos session_token (nuevo flujo - el backend ya verificó)
+      // Caso 1: Tenemos session_token (el backend ya verificó el email)
       if (sessionToken) {
         console.log("📡 Session token found, establishing session...");
         try {
-          // Llamar a /set-session para establecer la cookie JWT
-          const setSessionResponse = await post("/set-session", { session_token: sessionToken });
-          console.log("📥 Set session response:", setSessionResponse);
+          const response = await fetch("/api/auth/set-session", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ session_token: sessionToken }),
+            credentials: "include",
+          });
 
-          if (setSessionResponse.success) {
+          const data = await response.json();
+
+          if (response.ok && data.success) {
             console.log("✅ Session established successfully");
             setVerificationStatus("success");
 
-            // Obtener datos completos del usuario desde /session
-            try {
-              console.log("📡 Obteniendo datos completos de sesión...");
-              const sessionData = await get("/session");
-              console.log("📥 Datos de sesión obtenidos:", sessionData);
-
-              if (sessionData.loggedIn) {
-                setUser({
-                  username: sessionData.fullName || sessionData.username || sessionData.email?.split('@')[0] || '',
-                  email: sessionData.email,
-                  isFirstLogin: sessionData.isFirstLogin ?? true,
-                  welcomeModalShown: sessionData.welcomeModalShown ?? false,
-                  onboardingStep: sessionData.onboardingStep || "pending",
-                  affiliateCode: sessionData.affiliateCode || null,
-                  affiliateCodeUsedAt: sessionData.affiliateCodeUsedAt || null,
-                  carbonCredits: sessionData.carbonCredits ?? 0,
-                  omBalance: sessionData.omBalance ?? 0,
-                  bonusOMsReceived: sessionData.bonusOMsReceived ?? 0,
-                });
-                console.log("✅ Usuario seteado con datos completos de sesión");
-              }
-            } catch (sessionError) {
-              console.error("❌ Error obteniendo sesión después de set-session:", sessionError);
-              // Usar datos de la respuesta de set-session si están disponibles
-              if (setSessionResponse.user) {
-                setUser({
-                  username: setSessionResponse.user.fullName || setSessionResponse.user.email?.split('@')[0] || '',
-                  email: setSessionResponse.user.email,
-                  isFirstLogin: setSessionResponse.user.isFirstLogin ?? true,
-                  welcomeModalShown: setSessionResponse.user.welcomeModalShown ?? false,
-                  onboardingStep: setSessionResponse.user.onboardingStep || "pending",
-                  affiliateCode: setSessionResponse.user.affiliateCode || null,
-                  affiliateCodeUsedAt: setSessionResponse.user.affiliateCodeUsedAt || null,
-                  carbonCredits: setSessionResponse.user.carbonCredits ?? 0,
-                  omBalance: setSessionResponse.user.omBalance ?? 0,
-                  bonusOMsReceived: setSessionResponse.user.bonusOMsReceived ?? 0,
-                });
-              }
-            }
-          } else {
-            console.error("❌ Set session failed:", setSessionResponse);
-            setVerificationStatus("error");
-            setErrorMessage(setSessionResponse.error || "Failed to establish session");
-          }
-        } catch (error: any) {
-          console.error("❌ Error calling set-session:", error);
-          setVerificationStatus("error");
-          if (error instanceof Response) {
-            try {
-              const errorData = await error.json();
-              setErrorMessage(errorData.error || "Failed to establish session");
-            } catch {
-              setErrorMessage("Failed to establish session");
-            }
-          } else {
-            setErrorMessage("Network error occurred");
-          }
-        }
-        return;
-      }
-
-      // Caso 2: Tenemos token de verificación (flujo antiguo)
-      if (!token) {
-        console.log("No token found in URL");
-        setVerificationStatus("error");
-        setErrorMessage("No verification token provided");
-        return;
-      }
-
-      console.log("Starting email verification with POST...");
-      try {
-        // POST to /verify-email to avoid CORS issues with redirects
-        const response = await post("/verify-email", { token });
-
-        console.log("Verification response:", response);
-
-        // response is already parsed JSON
-        if (response.success) {
-          console.log("Verification successful");
-
-          // Si el backend devuelve session_token, usarlo para establecer sesión
-          if (response.session_token) {
-            console.log("📡 Backend returned session_token, establishing session...");
-            try {
-              const setSessionResponse = await post("/set-session", { session_token: response.session_token });
-              if (setSessionResponse.success) {
-                console.log("✅ Session established from verification response");
-              }
-            } catch (setSessionError) {
-              console.error("❌ Error setting session from verification:", setSessionError);
-            }
-          }
-
-          setVerificationStatus("success");
-
-          // Obtener datos completos del usuario desde /session (incluye OMs, carbonCredits, etc.)
-          try {
-            console.log("📡 Obteniendo datos completos de sesión...");
-            const sessionData = await get("/session");
-            console.log("📥 Datos de sesión obtenidos:", sessionData);
+            // Obtener datos del usuario desde /session
+            const sessionResponse = await fetch("/api/auth/session", {
+              credentials: "include",
+            });
+            const sessionData = await sessionResponse.json();
 
             if (sessionData.loggedIn) {
               setUser({
-                username: sessionData.fullName || sessionData.username || sessionData.email?.split('@')[0] || '',
-                email: sessionData.email,
+                username: sessionData.fullName || sessionData.username || '',
+                email: sessionData.email || '',
                 isFirstLogin: sessionData.isFirstLogin ?? true,
                 welcomeModalShown: sessionData.welcomeModalShown ?? false,
                 onboardingStep: sessionData.onboardingStep || "pending",
                 affiliateCode: sessionData.affiliateCode || null,
                 affiliateCodeUsedAt: sessionData.affiliateCodeUsedAt || null,
-                messageType: sessionData.messageType || null,
                 carbonCredits: sessionData.carbonCredits ?? 0,
                 omBalance: sessionData.omBalance ?? 0,
                 bonusOMsReceived: sessionData.bonusOMsReceived ?? 0,
               });
-              console.log("✅ Usuario seteado con datos completos de sesión");
             }
-          } catch (sessionError) {
-            console.error("❌ Error obteniendo sesión, usando datos de verificación:", sessionError);
-            // Fallback: usar datos de la respuesta de verificación
-            if (response.user) {
-              setUser({
-                username: response.user.fullName || response.user.email?.split('@')[0] || '',
-                email: response.user.email,
-                isFirstLogin: response.user.isFirstLogin ?? true,
-                welcomeModalShown: response.user.welcomeModalShown ?? false,
-                onboardingStep: response.user.onboardingStep || "pending",
-                affiliateCode: response.user.affiliateCode || null,
-                affiliateCodeUsedAt: response.user.affiliateCodeUsedAt || null,
-                messageType: response.messageType || null,
-                carbonCredits: response.user.carbonCredits ?? 0,
-                omBalance: response.user.omBalance ?? 0,
-                bonusOMsReceived: response.user.bonusOMsReceived ?? 0,
-              });
-            }
+          } else {
+            console.error("❌ Set session failed:", data);
+            setVerificationStatus("error");
+            setErrorMessage(data.error || "Failed to establish session");
           }
-        } else {
-          console.log("Verification failed:", response);
+        } catch (error) {
+          console.error("❌ Error setting session:", error);
           setVerificationStatus("error");
-          setErrorMessage(response.message || "Verification failed");
-        }
-      } catch (error: any) {
-        console.error("Email verification error:", error);
-        // Handle thrown Response from get() on HTTP errors
-        if (error instanceof Response) {
-          try {
-            const errorData = await error.json();
-            setErrorMessage(errorData.message || "Verification failed");
-          } catch {
-            setErrorMessage("Verification failed");
-          }
-        } else {
           setErrorMessage("Network error occurred");
         }
+        return;
+      }
+
+      // Caso 2: Tenemos token de verificación
+      if (!token) {
+        console.log("❌ No token found in URL");
         setVerificationStatus("error");
+        setErrorMessage("No verification token provided");
+        return;
+      }
+
+      try {
+        const response = await fetch("/api/auth/verify-email", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ token }),
+          credentials: "include",
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.success) {
+          console.log("✅ Email verification successful");
+
+          // Si el backend devuelve session_token, establecer la sesión
+          if (data.session_token) {
+            const sessionResponse = await fetch("/api/auth/set-session", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ session_token: data.session_token }),
+              credentials: "include",
+            });
+
+            if (sessionResponse.ok) {
+              console.log("✅ Session established");
+            }
+          }
+
+          setVerificationStatus("success");
+
+          // Obtener datos del usuario
+          const sessionResponse = await fetch("/api/auth/session", {
+            credentials: "include",
+          });
+          const sessionData = await sessionResponse.json();
+
+          if (sessionData.loggedIn) {
+            setUser({
+              username: sessionData.fullName || sessionData.username || '',
+              email: sessionData.email || '',
+              isFirstLogin: sessionData.isFirstLogin ?? true,
+              welcomeModalShown: sessionData.welcomeModalShown ?? false,
+              onboardingStep: sessionData.onboardingStep || "pending",
+              affiliateCode: sessionData.affiliateCode || null,
+              affiliateCodeUsedAt: sessionData.affiliateCodeUsedAt || null,
+              carbonCredits: sessionData.carbonCredits ?? 0,
+              omBalance: sessionData.omBalance ?? 0,
+              bonusOMsReceived: sessionData.bonusOMsReceived ?? 0,
+            });
+          }
+        } else {
+          console.error("❌ Verification failed:", data);
+          setVerificationStatus("error");
+          setErrorMessage(data.error || data.message || "Verification failed");
+        }
+      } catch (error) {
+        console.error("❌ Email verification error:", error);
+        setVerificationStatus("error");
+        setErrorMessage("Network error occurred");
       }
     };
 
