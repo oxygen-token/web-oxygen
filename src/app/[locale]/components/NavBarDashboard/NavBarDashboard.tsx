@@ -156,7 +156,7 @@ const NavBarDashboard = () => {
           : 'opacity-0 translate-y-[-100%] pointer-events-none'
       }`}>
           <div className="px-4 py-6">
-            <div className="mb-4 space-y-3">
+            <div className="mb-4 space-y-3 flex flex-col items-center">
               <Wallet_Connect_Banner />
               <Wallet_Status />
             </div>
@@ -240,6 +240,16 @@ const NavBarDashboard = () => {
                     );
                   })}
                 </nav>
+
+                <button
+                  onClick={handleLogout}
+                  className="flex items-center gap-4 px-4 py-3 rounded-xl transition-colors duration-150 w-full text-left group bg-transparent text-white hover:bg-red-500/20 border-t border-white/10 pt-4 mt-4"
+                >
+                  <PiSignOut className="text-xl flex-shrink-0 text-red-400" />
+                  <span className="text-sm font-medium text-red-400">
+                    {t("logout")}
+                  </span>
+                </button>
               </div>
             ) : (
               <div className="flex flex-col space-y-6">

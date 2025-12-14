@@ -9,7 +9,7 @@ interface Metric_CardProps {
 
 const Metric_Card = memo(({ data }: Metric_CardProps) => {
   return (
-    <div className="dashboard-card relative rounded-lg overflow-hidden h-16 sm:h-20 w-3/4 mx-auto">
+    <div className="dashboard-card relative rounded-xl overflow-hidden h-16 sm:h-20 w-full sm:w-3/4 mx-auto shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105 border border-white/10">
       <div className="absolute inset-0">
         <Image
           src={data.icon}
@@ -19,8 +19,8 @@ const Metric_Card = memo(({ data }: Metric_CardProps) => {
         />
         <div className="absolute inset-0" style={{ backgroundColor: '#006A6A', opacity: 0.3 }}></div>
       </div>
-      
-      <div className="relative h-full flex flex-col items-center justify-center px-3 sm:px-4 text-center">
+
+      <div className="relative h-full flex flex-col items-center justify-center px-1 sm:px-4 text-center">
         <div className="mb-1">
           <span className="text-xl sm:text-2xl font-bold text-white drop-shadow-lg">
             {data.value}

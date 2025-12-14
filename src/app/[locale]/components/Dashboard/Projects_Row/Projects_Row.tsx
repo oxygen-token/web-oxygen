@@ -14,16 +14,16 @@ const Projects_Row = memo(({ projects, footprint }: Projects_RowProps) => {
   const t = useTranslations("Dashboard");
   
   return (
-    <div className="projects-section mb-8 sm:mb-8 lg:mb-20 xl:mb-24">
-      <h2 className="text-base sm:text-lg font-bold text-white">
+    <div className="projects-section mb-4 sm:mb-8 lg:mb-20 xl:mb-24">
+      <h2 className="text-base sm:text-lg font-bold text-white text-center sm:text-left mb-1 sm:mb-4">
         {t("sections.currentProjects")}
       </h2>
-      
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 lg:gap-10 xl:gap-16 min-h-[250px]">
-        <div className="relative max-w-md mx-auto w-full flex items-center justify-center">
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 lg:gap-10 xl:gap-16">
+        <div className="relative max-w-md mx-auto w-full sm:flex sm:items-center sm:justify-center">
           <Project_Card data={projects[0]} />
         </div>
-        <div className="h-full max-w-md mx-auto w-full flex items-center justify-center">
+        <div className="h-full max-w-md mx-auto w-full sm:flex sm:items-center sm:justify-center">
           <Carbon_Footprint_Card data={footprint} />
         </div>
       </div>

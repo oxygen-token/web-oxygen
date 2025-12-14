@@ -11,7 +11,7 @@ interface Bottom_RowProps {
 
 const Bottom_Row = memo(({ earnings, social }: Bottom_RowProps) => {
   return (
-    <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 sm:gap-4 lg:gap-10 xl:gap-16 !mt-0">
+    <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 sm:gap-4 lg:gap-10 xl:gap-16 mt-8 sm:!mt-0">
       <div className="earnings-card xl:col-span-2 flex justify-center">
         <div className="w-full max-w-4xl">
           <Earnings_Card data={earnings} />

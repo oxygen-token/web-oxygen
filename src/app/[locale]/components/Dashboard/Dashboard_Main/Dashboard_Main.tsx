@@ -211,7 +211,7 @@ const Dashboard_Main = memo(({
         onButtonClick={handleWelcomeButtonClick}
       />
 
-      <div className="dashboard-content space-y-8 sm:space-y-6 lg:space-y-6 xl:space-y-8 p-4 sm:p-6 lg:p-0 xl:p-0">
+      <div className="dashboard-content space-y-12 sm:space-y-6 lg:space-y-12 xl:space-y-16 p-4 sm:p-6 lg:p-0 xl:p-0">
 
         <Metrics_Row data={metrics} />
         <Projects_Row projects={projects} footprint={footprint} />

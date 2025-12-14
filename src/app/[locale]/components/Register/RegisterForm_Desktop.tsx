@@ -322,7 +322,7 @@ const RegisterForm_Desktop = () => {
             disabled={
               !watch("terms") ||
               isSubmitting ||
-              (watch("affiliateCode") && verificationStatus !== "success")
+              (!!watch("affiliateCode") && verificationStatus !== "success")
             }
             className={`w-full py-3 px-6 text-base font-medium mt-4 bg-teal-accent text-white rounded-lg hover:bg-teal-accent/80 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 ${
               isSubmitting ? 'scale-105' : 'scale-100'

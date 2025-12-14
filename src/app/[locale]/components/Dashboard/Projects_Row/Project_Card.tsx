@@ -19,23 +19,23 @@ const Project_Card = memo(({ data }: Project_CardProps) => {
   };
 
   return (
-    <div 
-      className="project-card dashboard-card rounded-xl pt-4 pb-4 pr-4 sm:pt-5 sm:pb-5 sm:pr-5 pl-0 h-44 flex items-center space-x-5 sm:space-x-6 cursor-pointer"
+    <div
+      className="project-card dashboard-card rounded-xl pt-4 pb-4 pr-4 sm:pt-5 sm:pb-5 sm:pr-5 pl-0 h-52 sm:h-44 flex items-center space-x-5 sm:space-x-6 cursor-pointer"
       onClick={handleCardClick}
     >
       <div className="flex-shrink-0">
-        <div className="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 rounded-lg overflow-hidden border-2 border-white/30">
+        <div className="w-28 h-28 sm:w-20 sm:h-20 lg:w-24 lg:h-24 rounded-lg overflow-hidden border-2 border-white/30">
           <Image
             src={data.image}
             alt={data.name}
-            width={150}
-            height={150}
+            width={250}
+            height={250}
             className="w-full h-full object-cover"
             quality={100}
             priority={true}
             placeholder="blur"
             blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
-            sizes="(max-width: 640px) 64px, (max-width: 1024px) 80px, 96px"
+            sizes="(max-width: 640px) 112px, (max-width: 1024px) 80px, 96px"
           />
         </div>
       </div>

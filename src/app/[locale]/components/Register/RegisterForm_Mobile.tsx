@@ -489,7 +489,7 @@ const RegisterForm_Mobile = () => {
             disabled={
               !watch("terms") ||
               isSubmitting ||
-              (watch("affiliateCode") && verificationStatus !== "success")
+              (!!watch("affiliateCode") && verificationStatus !== "success")
             }
             color="cyan"
             speed="4s"
