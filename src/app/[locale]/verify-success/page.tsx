@@ -207,11 +207,12 @@ const VerifySuccess = () => {
   // Auto-redirect countdown cuando la verificación es exitosa
   useEffect(() => {
     if (verificationStatus === "success") {
+      const locale = window.location.pathname.split("/")[1] || "es";
       const timer = setInterval(() => {
         setRedirectCountdown((prev) => {
           if (prev <= 1) {
             clearInterval(timer);
-            router.push("/dashboard");
+            router.push(`/${locale}/dashboard`);
             return 0;
           }
           return prev - 1;
@@ -296,7 +297,10 @@ const VerifySuccess = () => {
                 </p>
 
                 <button
-                  onClick={() => router.push("/dashboard")}
+                  onClick={() => {
+                    const locale = window.location.pathname.split("/")[1] || "es";
+                    router.push(`/${locale}/dashboard`);
+                  }}
                   className="w-full max-w-xs py-3 px-6 text-base font-medium bg-teal-accent text-white rounded-lg hover:bg-teal-accent/80 transition-colors text-center"
                 >
                   {t("goToDashboard") || "Ir al Dashboard"}
