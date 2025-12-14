@@ -143,12 +143,20 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     setIsLoggingOut(true);
     setLoading(true);
 
-    // 1. Llamar al backend para invalidar sesión
+    // 1. Llamar al API route de Next.js para limpiar cookies HttpOnly
     try {
-      await post("/logout");
-      console.log("✅ Backend logout exitoso");
+      const response = await fetch("/api/auth/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+
+      if (response.ok) {
+        console.log("✅ Logout exitoso - Cookies HttpOnly limpiadas");
+      } else {
+        console.warn("⚠️ Logout del servidor falló, continuando con limpieza local");
+      }
     } catch (error) {
-      console.error("❌ Error en logout del backend:", error);
+      console.error("❌ Error en logout:", error);
       // Continuar con logout aunque falle el backend
     }
 
