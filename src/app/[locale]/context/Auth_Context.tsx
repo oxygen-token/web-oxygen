@@ -348,8 +348,15 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         return;
       }
 
-      if (isPublicPage) {
-        setUser(null);
+      // Si estamos en una página pública pero el usuario ya está logueado,
+      // NO resetear el usuario (puede estar en proceso de redirección post-login)
+      if (isPublicPage && !user) {
+        setLoading(false);
+        return;
+      }
+
+      // Si estamos en página pública con usuario, solo terminar loading
+      if (isPublicPage && user) {
         setLoading(false);
         return;
       }
