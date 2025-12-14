@@ -20,9 +20,13 @@ const LoginForm = () => {
 
   const onSubmit = async (data: Record<string, string>) => {
     try {
-      await login(data.email, data.password);
+      console.log("🔐 Attempting login...");
+      const result = await login(data.email, data.password);
+      console.log("✅ Login successful, result:", result);
+      console.log("🚀 Redirecting to dashboard...");
       router.push(`/${locale}/dashboard`);
     } catch (err) {
+      console.error("❌ Login failed:", err);
       if ((err as Response).status === 401) {
         setError("root", {
           type: "400",

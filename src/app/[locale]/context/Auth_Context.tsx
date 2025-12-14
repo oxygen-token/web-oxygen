@@ -103,24 +103,30 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       };
 
       const responseData = await post("/login", loginData);
+      console.log("📥 Login response:", responseData);
 
       // El backend devuelve success:true o un objeto user cuando el login es exitoso
       if (responseData.success || responseData.user) {
-        const user = responseData.user;
+        const userData = responseData.user;
+        console.log("✅ Login condition met, setting user:", userData);
 
-        setUser({
-          username: user?.fullName || user?.name || email.split('@')[0],
-          email: user?.email || email,
-          isFirstLogin: user?.isFirstLogin || false,
-          welcomeModalShown: user?.welcomeModalShown || false,
-          onboardingStep: user?.onboardingStep || "pending",
-          affiliateCode: user?.affiliateCode || null,
-          affiliateCodeUsedAt: user?.affiliateCodeUsedAt || null,
+        const userObj = {
+          username: userData?.fullName || userData?.name || email.split('@')[0],
+          email: userData?.email || email,
+          isFirstLogin: userData?.isFirstLogin || false,
+          welcomeModalShown: userData?.welcomeModalShown || false,
+          onboardingStep: userData?.onboardingStep || "pending",
+          affiliateCode: userData?.affiliateCode || null,
+          affiliateCodeUsedAt: userData?.affiliateCodeUsedAt || null,
           messageType: responseData.messageType || null,
-          carbonCredits: user?.carbonCredits ?? 0,
-          omBalance: user?.omBalance ?? 0,
-          bonusOMsReceived: user?.bonusOMsReceived ?? 0,
-        });
+          carbonCredits: userData?.carbonCredits ?? 0,
+          omBalance: userData?.omBalance ?? 0,
+          bonusOMsReceived: userData?.bonusOMsReceived ?? 0,
+        };
+
+        setUser(userObj);
+        // Guardar en localStorage para persistir entre navegaciones
+        localStorage.setItem('user', JSON.stringify(userObj));
         setLoading(false);
         return { success: true };
       } else {
@@ -159,6 +165,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
     // Limpiar localStorage
     try {
+      localStorage.removeItem('user');
       localStorage.removeItem('affiliateCode');
       localStorage.removeItem('affiliateVerified');
       localStorage.removeItem('affiliateBannerSeen');
@@ -330,52 +337,54 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       const forceLogoutFlag = sessionStorage.getItem("forceLogout");
       if (forceLogoutFlag === "true") {
         setUser(null);
+        localStorage.removeItem('user');
         setLoading(false);
         sessionStorage.removeItem("forceLogout");
         return;
       }
 
+      // Intentar cargar usuario desde localStorage primero
+      const savedUser = localStorage.getItem('user');
+      if (savedUser && !user) {
+        try {
+          const parsedUser = JSON.parse(savedUser);
+          console.log("📦 Usuario cargado desde localStorage:", parsedUser);
+          setUser(parsedUser);
+          setLoading(false);
+          return;
+        } catch (e) {
+          console.error("❌ Error parsing saved user:", e);
+          localStorage.removeItem('user');
+        }
+      }
+
       // Skip checkAuth on public pages where user is not expected to be logged in
-      // Note: verify-success puede setear el user después de verificación exitosa
       const publicPaths = ['/post-register', '/login', '/register'];
       const currentPath = window.location.pathname;
       const isPublicPage = publicPaths.some(path => currentPath.includes(path));
 
       // Para verify-success, solo skip checkAuth pero no resetear user
-      // porque el user se setea después de verificación exitosa
       if (currentPath.includes('/verify-success')) {
         setLoading(false);
         return;
       }
 
-      // Si estamos en una página pública pero el usuario ya está logueado,
-      // NO resetear el usuario (puede estar en proceso de redirección post-login)
-      if (isPublicPage && !user) {
-        setLoading(false);
-        return;
-      }
-
-      // Si estamos en página pública con usuario, solo terminar loading
-      if (isPublicPage && user) {
+      // Si estamos en una página pública, solo terminar loading
+      if (isPublicPage) {
         setLoading(false);
         return;
       }
     }
 
-    // Si el usuario ya está seteado (por ejemplo, después de login), no hacer checkAuth
-    if (user && !loading) {
+    // Si el usuario ya está seteado, no hacer checkAuth
+    if (user) {
       console.log("✅ Usuario ya existe en contexto, saltando checkAuth");
-      return;
-    }
-
-    // Si acabamos de hacer login y el usuario se acaba de setear
-    if (user && loading) {
-      console.log("✅ Usuario seteado después de login, actualizando estado de loading");
       setLoading(false);
       return;
     }
 
-    if (!isLoggingOut && !hasLoggedOut) {
+    // Solo hacer checkAuth si no tenemos usuario y no estamos en logout
+    if (!isLoggingOut && !hasLoggedOut && !user) {
       loadingRef.current = true;
       checkAuth();
 
