@@ -148,8 +148,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         };
 
         setUser(userObj);
-        // Guardar en localStorage para persistir entre navegaciones
-        localStorage.setItem('user', JSON.stringify(userObj));
+        // No guardar en localStorage - todo basado en cookies del servidor
         setLoading(false);
         return { success: true };
       } else {
@@ -337,11 +336,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   // Función de logout forzado que no depende del backend
   const forceLogout = () => {
     console.log("🔄 Force logout iniciado...");
-    
-    if (typeof window !== 'undefined') {
-      sessionStorage.setItem("forceLogout", "true");
-    }
-    
+
     // NUCLEAR APPROACH - Limpiar TODO inmediatamente
     setUser(null);
     setLoading(false);
@@ -472,30 +467,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
 
     if (typeof window !== 'undefined') {
-      const forceLogoutFlag = sessionStorage.getItem("forceLogout");
-      if (forceLogoutFlag === "true") {
-        setUser(null);
-        localStorage.removeItem('user');
-        setLoading(false);
-        sessionStorage.removeItem("forceLogout");
-        return;
-      }
-
-      // Intentar cargar usuario desde localStorage primero
-      const savedUser = localStorage.getItem('user');
-      if (savedUser && !user) {
-        try {
-          const parsedUser = JSON.parse(savedUser);
-          console.log("📦 Usuario cargado desde localStorage:", parsedUser);
-          setUser(parsedUser);
-          setLoading(false);
-          return;
-        } catch (e) {
-          console.error("❌ Error parsing saved user:", e);
-          localStorage.removeItem('user');
-        }
-      }
-
       // Skip checkAuth on public pages where user is not expected to be logged in
       const publicPaths = ['/post-register', '/login', '/register'];
       const currentPath = window.location.pathname;
