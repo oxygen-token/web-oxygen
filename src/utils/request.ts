@@ -15,28 +15,8 @@ const getBackendUrl = () => {
 
 const BASE_URL = getBackendUrl();
 
-const getCookieValue = (name: string) => {
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) return parts.pop()?.split(';').shift();
-  return null;
-};
-
-const setCookie = (name: string, value: string, options: any = {}) => {
-  const { expires, path = '/', domain, secure = false, sameSite = 'Lax' } = options;
-
-  let cookieString = `${name}=${value}`;
-  if (expires) cookieString += `; expires=${expires}`;
-  if (path) cookieString += `; path=${path}`;
-  if (domain) cookieString += `; domain=${domain}`;
-  // Solo usar secure en producción (HTTPS)
-  if (secure && typeof window !== 'undefined' && window.location.protocol === 'https:') {
-    cookieString += '; secure';
-  }
-  if (sameSite) cookieString += `; samesite=${sameSite}`;
-
-  document.cookie = cookieString;
-};
+// Removed client-side cookie handling functions
+// Cookies are now handled server-side through Next.js API routes
 
 export async function apiRequest(
   url: string,
@@ -45,7 +25,7 @@ export async function apiRequest(
   headers?: Record<string, string>
 ) {
   const fullUrl = `${BASE_URL}${url}`;
-  
+
   const res = await fetch(fullUrl, {
     method,
     headers: {
@@ -57,17 +37,8 @@ export async function apiRequest(
     credentials: "include",
   });
 
-  const setCookieHeader = res.headers.get('set-cookie');
-  if (setCookieHeader) {
-    const cookies = setCookieHeader.split(',').map(cookie => cookie.trim());
-    cookies.forEach(cookie => {
-      const [nameValue] = cookie.split(';');
-      const [name, value] = nameValue.split('=');
-      if (name && value) {
-        setCookie(name, value, { path: '/', sameSite: 'Lax' });
-      }
-    });
-  }
+  // Note: set-cookie headers are not accessible from client-side JavaScript
+  // Cookie handling is done server-side through Next.js API routes
 
   if (res.ok) return await res.json();
   throw res;
@@ -79,7 +50,7 @@ export async function get(
   headers?: Record<string, string>
 ) {
   const fullUrl = `${BASE_URL}${url}`;
-  
+
   const res = await fetch(fullUrl, {
     method: "GET",
     headers: {
@@ -89,18 +60,9 @@ export async function get(
     },
     credentials: "include",
   });
-  
-  const setCookieHeader = res.headers.get('set-cookie');
-  if (setCookieHeader) {
-    const cookies = setCookieHeader.split(',').map(cookie => cookie.trim());
-    cookies.forEach(cookie => {
-      const [nameValue] = cookie.split(';');
-      const [name, value] = nameValue.split('=');
-      if (name && value) {
-        setCookie(name, value, { path: '/', sameSite: 'Lax' });
-      }
-    });
-  }
+
+  // Note: set-cookie headers are not accessible from client-side JavaScript
+  // Cookie handling is done server-side through Next.js API routes
 
   if (res.ok) return await res.json();
   throw res;
@@ -112,7 +74,7 @@ export async function post(
   headers?: Record<string, string>
 ) {
   const fullUrl = `${BASE_URL}${url}`;
-  
+
   const res = await fetch(fullUrl, {
     method: "POST",
     headers: {
@@ -123,18 +85,9 @@ export async function post(
     body: JSON.stringify(body),
     credentials: "include",
   });
-  
-  const setCookieHeader = res.headers.get('set-cookie');
-  if (setCookieHeader) {
-    const cookies = setCookieHeader.split(',').map(cookie => cookie.trim());
-    cookies.forEach(cookie => {
-      const [nameValue] = cookie.split(';');
-      const [name, value] = nameValue.split('=');
-      if (name && value) {
-        setCookie(name, value, { path: '/', sameSite: 'Lax' });
-      }
-    });
-  }
+
+  // Note: set-cookie headers are not accessible from client-side JavaScript
+  // Cookie handling is done server-side through Next.js API routes
 
   if (res.ok) return await res.json();
   throw res;

@@ -57,15 +57,24 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const checkAuth = async () => {
     try {
-      const timeoutPromise = new Promise((_, reject) => 
+      const timeoutPromise = new Promise((_, reject) =>
         setTimeout(() => reject(new Error("Request timeout")), 10000)
       );
-      
-      const data: any = await Promise.race([
-        get("/session"),
+
+      // Usar API Route de Next.js en lugar de llamar directamente al backend
+      const response = await Promise.race([
+        fetch("/api/auth/session", {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }),
         timeoutPromise
-      ]);
-      
+      ]) as Response;
+
+      const data: any = await response.json();
+
       if (data.loggedIn) {
         setUser({
           username: data.fullName || data.username,
@@ -102,8 +111,22 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         password: password,
       };
 
-      const responseData = await post("/login", loginData);
+      // Usar API Route de Next.js en lugar de llamar directamente al backend
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(loginData),
+        credentials: "include",
+      });
+
+      const responseData = await response.json();
       console.log("📥 Login response:", responseData);
+
+      if (!response.ok) {
+        throw response;
+      }
 
       // El backend devuelve success:true o un objeto user cuando el login es exitoso
       if (responseData.success || responseData.user) {
