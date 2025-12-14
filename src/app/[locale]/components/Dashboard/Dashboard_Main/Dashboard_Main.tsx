@@ -8,6 +8,7 @@ import Dashboard_Tour_Button from "../Dashboard_Tour_Button/Dashboard_Tour_Butto
 
 import Affiliate_Reward_Modal from "../../Affiliate_Reward_Modal/Affiliate_Reward_Modal";
 import Welcome_Modal from "../../Welcome_Modal/Welcome_Modal";
+import Community_Welcome_Modal from "../../Community_Welcome_Modal/Community_Welcome_Modal";
 
 import { useAuth } from "../../../context/Auth_Context";
 import { useOnboarding } from "../../../hooks/useOnboarding";
@@ -43,50 +44,59 @@ const Dashboard_Main = memo(({
   const [showWelcomeBanner, setShowWelcomeBanner] = useState(false);
   const [modalAccepted, setModalAccepted] = useState(false);
   const [shouldShowAffiliateModal, setShouldShowAffiliateModal] = useState(false);
+  const [shouldShowCommunityModal, setShouldShowCommunityModal] = useState(false);
   const [shouldShowWelcomeModal, setShouldShowWelcomeModal] = useState(false);
   const [shouldShowTour, setShouldShowTour] = useState(false);
+  const [showCommunityBanner, setShowCommunityBanner] = useState(false);
 
   useEffect(() => {
     if (user) {
       const hasUsedAffiliateCode = user.affiliateCodeUsedAt !== null;
-      const shouldShowAffiliateModalCalc = !user.welcomeModalShown && hasUsedAffiliateCode;
-      const shouldShowWelcomeModalForNewUser = !user.welcomeModalShown && !hasUsedAffiliateCode;
-      const shouldShowOnboardingTour = user.onboardingStep === "pending" || user.onboardingStep === "skipped";
+      const isSpecialUser = user.messageType === "special";
 
-      console.log("🔍 Dashboard useEffect ejecutado:", {
-        welcomeModalShown: user.welcomeModalShown,
-        hasUsedAffiliateCode,
-        shouldShowAffiliateModalCalc,
-        shouldShowWelcomeModalForNewUser,
-        modalAccepted
-      });
+      // Prioridad 1: Usuario con código de afiliado
+      const shouldShowAffiliateModalCalc = !user.welcomeModalShown && hasUsedAffiliateCode;
+      // Prioridad 2: Usuario especial de comunidad (messageType === "special")
+      const shouldShowCommunityModalCalc = !user.welcomeModalShown && !hasUsedAffiliateCode && isSpecialUser;
+      // Prioridad 3: Usuario nuevo normal
+      const shouldShowWelcomeModalForNewUser = !user.welcomeModalShown && !hasUsedAffiliateCode && !isSpecialUser;
+      const shouldShowOnboardingTour = user.onboardingStep === "pending" || user.onboardingStep === "skipped";
 
       // Si el usuario ya aceptó el modal manualmente, no volver a mostrarlo
       if (modalAccepted) {
-        console.log("✅ Modal ya aceptado manualmente, no mostrar de nuevo");
         setShouldShowAffiliateModal(false);
+        setShouldShowCommunityModal(false);
         setShouldShowWelcomeModal(false);
         setShowAffiliateRewardBanner(false);
+        setShowCommunityBanner(false);
         setShowWelcomeBanner(false);
         return;
       }
 
       setShouldShowAffiliateModal(shouldShowAffiliateModalCalc);
+      setShouldShowCommunityModal(shouldShowCommunityModalCalc);
       setShouldShowWelcomeModal(shouldShowWelcomeModalForNewUser);
       setShouldShowTour(shouldShowOnboardingTour);
 
       if (shouldShowAffiliateModalCalc) {
         setShowAffiliateRewardBanner(true);
+        setShowCommunityBanner(false);
+        setShowWelcomeBanner(false);
+      } else if (shouldShowCommunityModalCalc) {
+        setShowAffiliateRewardBanner(false);
+        setShowCommunityBanner(true);
         setShowWelcomeBanner(false);
       } else if (shouldShowWelcomeModalForNewUser) {
         setShowAffiliateRewardBanner(false);
+        setShowCommunityBanner(false);
         setShowWelcomeBanner(true);
       } else {
         setShowAffiliateRewardBanner(false);
+        setShowCommunityBanner(false);
         setShowWelcomeBanner(false);
       }
     }
-  }, [user?.welcomeModalShown, user?.affiliateCodeUsedAt, user?.onboardingStep, modalAccepted]);
+  }, [user?.welcomeModalShown, user?.affiliateCodeUsedAt, user?.onboardingStep, user?.messageType, modalAccepted]);
 
 
 
@@ -94,6 +104,17 @@ const Dashboard_Main = memo(({
 
   const handleCloseAffiliateRewardBanner = async () => {
     setShowAffiliateRewardBanner(false);
+  };
+
+  const handleCloseCommunityBanner = async () => {
+    setShowCommunityBanner(false);
+    setModalAccepted(true);
+
+    try {
+      await updateWelcomeModalShown();
+    } catch (error) {
+      console.error("Error al marcar modal de bienvenida como mostrado:", error);
+    }
   };
 
   const handleCloseWelcomeBanner = async () => {
@@ -131,6 +152,22 @@ const Dashboard_Main = memo(({
     }
   };
 
+  const handleCommunityButtonClick = async () => {
+    setShowCommunityBanner(false);
+    setModalAccepted(true);
+
+    try {
+      // 1. Marcar modal de bienvenida como mostrado
+      const modalUpdated = await updateWelcomeModal();
+      if (modalUpdated) {
+        // 2. Marcar perfil como completado
+        await updateProfileStatus();
+      }
+    } catch (error) {
+      console.error("Error en el flujo de onboarding:", error);
+    }
+  };
+
   const handleWelcomeButtonClick = async () => {
     console.log("🎯 Botón de bienvenida clickeado");
 
@@ -162,8 +199,14 @@ const Dashboard_Main = memo(({
         onButtonClick={handleAffiliateRewardButtonClick}
       />
       
-      <Welcome_Modal 
-        show={showWelcomeBanner && shouldShowWelcomeModal} 
+      <Community_Welcome_Modal
+        show={showCommunityBanner && shouldShowCommunityModal}
+        onClose={handleCloseCommunityBanner}
+        onButtonClick={handleCommunityButtonClick}
+      />
+
+      <Welcome_Modal
+        show={showWelcomeBanner && shouldShowWelcomeModal}
         onClose={handleCloseWelcomeBanner}
         onButtonClick={handleWelcomeButtonClick}
       />

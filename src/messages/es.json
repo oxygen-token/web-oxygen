@@ -349,6 +349,14 @@
     "description3": "¡Has comenzado tu viaje hacia la sostenibilidad y las ganancias!",
     "cta": "Explorar mi Dashboard"
   },
+  "CommunityWelcomeModal": {
+    "title": "¡Felicitaciones y bienvenido a Oxygen!",
+    "description1": "Acabas de desbloquear tus tokens OM por ser uno de los miembros más activos de nuestra comunidad.",
+    "description2": "Tus tokens ahora están seguros en tu cuenta. Son parte de nuestra pre-venta y se activarán cuando lancemos pronto, estate atento a los próximos anuncios.",
+    "description3": "Gracias por ser parte de este viaje para proteger bosques, empoderar comunidades y transformar la acción climática en algo accesible para todos.",
+    "description4": "Recién estamos empezando. 💚",
+    "cta": "Explorar mi Dashboard"
+  },
   "common": {
     "back": "Atrás",
     "close": "Cerrar",

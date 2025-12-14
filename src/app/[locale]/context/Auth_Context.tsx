@@ -14,11 +14,10 @@ interface User {
   carbonCredits?: number;
   omBalance?: number;
   bonusOMsReceived?: number;
+  messageType?: string | null;
 }
 
-type LoginResponse = 
-  | { requires2FA: true; email: string }
-  | { success: boolean };
+type LoginResponse = { success: boolean };
 
 interface AuthContextType {
   user: User | null;
@@ -79,6 +78,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           carbonCredits: data.carbonCredits ?? 0,
           omBalance: data.omBalance ?? 0,
           bonusOMsReceived: data.bonusOMsReceived ?? 0,
+          messageType: data.messageType || null,
         });
       } else {
         setUser(null);
@@ -102,80 +102,27 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         password: password,
       };
 
-      console.log("📡 Enviando request de login...");
       const responseData = await post("/login", loginData);
-      console.log("📥 Respuesta del login recibida:", responseData);
 
-      // 2FA desactivado temporalmente - tratar como login exitoso
-      const is2FAResponse = responseData.status === "2fa_required" || responseData.requires2FA || responseData.twoFactorRequired;
-      const isLoginSuccess = responseData.success || responseData.status === "logged" || responseData.status === "success";
+      // El backend devuelve success:true o un objeto user cuando el login es exitoso
+      if (responseData.success || responseData.user) {
+        const user = responseData.user;
 
-      if (isLoginSuccess) {
-        console.log("✅ Login exitoso, obteniendo datos completos del usuario...");
-        console.log("🔍 isLoginSuccess:", isLoginSuccess);
-        console.log("🔍 responseData.success:", responseData.success);
-        console.log("🔍 responseData.status:", responseData.status);
-
-        // Hacer checkAuth para obtener TODOS los datos del usuario desde /session
-        // En lugar de intentar parsear la respuesta del login que puede estar incompleta
-        try {
-          console.log("📡 Haciendo request a /session...");
-          const sessionData = await get("/session");
-          console.log("📥 Datos completos de sesión obtenidos:", sessionData);
-
-          if (sessionData.loggedIn) {
-            setUser({
-              username: sessionData.fullName || sessionData.username,
-              email: sessionData.email || email,
-              isFirstLogin: sessionData.isFirstLogin || false,
-              welcomeModalShown: sessionData.welcomeModalShown || false,
-              onboardingStep: sessionData.onboardingStep || "pending",
-              affiliateCode: sessionData.affiliateCode || null,
-              affiliateCodeUsedAt: sessionData.affiliateCodeUsedAt || null,
-              carbonCredits: sessionData.carbonCredits ?? 0,
-              omBalance: sessionData.omBalance ?? 0,
-              bonusOMsReceived: sessionData.bonusOMsReceived ?? 0,
-            });
-            setLoading(false);
-            console.log("✅ Usuario actualizado con datos completos de sesión");
-            return { success: true };
-          } else {
-            // Session no está logueada, pero el login fue exitoso - intentar de nuevo
-            console.warn("⚠️ Session no logueada después del login exitoso");
-            return { success: true };
-          }
-        } catch (sessionError) {
-          console.error("❌ Error obteniendo sesión después del login:", sessionError);
-          // Fallback: usar datos de la respuesta del login aunque estén incompletos
-          const username = responseData.user?.fullName || responseData.user?.name || responseData.fullName || email.split('@')[0];
-          const userEmail = responseData.user?.email || responseData.email || email;
-          const isFirstLogin = responseData.user?.isFirstLogin || responseData.isFirstLogin || false;
-          const welcomeModalShown = responseData.user?.welcomeModalShown || false;
-          const onboardingStep = responseData.user?.onboardingStep || "pending";
-          const affiliateCode = responseData.user?.affiliateCode || null;
-          const affiliateCodeUsedAt = responseData.user?.affiliateCodeUsedAt || null;
-          const carbonCredits = responseData.user?.carbonCredits ?? 0;
-          const omBalance = responseData.user?.omBalance ?? 0;
-          const bonusOMsReceived = responseData.user?.bonusOMsReceived ?? 0;
-
-          setUser({
-            username: username,
-            email: userEmail,
-            isFirstLogin: isFirstLogin,
-            welcomeModalShown: welcomeModalShown,
-            onboardingStep: onboardingStep,
-            affiliateCode: affiliateCode,
-            affiliateCodeUsedAt: affiliateCodeUsedAt,
-            carbonCredits: carbonCredits,
-            omBalance: omBalance,
-            bonusOMsReceived: bonusOMsReceived
-          });
-          setLoading(false);
-          return { success: true };
-        }
-      } else if (is2FAResponse) {
-        // Para 2FA, retornar que se requiere 2FA
-        return { requires2FA: true as const, email: email };
+        setUser({
+          username: user?.fullName || user?.name || email.split('@')[0],
+          email: user?.email || email,
+          isFirstLogin: user?.isFirstLogin || false,
+          welcomeModalShown: user?.welcomeModalShown || false,
+          onboardingStep: user?.onboardingStep || "pending",
+          affiliateCode: user?.affiliateCode || null,
+          affiliateCodeUsedAt: user?.affiliateCodeUsedAt || null,
+          messageType: responseData.messageType || null,
+          carbonCredits: user?.carbonCredits ?? 0,
+          omBalance: user?.omBalance ?? 0,
+          bonusOMsReceived: user?.bonusOMsReceived ?? 0,
+        });
+        setLoading(false);
+        return { success: true };
       } else {
         throw new Error("Login failed");
       }
