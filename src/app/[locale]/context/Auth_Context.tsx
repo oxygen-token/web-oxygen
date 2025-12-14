@@ -139,43 +139,150 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   const logout = async () => {
+    console.log("🚪 Iniciando LOGOUT NUCLEAR...");
     setIsLoggingOut(true);
     setLoading(true);
-    
+
+    // 1. Llamar al backend para invalidar sesión
     try {
       await post("/logout");
+      console.log("✅ Backend logout exitoso");
     } catch (error) {
-      console.error("Error en logout del backend:", error);
+      console.error("❌ Error en logout del backend:", error);
+      // Continuar con logout aunque falle el backend
     }
 
-    // Limpiar cookies de sesión
+    // 2. LIMPIEZA NUCLEAR DE COOKIES - Producción y desarrollo
     try {
-      document.cookie = "jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-      document.cookie = "jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=localhost";
-      document.cookie = "jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.localhost";
-      
-      document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-      document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=localhost";
-      
-      document.cookie = "session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-      document.cookie = "auth=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      // Obtener el dominio actual
+      const currentDomain = window.location.hostname;
+      const isProduction = !currentDomain.includes('localhost') && !currentDomain.includes('127.0.0.1');
+
+      // Lista de nombres de cookies conocidas
+      const cookieNames = [
+        'jwt', 'username', 'session', 'auth', 'token',
+        'connect.sid', 'next-auth.session-token', 'next-auth.csrf-token',
+        'next-auth.callback-url', 'oxygen_token', 'oxygen_session',
+        'oxygen_auth', 'oxygen_user', 'NEXT_LOCALE'
+      ];
+
+      // Paths posibles
+      const paths = ['/', '/dashboard', '/api', '/es', '/en'];
+
+      // Dominios para producción y desarrollo
+      const domains = [
+        '',
+        currentDomain,
+        `.${currentDomain}`,
+        'localhost',
+        '.localhost',
+        '127.0.0.1',
+      ];
+
+      console.log(`🍪 Limpiando cookies para dominio: ${currentDomain} (${isProduction ? 'PRODUCCIÓN' : 'DESARROLLO'})`);
+
+      // Limpiar cookies conocidas con todas las variaciones
+      cookieNames.forEach(name => {
+        paths.forEach(path => {
+          domains.forEach(domain => {
+            // Variaciones básicas
+            document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=${path}`;
+            document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=${path}; domain=${domain}`;
+
+            // Con flags de seguridad
+            if (isProduction) {
+              document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=${path}; domain=${domain}; secure`;
+              document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=${path}; domain=${domain}; secure; samesite=none`;
+            }
+
+            // SameSite variations
+            document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=${path}; domain=${domain}; samesite=strict`;
+            document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=${path}; domain=${domain}; samesite=lax`;
+          });
+        });
+      });
+
+      // Limpiar TODAS las cookies que existan actualmente
+      const allCookies = document.cookie.split(";");
+      allCookies.forEach(cookie => {
+        const eqPos = cookie.indexOf("=");
+        const name = eqPos > -1 ? cookie.substr(0, eqPos).trim() : cookie.trim();
+
+        if (name) {
+          paths.forEach(path => {
+            document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=${path}`;
+            document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=${path}; domain=${currentDomain}`;
+            document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=${path}; domain=.${currentDomain}`;
+
+            if (isProduction) {
+              document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=${path}; domain=${currentDomain}; secure`;
+              document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=${path}; domain=.${currentDomain}; secure`;
+            }
+          });
+        }
+      });
+
+      console.log("✅ Cookies limpiadas");
     } catch (cookieError) {
-      console.error("Error limpiando cookies:", cookieError);
+      console.error("❌ Error limpiando cookies:", cookieError);
     }
 
-    // Limpiar localStorage
+    // 3. LIMPIEZA NUCLEAR DE STORAGE
     try {
-      localStorage.removeItem('user');
-      localStorage.removeItem('affiliateCode');
-      localStorage.removeItem('affiliateVerified');
-      localStorage.removeItem('affiliateBannerSeen');
+      // LocalStorage
+      const localStorageKeys = Object.keys(localStorage);
+      console.log(`🗄️ Limpiando ${localStorageKeys.length} items de localStorage`);
+      localStorageKeys.forEach(key => {
+        localStorage.removeItem(key);
+      });
+      localStorage.clear();
+
+      // SessionStorage
+      const sessionStorageKeys = Object.keys(sessionStorage);
+      console.log(`🗄️ Limpiando ${sessionStorageKeys.length} items de sessionStorage`);
+      sessionStorageKeys.forEach(key => {
+        sessionStorage.removeItem(key);
+      });
+      sessionStorage.clear();
+
+      console.log("✅ Storage limpiado completamente");
     } catch (storageError) {
-      console.error("Error limpiando localStorage:", storageError);
+      console.error("❌ Error limpiando storage:", storageError);
     }
 
+    // 4. LIMPIEZA DE CACHÉ (ServiceWorker y Cache API)
+    try {
+      // Limpiar Cache API si está disponible
+      if ('caches' in window) {
+        const cacheNames = await caches.keys();
+        console.log(`🗑️ Limpiando ${cacheNames.length} cachés`);
+        await Promise.all(
+          cacheNames.map(cacheName => caches.delete(cacheName))
+        );
+        console.log("✅ Caché limpiado");
+      }
+    } catch (cacheError) {
+      console.error("❌ Error limpiando caché:", cacheError);
+    }
+
+    // 5. Limpiar estado de la aplicación
     setUser(null);
+    setHasLoggedOut(true);
     setLoading(false);
     setIsLoggingOut(false);
+
+    console.log("✅ LOGOUT NUCLEAR COMPLETADO");
+
+    // 6. FORZAR REDIRECCIÓN Y RECARGA
+    // Esperar un momento para que todas las operaciones async terminen
+    setTimeout(() => {
+      // Redirigir a home y forzar recarga completa
+      window.location.href = '/';
+      // Forzar recarga dura (sin caché)
+      setTimeout(() => {
+        window.location.reload();
+      }, 100);
+    }, 300);
   };
 
   // Función adicional para limpiar completamente el estado
