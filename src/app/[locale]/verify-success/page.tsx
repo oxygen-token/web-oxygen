@@ -44,15 +44,35 @@ const VerifySuccess = () => {
 
           if (response.ok && data.success) {
             console.log("✅ Session established successfully");
+
+            // Esperar un momento para que las cookies se propaguen
+            await new Promise(resolve => setTimeout(resolve, 500));
+
             setVerificationStatus("success");
 
-            // Obtener datos del usuario desde /session
-            const sessionResponse = await fetch("/api/auth/session", {
-              credentials: "include",
-            });
-            const sessionData = await sessionResponse.json();
+            // Obtener datos del usuario desde /session con retry
+            let sessionData = null;
+            let retries = 3;
 
-            if (sessionData.loggedIn) {
+            while (retries > 0 && (!sessionData || !sessionData.loggedIn)) {
+              const sessionResponse = await fetch("/api/auth/session", {
+                credentials: "include",
+              });
+              sessionData = await sessionResponse.json();
+
+              if (sessionData.loggedIn) {
+                console.log("✅ Session data retrieved successfully");
+                break;
+              }
+
+              retries--;
+              if (retries > 0) {
+                console.log(`⏳ Session not ready, retrying... (${retries} attempts left)`);
+                await new Promise(resolve => setTimeout(resolve, 300));
+              }
+            }
+
+            if (sessionData && sessionData.loggedIn) {
               setUser({
                 username: sessionData.fullName || sessionData.username || '',
                 email: sessionData.email || '',
@@ -111,18 +131,37 @@ const VerifySuccess = () => {
 
             if (sessionResponse.ok) {
               console.log("✅ Session established");
+
+              // Esperar un momento para que las cookies se propaguen
+              await new Promise(resolve => setTimeout(resolve, 500));
             }
           }
 
           setVerificationStatus("success");
 
-          // Obtener datos del usuario
-          const sessionResponse = await fetch("/api/auth/session", {
-            credentials: "include",
-          });
-          const sessionData = await sessionResponse.json();
+          // Obtener datos del usuario con retry
+          let sessionData = null;
+          let retries = 3;
 
-          if (sessionData.loggedIn) {
+          while (retries > 0 && (!sessionData || !sessionData.loggedIn)) {
+            const sessionResponse = await fetch("/api/auth/session", {
+              credentials: "include",
+            });
+            sessionData = await sessionResponse.json();
+
+            if (sessionData.loggedIn) {
+              console.log("✅ Session data retrieved successfully");
+              break;
+            }
+
+            retries--;
+            if (retries > 0) {
+              console.log(`⏳ Session not ready, retrying... (${retries} attempts left)`);
+              await new Promise(resolve => setTimeout(resolve, 300));
+            }
+          }
+
+          if (sessionData && sessionData.loggedIn) {
             setUser({
               username: sessionData.fullName || sessionData.username || '',
               email: sessionData.email || '',
@@ -159,7 +198,8 @@ const VerifySuccess = () => {
         setRedirectCountdown((prev) => {
           if (prev <= 1) {
             clearInterval(timer);
-            router.push(`/${locale}/dashboard`);
+            // Usar window.location.href para forzar recarga completa de cookies
+            window.location.href = `/${locale}/dashboard`;
             return 0;
           }
           return prev - 1;
@@ -168,7 +208,7 @@ const VerifySuccess = () => {
 
       return () => clearInterval(timer);
     }
-  }, [verificationStatus, router]);
+  }, [verificationStatus]);
 
   return (
     <>
@@ -246,7 +286,8 @@ const VerifySuccess = () => {
                 <button
                   onClick={() => {
                     const locale = window.location.pathname.split("/")[1] || "es";
-                    router.push(`/${locale}/dashboard`);
+                    // Usar window.location.href para forzar recarga completa de cookies
+                    window.location.href = `/${locale}/dashboard`;
                   }}
                   className="w-full max-w-xs py-3 px-6 text-base font-medium bg-teal-accent text-white rounded-lg hover:bg-teal-accent/80 transition-colors text-center"
                 >
