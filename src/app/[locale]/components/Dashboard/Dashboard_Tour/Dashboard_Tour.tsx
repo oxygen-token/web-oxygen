@@ -74,6 +74,7 @@ const Dashboard_Tour = ({ shouldShowTour }: Dashboard_Tour_Props) => {
       target: isMobile ? ".mobile-menu-button" : ".sidebar-navigation",
       content: t("tour.social"),
       placement: isMobile ? "bottom" : "right",
+      offset: isMobile ? 60 : 0,
     },
   ];
 
@@ -107,11 +108,23 @@ const Dashboard_Tour = ({ shouldShowTour }: Dashboard_Tour_Props) => {
       if (currentStep && currentStep.target && typeof currentStep.target === 'string') {
         const targetElement = document.querySelector(currentStep.target);
         if (targetElement) {
+          // Para el último step (menú), scroll más hacia arriba
+          const isLastStep = index === steps.length - 1;
           targetElement.scrollIntoView({
             behavior: 'smooth',
-            block: 'center',
+            block: isLastStep ? 'start' : 'center',
             inline: 'nearest'
           });
+
+          // Ajuste adicional para el menú
+          if (isLastStep) {
+            setTimeout(() => {
+              window.scrollBy({
+                top: -80,
+                behavior: 'smooth'
+              });
+            }, 300);
+          }
         }
       }
     }

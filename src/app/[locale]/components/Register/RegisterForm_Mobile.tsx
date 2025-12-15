@@ -494,19 +494,19 @@ const RegisterForm_Mobile = () => {
             color="cyan"
             speed="4s"
             thickness={3}
-            className="w-auto min-w-[120px] py-1.5 px-4 text-xs font-medium"
+            className="w-[140px] py-1.5 px-4 text-xs font-medium"
             style={{
               transform: isSubmitting ? 'scale(0.95)' : 'scale(1)',
               transition: 'transform 0.3s ease'
             }}
           >
             {isSubmitting ? (
-              <div className="flex items-center justify-center gap-1">
+              <div className="flex items-center justify-center gap-1 w-full">
                 <Loading_Spinner size="sm" color="white" />
-                <span>{t("creating-account")}</span>
+                <span className="whitespace-nowrap">{t("creating-account")}</span>
               </div>
             ) : (
-              t("create-account")
+              <span className="whitespace-nowrap">{t("create-account")}</span>
             )}
           </Star_Border>
         </div>
