@@ -103,28 +103,25 @@ const Dashboard_Tour = ({ shouldShowTour }: Dashboard_Tour_Props) => {
       return;
     }
     
-    if (type === 'step:after' && isMobile) {
+    // Para el último step (menú hamburguesa), hacer scroll al top ANTES de mostrar
+    if (type === 'step:before' && isMobile && index === 3) {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
+
+    // Para otros steps, hacer scroll después
+    if (type === 'step:after' && isMobile && index < 3) {
       const currentStep = steps[index];
       if (currentStep && currentStep.target && typeof currentStep.target === 'string') {
         const targetElement = document.querySelector(currentStep.target);
         if (targetElement) {
-          // Para el último step (menú), scroll más hacia arriba
-          const isLastStep = index === steps.length - 1;
           targetElement.scrollIntoView({
             behavior: 'smooth',
-            block: isLastStep ? 'start' : 'center',
+            block: 'center',
             inline: 'nearest'
           });
-
-          // Ajuste adicional para el menú
-          if (isLastStep) {
-            setTimeout(() => {
-              window.scrollBy({
-                top: -80,
-                behavior: 'smooth'
-              });
-            }, 300);
-          }
         }
       }
     }
