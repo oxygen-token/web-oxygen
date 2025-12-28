@@ -70,6 +70,12 @@ const LoginForm = () => {
             {...register("password", { required: true })}
             label={t("password-field")}
           />
+          <Link
+            href={`/${locale}/forgot-password`}
+            className="block text-center text-sm text-white/80 hover:text-white mt-2"
+          >
+            {t("forgot-password")}
+          </Link>
         </div>
 
         <div className="flex flex-col">
