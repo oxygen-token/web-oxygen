@@ -278,6 +278,7 @@
   "SideBarDashboard": {
     "inicio": "Home",
     "mainPage": "Main Page",
+    "claimOms": "Claim OMs",
     "intercambiar": "Exchange",
     "quemarToken": "Burn Token",
     "compensar": "Compensa",
@@ -676,5 +677,28 @@
   "WhatsApp": {
     "buttonText": "Contact us",
     "buttonLabel": "Chat with us on WhatsApp"
+  },
+  "ClaimOMs": {
+    "button": "Claim OMs",
+    "title": "Claim your OMs",
+    "subtitle": "Enter your code to receive OMs",
+    "code-label": "Redemption code",
+    "code-placeholder": "Enter your code",
+    "verify": "Verify Code",
+    "verifying": "Verifying...",
+    "confirm-title": "Confirm Redemption",
+    "confirm-subtitle": "You are about to receive",
+    "confirm": "Confirm",
+    "confirming": "Confirming...",
+    "back": "Back",
+    "submit": "Claim OMs",
+    "submitting": "Claiming...",
+    "success-title": "OMs Claimed!",
+    "success-message": "You have received {amount} OMs",
+    "error-empty": "Please enter a code",
+    "error-not-found": "Code not found",
+    "error-already-used": "This code has already been used",
+    "error-expired": "This code has expired",
+    "error-generic": "Something went wrong. Please try again."
   }
 }

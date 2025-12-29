@@ -34,11 +34,12 @@ html, body {
 input {
   background-color: #00caa61a !important;
   border: none !important;
-  color: rgba(14, 37, 52, 0.95) !important;
+  color: #ffffff !important;
 }
 
 input::placeholder {
-  color: rgba(209, 213, 219, 0.559) !important;
+  color: rgba(255, 255, 255, 0.5) !important;
+  text-transform: none !important;
 }
 
 input:focus {
@@ -142,4 +143,132 @@ input:focus {
 .navbar-transparent {
   background: transparent !important;
   backdrop-filter: none !important;
+}
+
+/* Modal animations */
+@keyframes modal-backdrop-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modal-backdrop-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes modal-content-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes modal-content-out {
+  from {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.95) translateY(10px);
+  }
+}
+
+.animate-modal-backdrop-in {
+  animation: modal-backdrop-in 0.2s ease-out forwards;
+}
+
+.animate-modal-backdrop-out {
+  animation: modal-backdrop-out 0.2s ease-in forwards;
+}
+
+.animate-modal-content-in {
+  animation: modal-content-in 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-modal-content-out {
+  animation: modal-content-out 0.2s ease-in forwards;
+}
+
+/* Claim modal state transitions */
+@keyframes claim-state-in {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes om-reveal {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fade-in-delayed {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes success-bounce {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-claim-state-in {
+  animation: claim-state-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-om-reveal {
+  animation: om-reveal 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.animate-fade-in-delayed {
+  animation: fade-in-delayed 0.4s ease-out 0.3s forwards;
+  opacity: 0;
+}
+
+.animate-success-bounce {
+  animation: success-bounce 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }

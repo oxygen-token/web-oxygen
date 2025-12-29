@@ -93,7 +93,7 @@ export default function DashboardPage() {
     metrics: [
       {
         title: t("metrics.carbonCredits"),
-        value: String(user?.bonusOMsReceived ?? 0),
+        value: String(user?.omBalance ?? 0),
         icon: "/assets/images/imgTrees.jpg",
         description: t("metrics.carbonCreditsDesc")
       },

@@ -278,6 +278,7 @@
   "SideBarDashboard": {
     "inicio": "Inicio",
     "mainPage": "Página Principal",
+    "claimOms": "Canjear OMs",
     "intercambiar": "Intercambiar",
     "quemarToken": "Quemar Token",
     "compensar": "Compensar",
@@ -675,5 +676,28 @@
   "WhatsApp": {
     "buttonText": "Contáctanos",
     "buttonLabel": "Chatea con nosotros en WhatsApp"
+  },
+  "ClaimOMs": {
+    "button": "Canjear OMs",
+    "title": "Canjeá tus OMs",
+    "subtitle": "Ingresá tu código para recibir OMs",
+    "code-label": "Código de canje",
+    "code-placeholder": "Ingresá tu código",
+    "verify": "Verificar Código",
+    "verifying": "Verificando...",
+    "confirm-title": "Confirmar Canje",
+    "confirm-subtitle": "Estás por recibir",
+    "confirm": "Confirmar",
+    "confirming": "Confirmando...",
+    "back": "Volver",
+    "submit": "Canjear OMs",
+    "submitting": "Canjeando...",
+    "success-title": "¡OMs Canjeados!",
+    "success-message": "Recibiste {amount} OMs",
+    "error-empty": "Por favor ingresá un código",
+    "error-not-found": "Código no encontrado",
+    "error-already-used": "Este código ya fue utilizado",
+    "error-expired": "Este código ha expirado",
+    "error-generic": "Ocurrió un error. Por favor intentá de nuevo."
   }
 }
