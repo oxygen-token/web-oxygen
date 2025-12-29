@@ -4,13 +4,10 @@ const getBaseBackendUrl = () => {
   if (IS_DEV) {
     return "http://localhost:10001";
   }
-  
-  const envUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
-  if (envUrl) {
-    return envUrl;
-  }
-  
-  return "https://backend-render-7vh2.onrender.com";
+
+  // In production, use the proxy to avoid cross-origin cookie issues
+  // The proxy is configured in next.config.js
+  return "/api/backend";
 };
 
 const BACKEND_URL = getBaseBackendUrl();

@@ -6,6 +6,14 @@ const withNextIntl = createNextIntlPlugin('./i18n/request.ts', {
 
 /** @type {import('next').NextConfig}    */
 const nextConfig = {
+  async rewrites() {
+    return [
+      {
+        source: '/api/backend/:path*',
+        destination: 'https://backend-render-7vh2.onrender.com/:path*'
+      }
+    ]
+  },
   images: {
     remotePatterns: [
       {
