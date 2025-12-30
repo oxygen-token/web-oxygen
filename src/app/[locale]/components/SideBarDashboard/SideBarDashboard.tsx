@@ -552,29 +552,16 @@ const SideBarDashboard = memo(() => {
                 </div>
 
                 <form onSubmit={handleVerifyCode} className="space-y-6">
-                  <div className="relative">
+                  <div>
                     <input
                       type="text"
                       value={claimCode}
                       onChange={(e) => setClaimCode(e.target.value)}
                       placeholder={claimT("code-placeholder")}
-                      className="claim-input w-full px-4 py-4 rounded-lg font-medium text-lg transition-all tracking-wider shadow-md"
+                      className="claim-input w-full px-4 py-4 rounded-lg font-medium text-lg transition-all tracking-wider shadow-md text-center"
                       disabled={isClaimLoading}
                       autoFocus
                     />
-                    {claimCode.trim() && !claimError && (
-                      <button
-                        type="submit"
-                        disabled={isClaimLoading}
-                        className={`absolute right-3 top-1/2 -translate-y-1/2 text-sm font-medium transition-all duration-300 ${
-                          isClaimLoading
-                            ? "text-teal-accent cursor-not-allowed"
-                            : "text-teal-accent hover:text-teal-dark"
-                        }`}
-                      >
-                        {isClaimLoading ? "verifying..." : "verify"}
-                      </button>
-                    )}
                   </div>
 
                   {claimError && (
