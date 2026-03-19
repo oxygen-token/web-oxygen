@@ -1,8 +1,6 @@
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 
-import { LogoBDB } from "./logos";
-
 import chronosPayLogo from "../../../../../public/assets/logos/chronosPayLogo.png";
 import finguruLogo from "../../../../../public/assets/logos/finguruLogo.png";
 
@@ -15,7 +13,6 @@ function Partnerships() {
         {partnerships("title")}
       </h3>
       <div className="flex flex-col lg:flex-row gap-8 lg:gap-16 items-center lg:justify-center">
-        <LogoBDB height={40} className="text-white" />
         <Image height={40} src={chronosPayLogo} alt="Chronos Pay" className="brightness-0 invert" />
         <Image height={40} src={finguruLogo} alt="Finguru" className="brightness-0 invert" />
       </div>

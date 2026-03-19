@@ -8,7 +8,6 @@ import Image from "next/image.js";
 import tokenImg from "../../../../public/assets/images/tokenv1.png";
 import Project from "../components/Project/Project.js";
 import laFlorenciaPic from "../../../../public/assets/images/laFlorenciaBuy.png";
-import araucariasPic from "../../../../public/assets/images/araucariasBuy.png";
 // ..
 const Comprar = () => {
   const buyIdioms = useTranslations("Buy");
@@ -36,13 +35,6 @@ const Comprar = () => {
               <Project
                 name="LA FLORENCIA"
                 picture={laFlorenciaPic}
-                description={projectIdioms("laFlorencia-text")}
-                buyCard={true}
-                btnText={buyIdioms("btn")}
-              />
-              <Project
-                name="LAS ARAUCARIAS"
-                picture={araucariasPic}
                 description={projectIdioms("laFlorencia-text")}
                 buyCard={true}
                 btnText={buyIdioms("btn")}

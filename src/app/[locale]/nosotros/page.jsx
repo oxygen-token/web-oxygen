@@ -14,7 +14,6 @@ import "../../[locale]/globals.css";
 import picDante from "../../../../public/assets/images/team/team_sin_bg/Dante_sbg.png";
 import picMatteo from "../../../../public/assets/images/team/team_sin_bg/Mateo_sbg.png";
 import picFranco from "../../../../public/assets/images/team/team_sin_bg/Franco_sbg.png";
-import picEmiliano from "../../../../public/assets/images/team/team_sin_bg/Emiliano_sbg.png";
 import picConstanza from "../../../../public/assets/images/team/team_sin_bg/Constanza_sbg.png";
 import picMalena from "../../../../public/assets/images/team/team_sin_bg/Malena_sbg.png";
 import picNicolas from "../../../../public/assets/images/team/team_sin_bg/Nicolas_sbg.png";
@@ -164,15 +163,6 @@ const Nosotros = () => {
       rol: "Head of Growth",
       description: teamIdioms("text-franco"),
       linkLin: "https://www.linkedin.com/in/franco-ammaturo-208712192",
-      linkIg: "",
-      linkTw: ""
-    },
-    {
-      name: "Emiliano Ezcurra",
-      picture: picEmiliano,
-      rol: "Conservation Advisor",
-      description: teamIdioms("text-emiliano"),
-      linkLin: "https://www.linkedin.com/in/emiliano-ezcurra-3a26b720",
       linkIg: "",
       linkTw: ""
     }
