@@ -3,7 +3,9 @@ import { useTranslations } from "next-intl";
 export function Progress() {
   const hometokens = useTranslations("homeTokens");
 
-  const progress = 0; // TODO
+  const protected_hectares = 30000;
+  const objective_hectares = 100000;
+  const progress = protected_hectares / objective_hectares;
 
   return (
     <section className="bg-white flex flex-col items-center text-center lg:text-start px-5 lg:px-20 pb-16 lg:pb-32">
@@ -49,7 +51,7 @@ export function Progress() {
           <p className="mt-6">
             {hometokens("progress-span")}:{" "}
             <strong className="font-bold">
-              000 {hometokens("progress-span-2")}
+              {objective_hectares.toLocaleString()} {hometokens("progress-span-2")}
             </strong>
           </p>
         </div>
