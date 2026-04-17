@@ -85,6 +85,7 @@
     "helloUser": "Hello, {username}",
     "logout": "Log out",
     "whitepaper": "Whitepaper",
+    "green-panorama": "Green Panorama",
     "dashboard": "Dashboard"
   },
   "Footer": {
@@ -97,17 +98,22 @@
     "news-button": "Send"
   },
   "Blog": {
-    "title": "Community",
-    "subtitle": "Discover the latest news, insights, and stories about environmental conservation and our mission to protect native forests.",
     "allPosts": "All Posts",
-    "searchPlaceholder": "Search posts...",
+    "searchResults": "Search Results",
+    "loading": "Loading posts...",
+    "errorLoading": "Error loading posts. Please try again later.",
+    "noResults": "No posts found for your search.",
+    "noPosts": "No posts available.",
+    "searchComplete": "Search complete",
+    "postNotFound": "Post not found",
+    "postNotFoundMessage": "The post you're looking for doesn't exist or has been removed.",
+    "backToBlog": "Back to Blog",
+    "publishedOn": "Published on",
     "views": "views",
     "comments": "comments",
-    "aboutSection": "About Our Community",
-    "aboutText": "We share insights about forest conservation, carbon credits, and environmental initiatives. Stay updated with our latest projects and achievements.",
-    "articles": "articles",
-    "updated": "Regularly updated",
-    "moreComing": "More articles coming soon..."
+    "likes": "likes",
+    "seobotBlogTitle": "SEObot Blog",
+    "seobotBlogSubtitle": "Discover the latest AI-generated content about environmental conservation, sustainability, and our mission to protect native forests."
   },
   "AboutUs": {
     "title": "This is Oxygen.",
@@ -443,7 +449,7 @@
     },
     "sections": {
       "transport": "Transport",
-      "flights": "Flights & Diet", 
+      "flights": "Flights & Diet",
       "energy": "Energy & Lifestyle"
     },
     "transport": {
@@ -656,24 +662,6 @@
       }
     }
   },
-  "Blog": {
-    "allPosts": "All Posts",
-    "searchResults": "Search Results",
-    "loading": "Loading posts...",
-    "errorLoading": "Error loading posts. Please try again later.",
-    "noResults": "No posts found for your search.",
-    "noPosts": "No posts available.",
-    "searchComplete": "Search complete",
-    "postNotFound": "Post not found",
-    "postNotFoundMessage": "The post you're looking for doesn't exist or has been removed.",
-    "backToBlog": "Back to Blog",
-    "publishedOn": "Published on",
-    "views": "views",
-    "comments": "comments",
-    "likes": "likes",
-    "seobotBlogTitle": "SEObot Blog",
-    "seobotBlogSubtitle": "Discover the latest AI-generated content about environmental conservation, sustainability, and our mission to protect native forests."
-  },
   "WhatsApp": {
     "buttonText": "Contact us",
     "buttonLabel": "Chat with us on WhatsApp"
@@ -700,5 +688,24 @@
     "error-already-used": "This code has already been used",
     "error-expired": "This code has expired",
     "error-generic": "Something went wrong. Please try again."
+  },
+  "GreenPanorama": {
+    "hero-eyebrow": "PARTNERSHIP · VERIFIABLE INDUSTRIES",
+    "hero-title": "Green Panorama",
+    "hero-subtitle": "An interactive map of Argentina's green and carbon-market ecosystem.",
+    "hero-description": "Oxygen is part of a living network of organizations working on conservation, carbon markets, and sustainability across Argentina. Explore the companies, funds, and relationships that make this ecosystem real — discovered by AI research agents and verified on-chain through GenLayer intelligent contracts.",
+    "widget-aria": "Interactive map of the green ecosystem",
+    "info-heading": "What you can do here",
+    "info-1-title": "630+ organizations",
+    "info-1-text": "Companies, NGOs, government agencies, and funds mapped by autonomous AI research agents.",
+    "info-2-title": "Verified on-chain",
+    "info-2-text": "Every claim checked by GenLayer intelligent contracts — real, active, and accurately described.",
+    "info-3-title": "Always fresh",
+    "info-3-text": "Research agents discover new organizations, funding rounds, and partnerships 24/7.",
+    "cta-text": "Prefer full screen?",
+    "cta-button": "Open in a new tab",
+    "partner-title": "Verifiable Industries, for every sector",
+    "partner-text": "Green Panorama is the first live map built on the Verifiable Industries protocol — the same infrastructure that powers on-chain-verified event networks, industry reports, and deal-flow tools. Oxygen is a partner.",
+    "partner-button": "Learn more"
   }
 }
