@@ -7,7 +7,7 @@ import { capitalizeFirstLetter } from "../../../../utils/stringUtils";
 import { useAuth } from "../../context/Auth_Context";
 import LanguageSelect from "./LanguageSelect";
 import { usePathname } from "next/navigation";
-import { PiListBold, PiXBold, PiUser, PiHouse, PiQuestion, PiGear, PiSignOut, PiTree, PiUsers, PiFileText, PiCalculator } from "react-icons/pi";
+import { PiListBold, PiXBold, PiUser, PiHouse, PiQuestion, PiGear, PiSignOut, PiTree, PiUsers, PiFileText, PiCalculator, PiGraph } from "react-icons/pi";
 
 import logoNav from "../../../../../public/assets/images/logo.png";
 
@@ -18,6 +18,7 @@ const links = [
   { nameKey: "community", href: "/community" },
   { nameKey: "calculator", href: "/calculadora" },
   { nameKey: "whitepaper", href: "/whitepaper" },
+  { nameKey: "green-panorama", href: "/green-panorama" },
 ];
 
 function Navbar() {
@@ -74,6 +75,7 @@ function Navbar() {
     { nameKey: "community", href: "/community", icon: PiUsers, disabled: false },
     { nameKey: "calculator", href: "/calculadora", icon: PiCalculator, disabled: false },
     { nameKey: "whitepaper", href: "/whitepaper", icon: PiFileText, disabled: false },
+    { nameKey: "green-panorama", href: "/green-panorama", icon: PiGraph, disabled: false },
   ];
 
   return (
