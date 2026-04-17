@@ -38,6 +38,7 @@ export default function GreenPanoramaPage() {
           <div className="rounded-2xl overflow-hidden shadow-lg border border-gray-200 bg-[#f5f3eb]">
             <div
               data-green-panorama-map={MAP_SLUG}
+              data-green-panorama-industries="green"
               data-height="820"
               data-theme="light"
               aria-label={t("widget-aria")}
