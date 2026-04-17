@@ -9,7 +9,7 @@ import Footer from "../components/Footer/Footer";
 import { LinkButton } from "../components/ui/Button2";
 
 const EMBED_ORIGIN = "https://green-panorama-ar.vercel.app";
-const EVENT_SLUG = "blockchainrio-2026";
+const MAP_SLUG = "panorama";
 
 export default function GreenPanoramaPage() {
   const t = useTranslations("GreenPanorama");
@@ -35,18 +35,18 @@ export default function GreenPanoramaPage() {
         </section>
 
         <section className="px-5 lg:px-20 pb-16 lg:pb-20 max-w-6xl mx-auto">
-          <div className="rounded-2xl overflow-hidden shadow-lg border border-gray-200 bg-[#0a0f1a]">
+          <div className="rounded-2xl overflow-hidden shadow-lg border border-gray-200 bg-[#f5f3eb]">
             <div
-              data-green-panorama-event={EVENT_SLUG}
+              data-green-panorama-map={MAP_SLUG}
               data-height="820"
-              data-theme="dark"
+              data-theme="light"
               aria-label={t("widget-aria")}
             />
           </div>
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mt-6">
             <p className="text-sm text-gray-600">{t("cta-text")}</p>
             <LinkButton
-              href={`${EMBED_ORIGIN}/event/${EVENT_SLUG}`}
+              href={`${EMBED_ORIGIN}/#prototype`}
               target="_blank"
               rel="noopener noreferrer"
               variant="large"
